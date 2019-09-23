@@ -3,20 +3,21 @@ package com.chinamobile.sd.commonUtils;
  * @Author: fengchen.zsx
  * @Date: 2019/9/22 0:40
  */
+
 /**
  * 定义统一返回类
  */
 public class ResultVO {
-    private String code;
+    private String status;
     private String msg;
     private Object data;
 
-    public String getCode() {
-        return code;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getMsg() {
@@ -35,8 +36,8 @@ public class ResultVO {
         this.data = data;
     }
 
-    public ResultVO(String code, String msg, Object data) {
-        this.code = code;
+    public ResultVO(String status, String msg, Object data) {
+        this.status = status;
         this.msg = msg;
         this.data = data;
     }

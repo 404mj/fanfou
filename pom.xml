@@ -52,6 +52,7 @@
         </dependency>
 
         <!--redis缓存-->
+        <!--perhaps jedis is not necessart!!-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>

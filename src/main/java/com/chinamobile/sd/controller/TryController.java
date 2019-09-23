@@ -5,15 +5,19 @@ import com.chinamobile.sd.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/try")
@@ -24,7 +28,14 @@ public class TryController {
     @Autowired
     private UserService userService;
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+    @Resource
+    private RedisTemplate redisTemplate;
+
+
     //    测试环境配置
+    //@GetMapping
     @RequestMapping("/index")
     public Map<String, String> index() {
         Map<String, String> a = new HashMap<>();
@@ -56,9 +67,15 @@ public class TryController {
     }
 
     //    测试json请求参数
+    // @PostMapping
     @RequestMapping("/jsonparam")
     public String jsonParam(@RequestBody String jsonData) {
         return jsonData;
+    }
+    @RequestMapping("/jsonparam2")
+    public String jsonParam2(@RequestBody Map<String,Object> jsonData) {
+        logger.info(jsonData.get("k1").toString());
+        return "success";
     }
 
 
@@ -75,6 +92,16 @@ public class TryController {
         logger.debug("DEBUG 级别日志");
         logger.trace("TRACE 级别日志");
         return "success";
+    }
+
+    /**
+     * 测试redis
+     * 10s过期时间
+     */
+    @RequestMapping("/setget")
+    public String setThenGet() {
+        stringRedisTemplate.opsForValue().set("ping", "Pong!", 10, TimeUnit.SECONDS);
+        return stringRedisTemplate.opsForValue().get("ping");
     }
 
 }
