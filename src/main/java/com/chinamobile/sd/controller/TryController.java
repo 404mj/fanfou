@@ -1,18 +1,24 @@
 package com.chinamobile.sd.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.chinamobile.sd.commonUtils.CrypUtil;
 import com.chinamobile.sd.model.User;
 import com.chinamobile.sd.service.UserService;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -102,6 +108,36 @@ public class TryController {
     public String setThenGet() {
         stringRedisTemplate.opsForValue().set("ping", "Pong!", 10, TimeUnit.SECONDS);
         return stringRedisTemplate.opsForValue().get("ping");
+    }
+
+    /**
+     *使用alibaba fastjson
+     */
+    @PostMapping("/tryjson")
+    public void parseJson(@RequestBody String jsonstring) {
+        JSONObject jsonOb = JSONObject.parseObject(jsonstring);
+        String jstring = jsonOb.toJSONString();
+        logger.info("=======>"+jsonstring+"<=======");
+
+        RestTemplate restClient = new RestTemplate();
+    }
+
+
+    /**
+     * 使用httpclient请求开发者接口
+     */
+    @GetMapping("/getpic")
+    public String getPic() {
+        return "";
+    }
+
+    /**
+     * Test
+     */
+    @GetMapping("/test")
+    public void test() {
+
+
     }
 
 }
