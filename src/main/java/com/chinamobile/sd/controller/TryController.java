@@ -2,6 +2,7 @@ package com.chinamobile.sd.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.CrypUtil;
+import com.chinamobile.sd.commonUtils.RestClient4Andmu;
 import com.chinamobile.sd.model.User;
 import com.chinamobile.sd.service.UserService;
 import org.apache.commons.codec.binary.Hex;
@@ -78,8 +79,9 @@ public class TryController {
     public String jsonParam(@RequestBody String jsonData) {
         return jsonData;
     }
+
     @RequestMapping("/jsonparam2")
-    public String jsonParam2(@RequestBody Map<String,Object> jsonData) {
+    public String jsonParam2(@RequestBody Map<String, Object> jsonData) {
         logger.info(jsonData.get("k1").toString());
         return "success";
     }
@@ -111,13 +113,13 @@ public class TryController {
     }
 
     /**
-     *使用alibaba fastjson
+     * 使用alibaba fastjson
      */
     @PostMapping("/tryjson")
     public void parseJson(@RequestBody String jsonstring) {
         JSONObject jsonOb = JSONObject.parseObject(jsonstring);
         String jstring = jsonOb.toJSONString();
-        logger.info("=======>"+jsonstring+"<=======");
+        logger.info("=======>" + jsonstring + "<=======");
 
         RestTemplate restClient = new RestTemplate();
     }
@@ -126,9 +128,11 @@ public class TryController {
     /**
      * 使用httpclient请求开发者接口
      */
-    @GetMapping("/getpic")
+    @GetMapping("/sendapi")
     public String getPic() {
-        return "";
+        //todo 调用接口的body数据怎么弄？
+        RestClient4Andmu.requestApi("https://open.andmu.cn/v3/open/api/token", "{\"sig\":\"3ea4ef228abe9fb7098fcaaa24598abf\",\"operatorType\":1}", false);
+        return "headers";
     }
 
     /**
