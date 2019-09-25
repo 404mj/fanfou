@@ -21,10 +21,7 @@ import javax.annotation.Resource;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -35,6 +32,8 @@ public class TryController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RestClient4Andmu restClient4Andmu;
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
@@ -130,17 +129,20 @@ public class TryController {
      */
     @GetMapping("/sendapi")
     public String getPic() {
-        //todo 调用接口的body数据怎么弄？
-        RestClient4Andmu.requestApi("https://open.andmu.cn/v3/open/api/token", "{\"sig\":\"3ea4ef228abe9fb7098fcaaa24598abf\",\"operatorType\":1}", false);
-        return "headers";
+        //body数据按照规范构造顺序map，tojson。
+        Map<String, String> req = new LinkedHashMap<>();
+        req.put("page", "1");
+        req.put("pageSize", "10");
+        JSONObject obj = restClient4Andmu.requestApi(RestClient4Andmu.DEVICELIST_POST, JSONObject.toJSONString(req), true);
+        return obj.toJSONString();
     }
 
     /**
      * Test
      */
     @GetMapping("/test")
-    public void test() {
-
+    public String test() {
+        return restClient4Andmu.getToken();
 
     }
 

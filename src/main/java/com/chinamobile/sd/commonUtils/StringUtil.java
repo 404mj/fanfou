@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
  */
 public class StringUtil {
     public static final String EMPTYSTR = "";
+    public static final String REDISKEY_TOKEN = "ANDMU_FANFOU_TOKEN";
 
     public static boolean isSuccess(String str) {
         if (StringUtils.isEmpty(str)) {
