@@ -19,12 +19,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 根据 https://open.andmu.cn/doc/api 规范
@@ -39,10 +41,10 @@ public class RestClient4Andmu {
 
     private static final String APPID = "6e4268766a5c4445b6d1ec16d0f24636";
     private static final String SECRET = "uxG8HrcoMDWu0eqZ";
-    private static final String TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJwcm9mZXNzaW9uIjoxLCJzdWIiOiI2ZTQyNjg3NjZhNWM0NDQ1YjZkMW" +
-            "VjMTZkMGYyNDYzNiIsImFwcGlkIjoiNmU0MjY4NzY2YTVjNDQ0NWI2ZDFlYzE2ZDBmMjQ2MzYiLCJvcGVyYXRvclR5cGUiOjEsImV4cCI6M" +
-            "TU2OTk0NTAxNSwiaWF0IjoxNTY5MzQwMjE1LCJvcGVyYXRvciI6IjZlNDI2ODc2NmE1YzQ0NDViNmQxZWMxNmQwZjI0NjM2IiwianRpIjoi" +
-            "MTU2OTM0MDIxNTkzMiJ9.isl5spzHnFEuJdR6UHMk-8kUGQpKGRjQOHcQx2h1B7o";
+    private static final String TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJwcm9mZXNzaW9uIjoxLCJzdWIiOiI2ZTQyNjg3NjZhNWM0NDQ1" +
+            "YjZkMWVjMTZkMGYyNDYzNiIsImFwcGlkIjoiNmU0MjY4NzY2YTVjNDQ0NWI2ZDFlYzE2ZDBmMjQ2MzYiLCJvcGVyYXRvclR5cGUiO" +
+            "jEsImV4cCI6MTU3MDAyODcwNiwiaWF0IjoxNTY5NDIzOTA2LCJvcGVyYXRvciI6IjZlNDI2ODc2NmE1YzQ0NDViNmQxZWMxNmQwZj" +
+            "I0NjM2IiwianRpIjoiMTU2OTQyMzkwNjQ0NyJ9.--BqqkEowVVXh-pU3qhjXtHdWKOSJbYX6NF4zj9X7pQ";
     private static final String VERSION = "1.0.0";
 
     /**
@@ -78,10 +80,7 @@ public class RestClient4Andmu {
      */
     public String getToken() {
 
-        redisTemplate.opsForValue().set(StringUtil.REDISKEY_TOKEN,TOKEN,604800);
         String token = redisTemplate.opsForValue().get(StringUtil.REDISKEY_TOKEN);
-        return JSON.toJSONString(token);
-       /*
         if (!StringUtils.isEmpty(token)) {
             return token;
         }
@@ -95,10 +94,10 @@ public class RestClient4Andmu {
             return null;
         }
         token = JSONObject.parseObject(res.get("data").toString()).getString("token");
-        String expiresIn = JSONObject.parseObject(res.get("data").toString()).getString("expires_in");
-        redisTemplate.opsForValue().set(StringUtil.REDISKEY_TOKEN, token, Long.valueOf(expiresIn));
+        logger.info("----response   token------------" + token);
+        Long expiresIn = JSONObject.parseObject(res.get("data").toString()).getLong("expires_in");
+        redisTemplate.opsForValue().set(StringUtil.REDISKEY_TOKEN, token, expiresIn, TimeUnit.SECONDS);
         return token;
-        */
 
     }
 
