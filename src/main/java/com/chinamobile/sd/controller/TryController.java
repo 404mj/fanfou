@@ -120,8 +120,6 @@ public class TryController {
         JSONObject jsonOb = JSONObject.parseObject(jsonstring);
         String jstring = jsonOb.toJSONString();
         logger.info("=======>" + jsonstring + "<=======");
-
-        RestTemplate restClient = new RestTemplate();
     }
 
 
