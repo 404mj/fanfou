@@ -38,6 +38,7 @@ public class TryController {
 
     @Resource
     private StringRedisTemplate stringRedisTemplate;
+
     @Resource
     private RedisTemplate redisTemplate;
 
