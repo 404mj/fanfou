@@ -39,21 +39,14 @@ public class RestClient4Andmu {
     private StringRedisTemplate redisTemplate;
 
 
-    private static final String APPID = "6e4268766a5c4445b6d1ec16d0f24636";
-    private static final String SECRET = "uxG8HrcoMDWu0eqZ";
-    private static final String TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJwcm9mZXNzaW9uIjoxLCJzdWIiOiI2ZTQyNjg3NjZhNWM0NDQ1" +
+    private final String APPID = "6e4268766a5c4445b6d1ec16d0f24636";
+    private final String SECRET = "uxG8HrcoMDWu0eqZ";
+    private final String TOKEN = "eyJhbGciOiJIUzI1NiJ9.eyJwcm9mZXNzaW9uIjoxLCJzdWIiOiI2ZTQyNjg3NjZhNWM0NDQ1" +
             "YjZkMWVjMTZkMGYyNDYzNiIsImFwcGlkIjoiNmU0MjY4NzY2YTVjNDQ0NWI2ZDFlYzE2ZDBmMjQ2MzYiLCJvcGVyYXRvclR5cGUiO" +
             "jEsImV4cCI6MTU3MDAyODcwNiwiaWF0IjoxNTY5NDIzOTA2LCJvcGVyYXRvciI6IjZlNDI2ODc2NmE1YzQ0NDViNmQxZWMxNmQwZj" +
             "I0NjM2IiwianRpIjoiMTU2OTQyMzkwNjQ0NyJ9.--BqqkEowVVXh-pU3qhjXtHdWKOSJbYX6NF4zj9X7pQ";
-    private static final String VERSION = "1.0.0";
+    private final String VERSION = "1.0.0";
 
-    /**
-     * api list
-     */
-    public static final String TOKEN_POST = "https://open.andmu.cn/v3/open/api/token";
-    public static final String DEVICELIST_POST = "https://open.andmu.cn/v3/open/api/pro/device/list";
-    public static final String VIDEO_PLAY = "https://open.andmu.cn/v3/open/api/websdk/live";
-    public static final String PIC_REALTIME = "https://open.andmu.cn/v3/open/api/pro/camera/thumbnail/realtime";
 
     /**
      * 构造Header
@@ -80,7 +73,7 @@ public class RestClient4Andmu {
      */
     public String getToken() {
 
-        String token = redisTemplate.opsForValue().get(StringUtil.REDISKEY_TOKEN);
+        String token = redisTemplate.opsForValue().get(Constant.REDISKEY_TOKEN);
         if (!StringUtils.isEmpty(token)) {
             return token;
         }
@@ -88,7 +81,7 @@ public class RestClient4Andmu {
         Map<String, String> req = new LinkedHashMap<>();
         req.put("operatorType", "1");
         req.put("sig", CrypUtil.MD5Sum(APPID + SECRET));
-        JSONObject res = this.requestApi(TOKEN_POST, JSON.toJSONString(req), false);
+        JSONObject res = this.requestApi(Constant.TOKEN_POST, JSON.toJSONString(req), false);
         if (!res.getString("resultCode").equals("000000")) {
             logger.error(res.toJSONString());
             return null;
@@ -96,7 +89,7 @@ public class RestClient4Andmu {
         token = JSONObject.parseObject(res.get("data").toString()).getString("token");
         logger.info("----response   token------------" + token);
         Long expiresIn = JSONObject.parseObject(res.get("data").toString()).getLong("expires_in");
-        redisTemplate.opsForValue().set(StringUtil.REDISKEY_TOKEN, token, expiresIn, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(Constant.REDISKEY_TOKEN, token, expiresIn, TimeUnit.SECONDS);
         return token;
 
     }
@@ -157,6 +150,36 @@ public class RestClient4Andmu {
             }
         }
         return null;
+    }
+
+
+    /**
+     * 通知模型服务
+     *
+     * @param url
+     * @param requestBody
+     */
+    public void notifyAiService(String url, String requestBody) {
+        CloseableHttpClient restClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        try {
+            StringEntity entity = new StringEntity(requestBody);
+            entity.setContentType("application/json");
+            httpPost.setEntity(entity);
+            restClient.execute(httpPost);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            logger.error(e.toString());
+        } catch (IOException e) {
+            logger.error(e.toString());
+        } finally {
+            try {
+                restClient.close();
+            } catch (IOException e) {
+                logger.error(e.toString());
+            }
+        }
     }
 
 }

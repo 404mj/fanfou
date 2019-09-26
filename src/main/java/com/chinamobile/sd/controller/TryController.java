@@ -1,26 +1,19 @@
 package com.chinamobile.sd.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.CrypUtil;
+import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.RestClient4Andmu;
 import com.chinamobile.sd.model.User;
 import com.chinamobile.sd.service.UserService;
-import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.HttpMethod;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.security.Signature;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -35,12 +28,11 @@ public class TryController {
     @Autowired
     private RestClient4Andmu restClient4Andmu;
 
+    /**
+     * 直接使用sring序列化，免去Config配置
+     */
     @Resource
     private StringRedisTemplate stringRedisTemplate;
-
-    @Resource
-    private RedisTemplate redisTemplate;
-
 
     //    测试环境配置
     //@GetMapping
@@ -133,7 +125,7 @@ public class TryController {
         Map<String, String> req = new LinkedHashMap<>();
         req.put("page", "1");
         req.put("pageSize", "10");
-        JSONObject obj = restClient4Andmu.requestApi(RestClient4Andmu.DEVICELIST_POST, JSONObject.toJSONString(req), true);
+        JSONObject obj = restClient4Andmu.requestApi(Constant.DEVICELIST_POST, JSONObject.toJSONString(req), true);
         return obj.toJSONString();
     }
 
@@ -142,8 +134,26 @@ public class TryController {
      */
     @GetMapping("/test")
     public String test() {
-        return restClient4Andmu.getToken();
+//        return restClient4Andmu.getToken();
+        //测试rdis其他数据结构
+//        stringRedisTemplate.opsForList().rightPush("fanfou_list","aaaaaaaaaaaaaa");
+//        stringRedisTemplate.opsForList().rightPush("fanfou_list","bbbbbbbbbbbbbb");
+//        stringRedisTemplate.opsForList().rightPush("fanfou_list","ccccccccccccccc");
+//        stringRedisTemplate.opsForHash().put("fanfou_hash","20190926","base64picsdfsdfsdfd");
 
+//到秒
+//        logger.info(String.valueOf((System.currentTimeMillis() / 1000)));
+
+        //store image base64 to hash
+//        String basepic = CrypUtil.encodePicToBase64("C:\\zsxhome\\api_header.png");
+//        long st = System.currentTimeMillis();
+//        String basepic = CrypUtil.encodePicToBase64("https://www.pyimagesearch.com/wp-content/uploads/2018/01/keras_api_header.png");
+//        stringRedisTemplate.opsForHash().put("fanfou_hash", DateUtil.getCurrentSeconds(), basepic);
+
+//        String s = stringRedisTemplate.opsForHash().get("fanfou_hash","1569486463").toString();
+//        CrypUtil.decodeBase64ToPic(basepic,"C:\\zsxhome\\api_header_fromurlbasecov.png");
+//        return String.valueOf(System.currentTimeMillis()-st);
+        return null;
     }
 
 }

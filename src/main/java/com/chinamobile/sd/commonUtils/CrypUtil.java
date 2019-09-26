@@ -5,12 +5,19 @@ package com.chinamobile.sd.commonUtils;
  * @Date: 2019/9/24 14:24
  */
 
+import com.google.common.io.ByteStreams;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigInteger;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
@@ -19,7 +26,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
 /**
- * RSA签名与md5哈希工具类
+ * 签名编码工具类
  */
 public class CrypUtil {
 
@@ -33,7 +40,7 @@ public class CrypUtil {
      */
     public static String rsaSign(String clearText) {
         if (null == clearText || clearText.length() <= 0) {
-            return StringUtil.EMPTYSTR;
+            return Constant.EMPTYSTR;
         }
 
         try {
@@ -47,7 +54,7 @@ public class CrypUtil {
             logger.error(e.toString());
         }
 
-        return StringUtil.EMPTYSTR;
+        return Constant.EMPTYSTR;
     }
 
     /**
@@ -57,7 +64,7 @@ public class CrypUtil {
      */
     public static String MD5Sum(String source) {
         if (null == source || source.length() <= 0) {
-            return StringUtil.EMPTYSTR;
+            return Constant.EMPTYSTR;
         }
 
         try {
@@ -69,6 +76,65 @@ public class CrypUtil {
             logger.error(e.toString());
         }
 
-        return StringUtil.EMPTYSTR;
+        return Constant.EMPTYSTR;
+    }
+
+
+    public static String encodePicToBase64(String picUrl) {
+
+        try {
+            URL imgURL = new URL(picUrl);
+            InputStream is = imgURL.openStream();
+            byte[] bytes = ByteStreams.toByteArray(is);
+            //todo 1.6s
+            return Base64.getEncoder().encodeToString(bytes);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*
+        try {
+            URL imgURL = new URL(picUrl);
+            BufferedImage netPic = ImageIO.read(imgURL);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(netPic, "jpg", baos);
+            //todo time 1.8s
+            return Base64.getEncoder().encodeToString(baos.toByteArray());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        */
+
+        /*
+        try {
+//            File fpic = new File(picUrl);
+            FileInputStream fis = new FileInputStream(fpic);
+            byte[] bytes = new byte[(int) fpic.length()];
+            fis.read(bytes);
+            fis.close();
+            return Base64.getEncoder().encodeToString(bytes);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        return Constant.EMPTYSTR;
+    }
+
+    public static void decodeBase64ToPic(String base64, String pathName) {
+        try {
+            FileOutputStream fos = new FileOutputStream(pathName);
+            byte[] decoded = Base64.getDecoder().decode(base64.getBytes(StandardCharsets.UTF_8));
+            fos.write(decoded);
+            fos.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
