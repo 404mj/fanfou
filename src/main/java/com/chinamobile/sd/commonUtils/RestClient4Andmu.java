@@ -6,6 +6,7 @@ package com.chinamobile.sd.commonUtils;
  */
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
@@ -94,6 +95,24 @@ public class RestClient4Andmu {
 
     }
 
+    /**
+     * 设备列表
+     *
+     * @return
+     */
+    public JSONArray getDeviceList() {
+        Map<String, String> req = new LinkedHashMap<>();
+        req.put("page", "1");
+        req.put("pageSize", "10");
+        JSONObject res = this.requestApi(Constant.DEVICELIST_POST, JSON.toJSONString(req), true);
+        if (!res.getString("resultCode").equals("000000")) {
+            logger.error(res.toJSONString());
+            return null;
+        }
+        JSONArray jsons = JSONArray.parseArray(res.get("data").toString());
+        logger.info(jsons.toJSONString());
+        return jsons;
+    }
 
     /**
      * 向开发者平台发送请求

@@ -80,7 +80,7 @@ public class CrypUtil {
     }
 
 
-    public static String encodePicToBase64(String picUrl) {
+    public static String encodeUrlPicToBase64(String picUrl) {
 
         try {
             URL imgURL = new URL(picUrl);
