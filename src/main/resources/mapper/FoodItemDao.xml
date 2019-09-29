@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinamobile.sd.dao.FoodItemDao">
+    <insert id="createItem"></insert>
+    <insert id="addItemUp"></insert>
+    <insert id="addItemDown"></insert>
+    <update id="modifyItemByTime"></update>
+    <delete id="deleteFoodItem"></delete>
+    <select id="findRecommendByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem"></select>
+    <select id="findItemByWeekPeriod" resultType="com.chinamobile.sd.model.FoodItem"></select>
+</mapper>
