@@ -15,11 +15,11 @@ public class Constant {
     // 一个List作为队列，lpush，rpop(改为调用接口传参)，一个List作为lpush作为最新的数据，取则lrang
     public static final String REDISKEY_COMPLETED_LIST = "COMPLETED_LIST";
     //两个hash，一个以每天为单位存储时间戳和图片，一个以天为单位存储时间戳和图片识别结果
-    public static final String REDISKEY_REALTIMEPIC_PREFIX = "REALTIMEPIC_";
-    public static final String REDISKEY_PEOPLECOUNT_PREFIX = "PEOPLECOUNT_";
+    public static final String REDISKEY_REALTIMEPIC_PREFIX = "WAITPIC_";
+    public static final String REDISKEY_PEOPLECOUNT_PREFIX = "WAITCOUNT_";
     //上座率
-    public static final String REDISKEY_ATTENDANCE_PREFIX = "ATTENDANCE_";
-    public static final String REDISKEY_ATTENDANCEPROB_PREFIX = "ATTENDANCEPROB_";
+    public static final String REDISKEY_ATTENDANCE_PREFIX = "ATTENDPIC_";
+    public static final String REDISKEY_ATTENDANCEPROB_PREFIX = "ATTENDCOUNT_";
 
 
     /**
@@ -36,7 +36,7 @@ public class Constant {
      * device list
      * 做了请求接口，暂时固定到代码中
      */
-    public static final String DEVICE_QUEUE = "";
-    public static final String DEVICE_ATTENDANCE = "";
+    public static final String DEVICE_QUEUE = "xxxxS_001231404901";
+    public static final String DEVICE_ATTENDANCE = "xxxxS_0012313a1fc1";
 
 }

@@ -1,5 +1,6 @@
 package com.chinamobile.sd.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.CrypUtil;
@@ -144,16 +145,31 @@ public class TryController {
 //到秒
 //        logger.info(String.valueOf((System.currentTimeMillis() / 1000)));
 
+        //20190929设备到位调试摄像头到服务端
+        //        JSONArray jsonArray = restClient4Andmu.getDeviceList();
+
+
+//        long st = System.currentTimeMillis();
+//        String queJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
+//        logger.info(DateUtil.date2String(new Date(),DateUtil.YYYY_MM_DD_HH_MM_SS));
+//        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
+//        String queurl = picJsonQue.get("data").toString();
+//        return queurl;
+
+
         //store image base64 to hash
 //        String basepic = CrypUtil.encodePicToBase64("C:\\zsxhome\\api_header.png");
 //        long st = System.currentTimeMillis();
-//        String basepic = CrypUtil.encodePicToBase64("https://www.pyimagesearch.com/wp-content/uploads/2018/01/keras_api_header.png");
+        //https://openapi.h.reservehemu.com/rest/service/camera/xxxxS_001231404901/thumbnail/current?size=320x320&token=fcd00a35f6d84b53822540dc0857ecfc&channelNo=
+//        String basepic = CrypUtil.encodeUrlPicToBase64(queurl);
 //        stringRedisTemplate.opsForHash().put("fanfou_hash", DateUtil.getCurrentSeconds(), basepic);
 
 //        String s = stringRedisTemplate.opsForHash().get("fanfou_hash","1569486463").toString();
-//        CrypUtil.decodeBase64ToPic(basepic,"C:\\zsxhome\\api_header_fromurlbasecov.png");
+//        CrypUtil.decodeBase64ToPic(basepic,"C:\\zsxhome\\andmu_picget_3.png");
 //        return String.valueOf(System.currentTimeMillis()-st);
-        return null;
+
+        return "";
+
     }
 
 }
