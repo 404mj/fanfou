@@ -5,8 +5,18 @@ package com.chinamobile.sd.commonUtils;
  * @Date: 2019/9/26 12:53
  */
 public class Constant {
+
+    /**
+     * String constant
+     */
     public static final String EMPTYSTR = "";
     public static final String SUC = "SUCCESS";
+
+    /**
+     * number costant
+     */
+    //主要餐桌位总承载人数
+    public static Integer FULLSEAT_PEOPLE = 256;
 
     /**
      * redis key constant

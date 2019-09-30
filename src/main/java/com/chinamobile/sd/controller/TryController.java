@@ -6,7 +6,9 @@ import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.CrypUtil;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.RestClient4Andmu;
+import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.model.User;
+import com.chinamobile.sd.service.StatisticService;
 import com.chinamobile.sd.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +30,8 @@ public class TryController {
     private UserService userService;
     @Autowired
     private RestClient4Andmu restClient4Andmu;
+    @Autowired
+    private StatisticService statisticService;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -134,7 +138,7 @@ public class TryController {
      * Test
      */
     @GetMapping("/test")
-    public String test() {
+    public ResultModel test() {
 //        return restClient4Andmu.getToken();
         //测试rdis其他数据结构
 //        stringRedisTemplate.opsForList().rightPush("fanfou_list","aaaaaaaaaaaaaa");
@@ -168,8 +172,15 @@ public class TryController {
 //        CrypUtil.decodeBase64ToPic(basepic,"C:\\zsxhome\\andmu_picget_3.png");
 //        return String.valueOf(System.currentTimeMillis()-st);
 
-        return "";
+        //测试统计数据返沪resultmodel行不行。--可以的。
+//        return statisticService.getStatistic();
 
+
+
+
+
+
+        return null;
     }
 
 }
