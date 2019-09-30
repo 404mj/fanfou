@@ -1,13 +1,45 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.chinamobile.sd.dao.FoodItemDao">
-    <insert id="createItem"></insert>
-    <insert id="addItemUp"></insert>
-    <insert id="addItemDown"></insert>
-    <update id="modifyItemByTime"></update>
-    <delete id="deleteFoodItem">
+    <insert id="addItemUp">
+        update
+    </insert>
 
+    <insert id="addItemDown">
+
+    </insert>
+
+    <insert id="createItems">
+
+    </insert>
+
+    <insert id="addItem">
+
+
+    </insert>
+
+
+    <delete id="removeItemById">
+        delete from food_item
+        where food_id=#{itemId}
     </delete>
-    <select id="findRecommendByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem"></select>
-    <select id="findItemByWeekPeriod" resultType="com.chinamobile.sd.model.FoodItem"></select>
+
+    <delete id="removeItemByDay">
+        delete from food_item
+        where food_time=#{day}
+    </delete>
+
+    <select id="findRecommendByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem">
+      select * from food_item
+      where
+      period=#{period} and food_time=#{day} and reconmmend=1;
+    </select>
+
+    <select id="findItemByWeekPeriod" resultType="com.chinamobile.sd.model.FoodItem">
+        select * from food_item
+        where
+        period=#{period} and food_week=#{week};
+
+    </select>
+
 </mapper>

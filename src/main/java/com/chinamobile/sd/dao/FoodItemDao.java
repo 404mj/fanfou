@@ -2,6 +2,7 @@ package com.chinamobile.sd.dao;
 
 import com.chinamobile.sd.model.FoodItem;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,18 +13,22 @@ import java.util.List;
 @Mapper
 public interface FoodItemDao {
 
-    List<FoodItem> findRecommendByDayPeriod();
+    List<FoodItem> findRecommendByDayPeriod(@Param("day") String day, @Param("period") Integer period);
 
-    List<FoodItem> findItemByWeekPeriod();
+    List<FoodItem> findItemByWeekPeriod(@Param("week") Integer week, @Param("period") Integer period);
 
-    Integer createItem();
+    Integer createItems();
 
-    Integer addItemUp();
+    Integer addItem(@Param("foodItem") FoodItem foodItem);
 
-    Integer addItemDown();
+    Integer removeItemById(@Param("itemId") Integer itemId);
 
-    Integer modifyItemByTime();
+    Integer removeItemByDay(@Param("day") String day);
 
-    Integer deleteFoodItem();
+    Integer addItemUp(@Param("foodId") Integer foodId);
+
+    Integer addItemDown(@Param("foodId") Integer foodId);
+
+//    Integer modifyItemByTime(FoodItem foodItem);
 
 }

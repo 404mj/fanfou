@@ -2,12 +2,10 @@ package com.chinamobile.sd.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.chinamobile.sd.commonUtils.Constant;
-import com.chinamobile.sd.commonUtils.CrypUtil;
-import com.chinamobile.sd.commonUtils.DateUtil;
-import com.chinamobile.sd.commonUtils.RestClient4Andmu;
+import com.chinamobile.sd.commonUtils.*;
 import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.model.User;
+import com.chinamobile.sd.service.CameraAiService;
 import com.chinamobile.sd.service.StatisticService;
 import com.chinamobile.sd.service.UserService;
 import org.slf4j.Logger;
@@ -30,6 +28,8 @@ public class TryController {
     private UserService userService;
     @Autowired
     private RestClient4Andmu restClient4Andmu;
+    @Autowired
+    private CameraAiService cameraAiService;
     @Autowired
     private StatisticService statisticService;
 
@@ -138,7 +138,7 @@ public class TryController {
      * Test
      */
     @GetMapping("/test")
-    public ResultModel test() {
+    public String test() {
 //        return restClient4Andmu.getToken();
         //测试rdis其他数据结构
 //        stringRedisTemplate.opsForList().rightPush("fanfou_list","aaaaaaaaaaaaaa");
@@ -153,7 +153,7 @@ public class TryController {
         //        JSONArray jsonArray = restClient4Andmu.getDeviceList();
 
 
-//        long st = System.currentTimeMillis();
+        long st = System.currentTimeMillis();
 //        String queJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
 //        logger.info(DateUtil.date2String(new Date(),DateUtil.YYYY_MM_DD_HH_MM_SS));
 //        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
@@ -167,20 +167,30 @@ public class TryController {
         //https://openapi.h.reservehemu.com/rest/service/camera/xxxxS_001231404901/thumbnail/current?size=320x320&token=fcd00a35f6d84b53822540dc0857ecfc&channelNo=
 //        String basepic = CrypUtil.encodeUrlPicToBase64(queurl);
 //        stringRedisTemplate.opsForHash().put("fanfou_hash", DateUtil.getCurrentSeconds(), basepic);
-
+//
 //        String s = stringRedisTemplate.opsForHash().get("fanfou_hash","1569486463").toString();
 //        CrypUtil.decodeBase64ToPic(basepic,"C:\\zsxhome\\andmu_picget_3.png");
-//        return String.valueOf(System.currentTimeMillis()-st);
 
+        cameraAiService.getPicSendRedisCallAiTask();
+
+        return String.valueOf(System.currentTimeMillis() - st);
+//
         //测试统计数据返沪resultmodel行不行。--可以的。
 //        return statisticService.getStatistic();
 
 
+//        stringRedisTemplate.opsForValue().set("test", "11111");
+//        ResultUtil.successResult(stringRedisTemplate.opsForValue().get("test"))
 
+//        return ;
+    }
 
-
-
-        return null;
+    @GetMapping("/very")
+    public ResultModel very() {
+        List<String> al = stringRedisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
+        String lkey = al.get(0);
+        logger.info("--------->>>>>completed key:::" + lkey);
+        return ResultUtil.successResult(stringRedisTemplate.opsForHash().get(Constant.REDISKEY_ATTENDANCEPROB_PREFIX + "20190930", lkey));
     }
 
 }

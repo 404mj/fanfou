@@ -31,7 +31,7 @@ public class CameraAiService {
     /**
      * 每天的早中晚饭时间开始启动，30s执行一次
      */
-    @Scheduled(cron = "*/30 * 6-9,11-13,17-19  * * *")
+    @Scheduled(cron = "*/30 * 6-9,11-13,17-19  * * 1-5")
     public void executePicTask() {
         logger.info("==================" + DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
     }
@@ -39,10 +39,10 @@ public class CameraAiService {
     /**
      * 请求和目接口得到缩略图，存到redis并通知AI service
      */
-    private void getPicSendRedisCallAiTask() {
+    public void getPicSendRedisCallAiTask() {
         //同步方式取排队和上座照片
         String queJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
-        String attJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
+        String attJson = "{\"deviceId\":\"" + Constant.DEVICE_ATTENDANCE + "\"}";
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
         JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
         String queurl = picJsonQue.get("data").toString();
@@ -56,7 +56,7 @@ public class CameraAiService {
         redisTemplate.opsForHash().put(Constant.REDISKEY_ATTENDANCE_PREFIX + DateUtil.getToday(), nowTime, attBase);
 
         //通知AI service
-        restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"timestampKey\":\"" + nowTime + "\"}");
+        restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + nowTime + "\"}");
 
     }
 

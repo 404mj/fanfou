@@ -310,6 +310,10 @@ public class DateUtil {
         return DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
     }
 
+    public static String getTodayDate() {
+        return DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
+    }
+
     /**
      * 根据所给的起始时间,间隔天数来计算终止时间
      *

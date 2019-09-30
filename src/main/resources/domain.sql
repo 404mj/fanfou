@@ -26,11 +26,11 @@ create table `food_item`
 -- 每日食物评论
 create table `food_comment`
 (
-  `comment_id`      int not null primary key auto_increment comment '主键',
-  `content` varchar(512) default null comment '评论内容',
-  `comment_time`    date         default null comment '针对某天食物的评论',
-  `discusser`       varchar(20)  default null comment '评论人',
-  KEY `index_day` (`discuss_time`)
+  `comment_id`   int not null primary key auto_increment comment '主键',
+  `content`      varchar(512) default null comment '评论内容',
+  `comment_time` date         default null comment '针对某天食物的评论',
+  `discusser`    varchar(20)  default null comment '评论人',
+  UNIQUE `index_day` (`content`, `comment_time`)
 ) engine = InnoDB
   auto_increment = 1
   default charset = utf8;

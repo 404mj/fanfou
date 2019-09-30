@@ -10,6 +10,7 @@ import java.io.Serializable;
  */
 public class FoodItem implements Serializable {
 
+    private Integer foodId;
     private String desc;
     private Integer kind;
     private Boolean recommend;
@@ -20,7 +21,10 @@ public class FoodItem implements Serializable {
     private Integer down;
     private String foodBelng;
 
-    public FoodItem(String desc, Integer kind, Boolean recommend, Integer period, String foodTime, Integer foodWeek, Integer up, Integer down, String foodBelng) {
+
+    public FoodItem(Integer foodId, String desc, Integer kind, Boolean recommend, Integer period,
+                    String foodTime, Integer foodWeek, Integer up, Integer down, String foodBelng) {
+        this.foodId = foodId;
         this.desc = desc;
         this.kind = kind;
         this.recommend = recommend;
@@ -35,7 +39,8 @@ public class FoodItem implements Serializable {
     @Override
     public String toString() {
         return "FoodItem{" +
-                "desc='" + desc + '\'' +
+                "foodId=" + foodId +
+                ", desc='" + desc + '\'' +
                 ", kind=" + kind +
                 ", recommend=" + recommend +
                 ", period=" + period +
@@ -45,6 +50,14 @@ public class FoodItem implements Serializable {
                 ", down=" + down +
                 ", foodBelng='" + foodBelng + '\'' +
                 '}';
+    }
+
+    public Integer getFoodId() {
+        return foodId;
+    }
+
+    public void setFoodId(Integer foodId) {
+        this.foodId = foodId;
     }
 
     public String getDesc() {
