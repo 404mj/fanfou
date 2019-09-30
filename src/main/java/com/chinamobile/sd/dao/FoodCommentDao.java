@@ -9,10 +9,9 @@ import java.util.List;
  * @Date: 2019/9/29 17:48
  */
 @Mapper
-public interface FoodDiscussDao {
+public interface FoodCommentDao {
 
-    Integer addFoodDiscuss();
-    Integer removeFoodDiscuss();
+    Integer addComment();
 
     List<String> findDiscussContent();
 

@@ -5,7 +5,9 @@
     <insert id="addItemUp"></insert>
     <insert id="addItemDown"></insert>
     <update id="modifyItemByTime"></update>
-    <delete id="deleteFoodItem"></delete>
+    <delete id="deleteFoodItem">
+
+    </delete>
     <select id="findRecommendByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem"></select>
     <select id="findItemByWeekPeriod" resultType="com.chinamobile.sd.model.FoodItem"></select>
 </mapper>

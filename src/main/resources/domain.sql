@@ -24,11 +24,11 @@ create table `food_item`
 
 
 -- 每日食物评论
-create table `food_discuss`
+create table `food_comment`
 (
-  `discuss_id`      int not null primary key auto_increment comment '主键',
-  `discuss_content` varchar(512) default null comment '评论内容',
-  `discuss_time`    date         default null comment '针对某天食物的评论',
+  `comment_id`      int not null primary key auto_increment comment '主键',
+  `content` varchar(512) default null comment '评论内容',
+  `comment_time`    date         default null comment '针对某天食物的评论',
   `discusser`       varchar(20)  default null comment '评论人',
   KEY `index_day` (`discuss_time`)
 ) engine = InnoDB
