@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.chinamobile.sd.dao.FoodCommentDao">
 
-    <insert id="addComment"></insert>
-    <select id="findDiscussContent" resultType="java.lang.String"></select>
+    <insert id="addComment">
+        insert into food_comment(content, comment_time, discusser) VALUES
+        (#{content},#{day},'');
+    </insert>
+
+    <select id="findDiscussContentsByTime" resultType="com.chinamobile.sd.model.FoodComment">
+        select * from food_comment
+        where
+        comment_time = #{day}
+    </select>
 </mapper>

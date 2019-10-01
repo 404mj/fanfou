@@ -1,6 +1,8 @@
 package com.chinamobile.sd.dao;
 
+import com.chinamobile.sd.model.FoodComment;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,8 +13,8 @@ import java.util.List;
 @Mapper
 public interface FoodCommentDao {
 
-    Integer addComment();
+    Integer addComment(@Param("day") String day, @Param("content") String content);
 
-    List<String> findDiscussContent();
+    List<FoodComment> findDiscussContentsByTime(@Param("day") String day);
 
 }

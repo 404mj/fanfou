@@ -304,12 +304,17 @@ public class DateUtil {
     /**
      * 返回当天的日期
      *
-     * @return "YYYYMMDD"
+     * @return "YYYY-MM-DD"
      */
     public static String getToday() {
-        return DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
+        return DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD);
     }
 
+    /**
+     * 返回当天的日期
+     *
+     * @return "YYYYMMDD"
+     */
     public static String getTodayDate() {
         return DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
     }

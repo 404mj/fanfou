@@ -15,9 +15,9 @@ public interface FoodItemDao {
 
     List<FoodItem> findRecommendByDayPeriod(@Param("day") String day, @Param("period") Integer period);
 
-    List<FoodItem> findItemByWeekPeriod(@Param("week") Integer week, @Param("period") Integer period);
+    List<FoodItem> findItemsByWeekPeriod(@Param("week") Integer week, @Param("period") Integer period);
 
-    Integer createItems();
+    Integer createItems(List<FoodItem> itemList);
 
     Integer addItem(@Param("foodItem") FoodItem foodItem);
 

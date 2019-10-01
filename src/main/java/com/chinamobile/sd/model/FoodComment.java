@@ -10,22 +10,35 @@ import java.io.Serializable;
  */
 public class FoodComment implements Serializable {
 
+    private Integer commentId;
     private String content;
     private String commentTime;
     private String discusser;
 
-    public FoodComment(String content, String commentTime) {
+
+    public FoodComment(Integer commentId, String content, String commentTime, String discusser) {
+        this.commentId = commentId;
         this.content = content;
         this.commentTime = commentTime;
+        this.discusser = discusser;
     }
 
     @Override
     public String toString() {
         return "FoodComment{" +
-                "content='" + content + '\'' +
+                "commentId=" + commentId +
+                ", content='" + content + '\'' +
                 ", commentTime='" + commentTime + '\'' +
                 ", discusser='" + discusser + '\'' +
                 '}';
+    }
+
+    public Integer getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(Integer commentId) {
+        this.commentId = commentId;
     }
 
     public String getContent() {

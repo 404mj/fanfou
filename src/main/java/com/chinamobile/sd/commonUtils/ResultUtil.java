@@ -74,7 +74,7 @@ public class ResultUtil implements Serializable {
      * @param obj
      * @return
      */
-    public static ResultModel<Object> successResult(Object obj) {
+    public static <T> ResultModel<T> successResult(T obj) {
         return customResult(ServiceEnum.SUCCESS, obj);
     }
 }
