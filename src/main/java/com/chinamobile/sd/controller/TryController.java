@@ -3,11 +3,10 @@ package com.chinamobile.sd.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.*;
+import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.model.User;
-import com.chinamobile.sd.service.CameraAiService;
-import com.chinamobile.sd.service.StatisticService;
-import com.chinamobile.sd.service.UserService;
+import com.chinamobile.sd.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,10 @@ public class TryController {
     private CameraAiService cameraAiService;
     @Autowired
     private StatisticService statisticService;
+    @Autowired
+    private FoodItemService foodItemService;
+    @Autowired
+    private FoodCommentService foodCommentService;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -191,6 +194,40 @@ public class TryController {
         String lkey = al.get(0);
         logger.info("--------->>>>>completed key:::" + lkey);
         return ResultUtil.successResult(stringRedisTemplate.opsForHash().get(Constant.REDISKEY_ATTENDANCEPROB_PREFIX + "20190930", lkey));
+    }
+
+    @GetMapping("/dbainsert")
+    public ResultModel testDb() {
+//        FoodItem newItem = new FoodItem(null, "红烧排骨", 0, true, 1, DateUtil.getToday(), 3, 5, 1, "B1餐厅");
+//        return foodItemService.addItem(newItem);
+        List<FoodItem> items = new ArrayList<>();
+//        FoodItem it1 = new FoodItem(null, "九转大肠", 0, false, 1, DateUtil.getToday(), 3, 5, 1, "B1餐厅");
+        FoodItem it2 = new FoodItem(null, "葱爆羊肉", 0, false, 1, DateUtil.getToday(), 3, 5, 1, "B1餐厅");
+        FoodItem it3 = new FoodItem(null, "酸菜鱼", 0, false, 1, DateUtil.getToday(), 3, 5, 1, "B1餐厅");
+//        items.add(it1);
+        items.add(it2);
+        items.add(it3);
+        return foodItemService.addItems(items);
+
+//        foodItemService.removeItemById(2);
+//        return ResultUtil.successResult("ok");
+    }
+
+    @GetMapping("/dbaget")
+    public ResultModel testDbget() {
+//        return foodItemService.getItemsByDayAndPeriod(DateUtil.getToday(), 1);
+//        return foodItemService.getRecommendTodayPeriod(DateUtil.getToday(),1);
+//        return foodItemService.upItem(6);
+        return foodItemService.downItem(6);
+
+    }
+
+    @GetMapping("/dbacomm")
+    public ResultModel testComment() {
+//        return foodCommentService.addComment("红烧排骨是最爱了，谢谢大厨！！", DateUtil.getToday());
+//        foodCommentService.addComment("九转大肠太甜了。。。。不好吃", DateUtil.getToday());
+//        return foodCommentService.addComment("酸菜鱼做的太专业了，老家的味道！", DateUtil.getToday());
+        return foodCommentService.getTodayComments();
     }
 
 }

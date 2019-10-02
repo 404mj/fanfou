@@ -14,11 +14,28 @@
     </update>
 
     <insert id="createItems" parameterType="com.chinamobile.sd.model.FoodItem">
-        insert into food_item("desc", kind, reconmmend, period, food_time, food_week, up, down, food_belng)
+        insert into food_item (food_desc, kind, recommend, period, food_time, food_week, up, down, food_belng)
         values
         <foreach collection="list" index="index" item="it" separator=",">
             (
-            #{desc},
+            #{it.foodDesc},
+            #{it.kind},
+            #{it.recommend},
+            #{it.period},
+            #{it.foodTime},
+            #{it.foodWeek},
+            #{it.up},
+            #{it.down},
+            #{it.foodBelng}
+            )
+        </foreach>
+    </insert>
+
+    <insert id="addItem" parameterType="com.chinamobile.sd.model.FoodItem">
+        insert into food_item
+        (food_desc, kind, recommend, period, food_time, food_week, up, down, food_belng)
+        values
+        (   #{foodDesc},
             #{kind},
             #{recommend},
             #{period},
@@ -28,22 +45,6 @@
             #{down},
             #{foodBelng}
             )
-        </foreach>
-    </insert>
-
-    <insert id="addItem" parameterType="com.chinamobile.sd.model.FoodItem">
-        insert into food_item("desc", kind, reconmmend, period, food_time, food_week, up, down, food_belng)
-        values (
-            #{desc},
-            #{kind},
-            #{recommend},
-            #{period},
-            #{foodTime},
-            #{foodWeek},
-            #{up},
-            #{down},
-            #{foodBelng}
-            );
 
     </insert>
 
@@ -61,13 +62,13 @@
     <select id="findRecommendByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem">
       select * from food_item
       where
-      period=#{period} and food_time=#{day} and reconmmend=1;
+      period=#{period} and food_time=#{day} and recommend=1;
     </select>
 
-    <select id="findItemsByWeekPeriod" resultType="com.chinamobile.sd.model.FoodItem">
+    <select id="findItemsByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem">
         select * from food_item
         where
-        period=#{period} and food_week=#{week};
+        period=#{period} and food_time=#{day};
 
     </select>
 

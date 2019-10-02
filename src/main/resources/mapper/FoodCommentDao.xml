@@ -10,6 +10,6 @@
     <select id="findDiscussContentsByTime" resultType="com.chinamobile.sd.model.FoodComment">
         select * from food_comment
         where
-        comment_time = #{day}
+        comment_time = #{day} order by comment_id;
     </select>
 </mapper>

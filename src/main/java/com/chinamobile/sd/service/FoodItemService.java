@@ -37,15 +37,15 @@ public class FoodItemService {
     }
 
     /**
-     * @param week
+     * @param day
      * @param period
      * @return
      */
-    public ResultModel<List<FoodItem>> getItemsByWeekAndPeriod(Integer week, Integer period) {
-        if (StringUtils.isEmpty(week) || period < 0 || period >= 3) {
+    public ResultModel<List<FoodItem>> getItemsByDayAndPeriod(String day, Integer period) {
+        if (StringUtils.isEmpty(day) || period < 0 || period >= 3) {
             return ResultUtil.failResult(ServiceEnum.VALIDATE_ERROR, ServiceEnum.VALIDATE_ERROR.getValue());
         }
-        List<FoodItem> items = foodItemDao.findItemsByWeekPeriod(week, period);
+        List<FoodItem> items = foodItemDao.findItemsByDayPeriod(day, period);
         return ResultUtil.successResult(items);
     }
 
@@ -59,16 +59,45 @@ public class FoodItemService {
         }
 
         Integer insertRes = foodItemDao.createItems(itemList);
-        return ResultUtil.successResult(insertRes);
+        if (insertRes == itemList.size()) {
+            return ResultUtil.successResult(insertRes);
+        }
+        return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
     }
 
     /**
-     *
      * @param foodItem
      * @return
      */
     public ResultModel<Integer> addItem(FoodItem foodItem) {
+        if (null == foodItem) {
+            return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());
+        }
 
+        Integer insertRes = foodItemDao.addItem(foodItem);
+        return ResultUtil.successResult(insertRes);
+    }
+
+    /**
+     * @param foodId
+     * @return
+     */
+    public ResultModel<Integer> upItem(Integer foodId) {
+        Integer res = foodItemDao.addItemUp(foodId);
+        return ResultUtil.successResult(res);
+    }
+
+    /**
+     * @param foodId
+     * @return
+     */
+    public ResultModel<Integer> downItem(Integer foodId) {
+        Integer res = foodItemDao.addItemDown(foodId);
+        return ResultUtil.successResult(res);
+    }
+
+    public void removeItemById(Integer foodId) {
+        foodItemDao.removeItemById(foodId);
     }
 
 }
