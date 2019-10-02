@@ -13,6 +13,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: fengchen.zsx
@@ -27,6 +29,8 @@ public class CameraAiService {
     private RestClient4Andmu restClient4Andmu;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private AndmuTaskService andmuTaskService;
 
     /**
      * 每天的早中晚饭时间开始启动，30s执行一次
@@ -39,7 +43,7 @@ public class CameraAiService {
     /**
      * 请求和目接口得到缩略图，存到redis并通知AI service
      */
-    public void getPicSendRedisCallAiTask() {
+    public void syncPicSendRedisCallAiTask() {
         //同步方式取排队和上座照片
         String queJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
         String attJson = "{\"deviceId\":\"" + Constant.DEVICE_ATTENDANCE + "\"}";
@@ -51,12 +55,33 @@ public class CameraAiService {
         //存redis base64值
         String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
         String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
+        //作为key的时间戳精确到秒
         String nowTime = DateUtil.getCurrentSeconds();
         redisTemplate.opsForHash().put(Constant.REDISKEY_REALTIMEPIC_PREFIX + DateUtil.getToday(), nowTime, queBase);
         redisTemplate.opsForHash().put(Constant.REDISKEY_ATTENDANCE_PREFIX + DateUtil.getToday(), nowTime, attBase);
 
         //通知AI service
         restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + nowTime + "\"}");
+
+    }
+
+    /**
+     * 请求和目接口得到缩略图，存到redis并通知AI service
+     */
+    public void asyncPicSendRedisCallAiTask() {
+        //作为key的时间戳精确到秒
+        String timeKey = DateUtil.getCurrentSeconds();
+        try {
+            Future<Integer> queRes = andmuTaskService.doQuePicJob(timeKey);
+            Future<Integer> attRes = andmuTaskService.doAttendPicJob(timeKey);
+            while (!queRes.isDone() || !attRes.isDone()) {
+                TimeUnit.MILLISECONDS.sleep(10);
+            }
+            //通知AI service
+            restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+        } catch (Exception e) {
+            logger.error(e.toString());
+        }
 
     }
 

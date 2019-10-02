@@ -174,7 +174,7 @@ public class TryController {
 //        String s = stringRedisTemplate.opsForHash().get("fanfou_hash","1569486463").toString();
 //        CrypUtil.decodeBase64ToPic(basepic,"C:\\zsxhome\\andmu_picget_3.png");
 
-        cameraAiService.getPicSendRedisCallAiTask();
+        cameraAiService.syncPicSendRedisCallAiTask();
 
         return String.valueOf(System.currentTimeMillis() - st);
 //
@@ -228,6 +228,13 @@ public class TryController {
 //        foodCommentService.addComment("九转大肠太甜了。。。。不好吃", DateUtil.getToday());
 //        return foodCommentService.addComment("酸菜鱼做的太专业了，老家的味道！", DateUtil.getToday());
         return foodCommentService.getTodayComments();
+    }
+
+    @GetMapping("/testa")
+    public String testAsync() {
+        long st = System.currentTimeMillis();
+        cameraAiService.asyncPicSendRedisCallAiTask();
+        return String.valueOf(System.currentTimeMillis() - st);
     }
 
 }
