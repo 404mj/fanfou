@@ -13,6 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -72,11 +73,12 @@ public class CameraAiService {
         //作为key的时间戳精确到秒
         String timeKey = DateUtil.getCurrentSeconds();
         try {
-            Future<Integer> queRes = andmuTaskService.doQuePicJob(timeKey);
-            Future<Integer> attRes = andmuTaskService.doAttendPicJob(timeKey);
-            while (!queRes.isDone() || !attRes.isDone()) {
-                TimeUnit.MILLISECONDS.sleep(10);
-            }
+            CompletableFuture<Integer> queRes = andmuTaskService.doQuePicJob(timeKey);
+            CompletableFuture<Integer> attRes = andmuTaskService.doAttendPicJob(timeKey);
+
+            //等待
+            CompletableFuture.allOf(queRes, attRes).join();
+
             //通知AI service
             restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {

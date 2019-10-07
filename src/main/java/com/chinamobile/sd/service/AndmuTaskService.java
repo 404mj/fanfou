@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @Author: fengchen.zsx
@@ -32,25 +32,25 @@ public class AndmuTaskService {
 
 
     @Async("picTaskExecutor")
-    public Future<Integer> doQuePicJob(String timeKey) throws Exception {
+    public CompletableFuture<Integer> doQuePicJob(String timeKey) throws Exception {
         String queJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
         String queurl = picJsonQue.get("data").toString();
         //存redis base64值
         String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
         redisTemplate.opsForHash().put(Constant.REDISKEY_REALTIMEPIC_PREFIX + DateUtil.getToday(), timeKey, queBase);
-        return new AsyncResult<>(1);
+        return CompletableFuture.completedFuture(1);
     }
 
     @Async("picTaskExecutor")
-    public Future<Integer> doAttendPicJob(String timeKey) throws Exception {
+    public CompletableFuture<Integer> doAttendPicJob(String timeKey) throws Exception {
         String attJson = "{\"deviceId\":\"" + Constant.DEVICE_ATTENDANCE + "\"}";
         JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
         String atturl = picJsonAtt.get("data").toString();
         //存redis base64值
         String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
         redisTemplate.opsForHash().put(Constant.REDISKEY_ATTENDANCE_PREFIX + DateUtil.getToday(), timeKey, attBase);
-        return new AsyncResult<>(1);
+        return CompletableFuture.completedFuture(1);
     }
 }
 
