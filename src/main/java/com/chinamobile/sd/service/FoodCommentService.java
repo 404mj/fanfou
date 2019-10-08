@@ -28,6 +28,10 @@ public class FoodCommentService {
         return this.getCommentsByTime(DateUtil.getToday());
     }
 
+    public ResultModel<List<FoodComment>> getCommentsByDay(String dayTime) {
+        return this.getCommentsByTime(dayTime);
+    }
+
     public ResultModel getCommentsByTime(String dayTime) {
         if (StringUtils.isEmpty(dayTime)) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());

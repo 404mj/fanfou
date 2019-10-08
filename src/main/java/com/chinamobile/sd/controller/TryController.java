@@ -215,10 +215,12 @@ public class TryController {
 
     @GetMapping("/dbaget")
     public ResultModel testDbget() {
-//        return foodItemService.getItemsByDayAndPeriod(DateUtil.getToday(), 1);
+//        return foodItemService.getItemsByDayAndPeriod("2019-09-30", 1);
 //        return foodItemService.getRecommendTodayPeriod(DateUtil.getToday(),1);
-//        return foodItemService.upItem(6);
-        return foodItemService.downItem(6);
+//        return foodItemService.getRecommendTodayPeriod("2019-09-30", 1);
+
+        return foodItemService.upItem(6);
+//        return foodItemService.downItem(6);
 
     }
 
@@ -227,7 +229,7 @@ public class TryController {
 //        return foodCommentService.addComment("红烧排骨是最爱了，谢谢大厨！！", DateUtil.getToday());
 //        foodCommentService.addComment("九转大肠太甜了。。。。不好吃", DateUtil.getToday());
 //        return foodCommentService.addComment("酸菜鱼做的太专业了，老家的味道！", DateUtil.getToday());
-        return foodCommentService.getTodayComments();
+        return foodCommentService.getCommentsByTime("2019-09-30");
     }
 
     @GetMapping("/testa")
