@@ -12,8 +12,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -174,8 +176,9 @@ public class TryController {
 //        String s = stringRedisTemplate.opsForHash().get("fanfou_hash","1569486463").toString();
 //        CrypUtil.decodeBase64ToPic(basepic,"C:\\zsxhome\\andmu_picget_3.png");
 
-        cameraAiService.syncPicSendRedisCallAiTask();
+//        cameraAiService.syncPicSendRedisCallAiTask();
 
+        logger.info("+++++++++++++++++++++>>>>"+Constant.getPeopleFlowRate());
         return String.valueOf(System.currentTimeMillis() - st);
 //
         //测试统计数据返沪resultmodel行不行。--可以的。
@@ -237,6 +240,16 @@ public class TryController {
         long st = System.currentTimeMillis();
         cameraAiService.asyncPicSendRedisCallAiTask();
         return String.valueOf(System.currentTimeMillis() - st);
+    }
+
+    /**
+     * 上传excel文件
+     */
+    @PostMapping("/upload")
+    public ResultModel processExcel(@RequestParam("file")MultipartFile multipartFile) {
+//        InputStream inputStream = multipartFile.getInputStream();
+
+        return ResultUtil.successResult(1);
     }
 
 }

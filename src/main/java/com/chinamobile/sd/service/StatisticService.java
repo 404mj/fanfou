@@ -35,17 +35,17 @@ public class StatisticService {
         String queLen = redisTemplate.opsForHash().get(Constant.REDISKEY_PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
         retMap.put("quelength", queLen);
         String attend = redisTemplate.opsForHash().get(Constant.REDISKEY_ATTENDANCEPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
-//        计算上座率和等待时长
-        Double attProb = Double.valueOf(attend) / Constant.FULLSEAT_PEOPLE;
+//        计算上座率和等待时长(秒)
+        Double attProb = Double.valueOf(attend) / Constant.B1_FULLSEAT_PEOPLE;
         retMap.put("attendprob", attProb.toString());
-        String waitTime = "";//todo;haoran 提供公式
+        float waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
         retMap.put("waittime", waitTime);
 
         //todo: 获取历史排队人数
         Map<String, String> hisque = new LinkedHashMap<>();
         retMap.put("hisquecount", hisque);
 
-        
+
         return ResultUtil.successResult(retMap);
     }
 

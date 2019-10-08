@@ -1,5 +1,7 @@
 package com.chinamobile.sd.commonUtils;
 
+import java.util.Random;
+
 /**
  * @Author: fengchen.zsx
  * @Date: 2019/9/26 12:53
@@ -16,7 +18,13 @@ public class Constant {
      * number costant
      */
     //主要餐桌位总承载人数
-    public static Integer FULLSEAT_PEOPLE = 256;
+    public static Integer B1_FULLSEAT_PEOPLE = 256;
+
+    //计算排队通过速率
+    public static float getPeopleFlowRate() {
+        int i = (int) ((Math.random() * 4) + 1);
+        return (float) (6+(i/10.0));
+    }
 
     /**
      * redis key constant
