@@ -24,29 +24,29 @@ public class FoodCommentService {
     @Autowired
     private FoodCommentDao foodCommentDao;
 
-    public ResultModel<List<FoodComment>> getTodayComments() {
-        return this.getCommentsByTime(DateUtil.getToday());
+    public ResultModel<List<FoodComment>> getTodayComments(Integer restaurant) {
+        return this.getCommentsByTime(DateUtil.getToday(), restaurant);
     }
 
-    public ResultModel<List<FoodComment>> getCommentsByDay(String dayTime) {
-        return this.getCommentsByTime(dayTime);
+    public ResultModel<List<FoodComment>> getCommentsByDay(String dayTime, Integer restaurant) {
+        return this.getCommentsByTime(dayTime, restaurant);
     }
 
-    public ResultModel getCommentsByTime(String dayTime) {
-        if (StringUtils.isEmpty(dayTime)) {
+    public ResultModel getCommentsByTime(String dayTime, Integer restaurant) {
+        if (StringUtils.isEmpty(dayTime) || restaurant < 0) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());
         }
 
-        List<FoodComment> resList = foodCommentDao.findDiscussContentsByTime(dayTime);
+        List<FoodComment> resList = foodCommentDao.findDiscussContentsByTime(dayTime, restaurant);
         return ResultUtil.successResult(resList);
     }
 
-    public ResultModel addComment(String content, String time) {
+    public ResultModel addComment(String content, String time, Integer restaurant) {
         if (StringUtils.isEmpty(content) || StringUtils.isEmpty(time)) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());
         }
 
-        Integer res = foodCommentDao.addComment(time, content);
+        Integer res = foodCommentDao.addComment(time, content, restaurant);
         if (res > 0) {
             return ResultUtil.successResult(res);
         }

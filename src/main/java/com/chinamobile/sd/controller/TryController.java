@@ -232,7 +232,7 @@ public class TryController {
 //        return foodCommentService.addComment("红烧排骨是最爱了，谢谢大厨！！", DateUtil.getToday());
 //        foodCommentService.addComment("九转大肠太甜了。。。。不好吃", DateUtil.getToday());
 //        return foodCommentService.addComment("酸菜鱼做的太专业了，老家的味道！", DateUtil.getToday());
-        return foodCommentService.getCommentsByTime("2019-09-30");
+        return foodCommentService.getCommentsByTime("2019-09-30",0);
     }
 
     @GetMapping("/testa")

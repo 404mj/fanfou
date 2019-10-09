@@ -13,8 +13,8 @@ import java.util.List;
 @Mapper
 public interface FoodCommentDao {
 
-    Integer addComment(@Param("day") String day, @Param("content") String content);
+    Integer addComment(@Param("day") String day, @Param("content") String content, @Param("restaurant") Integer restaurant);
 
-    List<FoodComment> findDiscussContentsByTime(@Param("day") String day);
+    List<FoodComment> findDiscussContentsByTime(@Param("day") String day, @Param("restaurant") Integer restaurant);
 
 }
