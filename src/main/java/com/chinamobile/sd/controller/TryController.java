@@ -178,7 +178,7 @@ public class TryController {
 
 //        cameraAiService.syncPicSendRedisCallAiTask();
 
-        logger.info("+++++++++++++++++++++>>>>"+Constant.getPeopleFlowRate());
+        logger.info("+++++++++++++++++++++>>>>" + Constant.getPeopleFlowRate());
         return String.valueOf(System.currentTimeMillis() - st);
 //
         //测试统计数据返沪resultmodel行不行。--可以的。
@@ -205,8 +205,8 @@ public class TryController {
 //        return foodItemService.addItem(newItem);
         List<FoodItem> items = new ArrayList<>();
 //        FoodItem it1 = new FoodItem(null, "九转大肠", 0, false, 1, DateUtil.getToday(), 3, 5, 1, "B1餐厅");
-        FoodItem it2 = new FoodItem(null, "葱爆羊肉", 0, false, 1, DateUtil.getToday(), 3, 5, 1, "B1餐厅");
-        FoodItem it3 = new FoodItem(null, "酸菜鱼", 0, false, 1, DateUtil.getToday(), 3, 5, 1, "B1餐厅");
+        FoodItem it2 = new FoodItem(null, "葱爆羊肉", 0, false, 1, DateUtil.getToday(), 3, 5, 1, 5, 0);
+        FoodItem it3 = new FoodItem(null, "酸菜鱼", 0, false, 1, DateUtil.getToday(), 3, 5, 1, 5, 0);
 //        items.add(it1);
         items.add(it2);
         items.add(it3);
@@ -246,7 +246,7 @@ public class TryController {
      * 上传excel文件
      */
     @PostMapping("/upload")
-    public ResultModel processExcel(@RequestParam("file")MultipartFile multipartFile) {
+    public ResultModel processExcel(@RequestParam("file") MultipartFile multipartFile) {
 //        InputStream inputStream = multipartFile.getInputStream();
 
         return ResultUtil.successResult(1);

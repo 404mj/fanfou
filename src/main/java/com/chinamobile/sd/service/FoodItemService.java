@@ -28,11 +28,11 @@ public class FoodItemService {
      * @param period
      * @return
      */
-    public ResultModel<List<FoodItem>> getRecommendTodayPeriod(String day, Integer period, Integer restaurant) {
-        if (StringUtils.isEmpty(day) || period < 0 || period >= 3 || restaurant < 0) {
+    public ResultModel<List<FoodItem>> getRecommendTodayPeriod(String day, Integer period, Integer foodBelng) {
+        if (StringUtils.isEmpty(day) || period < 0 || period >= 3 || foodBelng < 0) {
             return ResultUtil.failResult(ServiceEnum.VALIDATE_ERROR, ServiceEnum.VALIDATE_ERROR.getValue());
         }
-        List<FoodItem> items = foodItemDao.findRecommendByDayPeriod(day, period, restaurant);
+        List<FoodItem> items = foodItemDao.findRecommendByDayPeriod(day, period, foodBelng);
         return ResultUtil.successResult(items);
     }
 
@@ -41,11 +41,11 @@ public class FoodItemService {
      * @param period
      * @return
      */
-    public ResultModel<List<FoodItem>> getItemsByDayAndPeriod(String day, Integer period) {
-        if (StringUtils.isEmpty(day) || period < 0 || period >= 3) {
+    public ResultModel<List<FoodItem>> getItemsByDayAndPeriod(String day, Integer period, Integer foodBelng) {
+        if (StringUtils.isEmpty(day) || period < 0 || period >= 3 || foodBelng < 0) {
             return ResultUtil.failResult(ServiceEnum.VALIDATE_ERROR, ServiceEnum.VALIDATE_ERROR.getValue());
         }
-        List<FoodItem> items = foodItemDao.findItemsByDayPeriod(day, period);
+        List<FoodItem> items = foodItemDao.findItemsByDayPeriod(day, period, foodBelng);
         return ResultUtil.successResult(items);
     }
 

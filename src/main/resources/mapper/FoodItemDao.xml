@@ -54,22 +54,21 @@
         where food_id=#{itemId}
     </delete>
 
-    <delete id="removeItemByDay">
+    <delete id="removeItemByDayBelng">
         delete from food_item
-        where food_time=#{day}
+        where food_time=#{day} and food_belng=#{foodBelng}
     </delete>
 
     <select id="findRecommendByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem">
       select * from food_item
       where
-      period=#{period} and food_time=#{day} and recommend=1;
+      period=#{period} and food_time=#{day} and recommend=1 and food_belng=#{foodBelng};
     </select>
 
     <select id="findItemsByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem">
         select * from food_item
         where
-        period=#{period} and food_time=#{day};
-
+        period=#{period} and food_time=#{day} and foodBelng=#{foodBelng};
     </select>
 
 </mapper>
