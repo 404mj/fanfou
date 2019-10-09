@@ -19,11 +19,14 @@ public class FoodItem implements Serializable {
     private Integer foodWeek;
     private Integer up;
     private Integer down;
+    private Integer starts;
     private String foodBelng;
 
 
-    public FoodItem(Integer foodId, String foodDesc, Integer kind, Boolean recommend,
-                    Integer period, String foodTime, Integer foodWeek, Integer up, Integer down, String foodBelng) {
+    public FoodItem(Integer foodId, String foodDesc, Integer kind,
+                    Boolean recommend, Integer period, String foodTime,
+                    Integer foodWeek, Integer up, Integer down, Integer starts,
+                    String foodBelng) {
         this.foodId = foodId;
         this.foodDesc = foodDesc;
         this.kind = kind;
@@ -33,6 +36,7 @@ public class FoodItem implements Serializable {
         this.foodWeek = foodWeek;
         this.up = up;
         this.down = down;
+        this.starts = starts;
         this.foodBelng = foodBelng;
     }
 
@@ -48,8 +52,17 @@ public class FoodItem implements Serializable {
                 ", foodWeek=" + foodWeek +
                 ", up=" + up +
                 ", down=" + down +
+                ", starts=" + starts +
                 ", foodBelng='" + foodBelng + '\'' +
                 '}';
+    }
+
+    public Integer getStarts() {
+        return starts;
+    }
+
+    public void setStarts(Integer starts) {
+        this.starts = starts;
     }
 
     public String getFoodDesc() {

@@ -14,13 +14,14 @@ public class FoodComment implements Serializable {
     private String content;
     private String commentTime;
     private String discusser;
+    private String restaurant;
 
-
-    public FoodComment(Integer commentId, String content, String commentTime, String discusser) {
+    public FoodComment(Integer commentId, String content, String commentTime, String discusser, String restaurant) {
         this.commentId = commentId;
         this.content = content;
         this.commentTime = commentTime;
         this.discusser = discusser;
+        this.restaurant = restaurant;
     }
 
     @Override
@@ -30,7 +31,16 @@ public class FoodComment implements Serializable {
                 ", content='" + content + '\'' +
                 ", commentTime='" + commentTime + '\'' +
                 ", discusser='" + discusser + '\'' +
+                ", restaurant='" + restaurant + '\'' +
                 '}';
+    }
+
+    public String getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(String restaurant) {
+        this.restaurant = restaurant;
     }
 
     public Integer getCommentId() {

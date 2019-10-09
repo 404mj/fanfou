@@ -18,7 +18,7 @@ create table `food_item`
   `up`         int         default 0 comment '赞的数量',
   `down`       int         default 0 comment '踩的数量',
   `food_belng` tinyint     default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅',
-  KEY `index_get` (`period`, `food_time`, `food_week`, `recommend`)
+  KEY `index_get` (`period`, `food_time`, `recommend`, `food_belng`)
 ) engine = InnoDB
   auto_increment = 1
   default charset = utf8;
@@ -30,9 +30,9 @@ create table `food_comment`
   `comment_id`      int not null primary key auto_increment comment '主键',
   `content`         varchar(512) default null comment '评论内容',
   `comment_time`    date         default null comment '针对某天食物的评论',
-  `blng_restaurant` tinyint      default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅',
+  `restaurant` tinyint      default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅',
   `discusser`       varchar(20)  default null comment '评论人',
-  UNIQUE `index_day` (`content`, `comment_time`)
+  UNIQUE `index_day` (`content`, `comment_time`,`restaurant`)
 ) engine = InnoDB
   auto_increment = 1
   default charset = utf8;
@@ -61,4 +61,4 @@ alter table food_item
   change reconmmend recommend tinyint default null comment '是否推荐:0-不是推荐的;1-今日推荐';
 alter table food_item
   modify column food_belng tinyint default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅';
-alter table food_comment add `blng_restaurant` tinyint      default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅';
+alter table food_comment add `restaurant` tinyint      default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅';
