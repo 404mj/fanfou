@@ -18,7 +18,8 @@ public class Constant {
      * number costant
      */
     //主要餐桌位总承载人数
-    public static Integer B1_FULLSEAT_PEOPLE = 256;
+    public static Integer R0_FULLSEAT_PEOPLE = 256;
+    public static Integer R1_FULLSEAT_PEOPLE = 256;
 
     //计算排队通过速率
     public static float getPeopleFlowRate() {
@@ -33,11 +34,17 @@ public class Constant {
     // 一个List作为队列，lpush，rpop(改为调用接口传参)，一个List作为lpush作为最新的数据，取则lrang
     public static final String REDISKEY_COMPLETED_LIST = "COMPLETED_LIST";
     //两个hash，一个以每天为单位存储时间戳和图片，一个以天为单位存储时间戳和图片识别结果
-    public static final String REDISKEY_REALTIMEPIC_PREFIX = "WAITPIC_";
-    public static final String REDISKEY_PEOPLECOUNT_PREFIX = "WAITCOUNT_";
-    //上座率
-    public static final String REDISKEY_ATTENDANCE_PREFIX = "ATTENDPIC_";
-    public static final String REDISKEY_ATTENDANCEPROB_PREFIX = "ATTENDCOUNT_";
+    public static final String REDIS_R0REALTIMEPIC_PREFIX = "R0_WAITPIC_";
+    public static final String REDIS_R0PEOPLECOUNT_PREFIX = "R0_WAITCOUNT_";
+    //B1小餐厅
+    public static final String REDIS_R1REALTIMEPIC_PREFIX = "R1_WAITPIC_";
+    public static final String REDIS_R1PEOPLECOUNT_PREFIX = "R1_WAITCOUNT_";
+    //B1大餐厅上座率
+    public static final String REDIS_R0ATTENDANCE_PREFIX = "R0_ATTENDPIC_";
+    public static final String REDIS_R0ATTENDPROB_PREFIX = "R0_ATTENDCOUNT_";
+    //B1小餐厅上座率
+    public static final String REDIS_R1ATTENDANCE_PREFIX = "R1_ATTENDPIC_";
+    public static final String REDIS_R1ATTENDPROB_PREFIX = "R1_ATTENDCOUNT_";
     //餐厅前缀
     public static final String B1_RESTAURANT_PREFIX0 = "R0";
     public static final String B1_RESTAURANT_PREFIX1 = "R1";
@@ -57,7 +64,12 @@ public class Constant {
      * device list
      * 做了请求接口，暂时固定到代码中
      */
-    public static final String DEVICE_QUEUE = "xxxxS_001231404901";
-    public static final String DEVICE_ATTENDANCE = "xxxxS_0012313a1fc1";
+    //B1大餐厅设备
+    public static final String R0_DEVICE_QUEUE = "xxxxS_001231404901";
+    public static final String R0_DEVICE_ATTENDANCE = "xxxxS_0012313a1fc1";
+    //B1小餐厅设备
+    public static final String R1_DEVICE_QUEUE = "";
+    public static final String R1_DEVICE_ATTENDANCE = "";
+
 
 }

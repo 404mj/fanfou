@@ -42,29 +42,8 @@ public class CameraAiService {
     }
 
     /**
-     * 请求和目接口得到缩略图，存到redis并通知AI service
+     * 同步方式请求和目接口得到缩略图，存到redis并通知AI service
      */
-    public void syncPicSendRedisCallAiTask() {
-        //同步方式取排队和上座照片
-        String queJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
-        String attJson = "{\"deviceId\":\"" + Constant.DEVICE_ATTENDANCE + "\"}";
-        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
-        JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
-        String queurl = picJsonQue.get("data").toString();
-        String atturl = picJsonAtt.get("data").toString();
-
-        //存redis base64值
-        String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-        String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
-        //作为key的时间戳精确到秒
-        String nowTime = DateUtil.getCurrentSeconds();
-        redisTemplate.opsForHash().put(Constant.REDISKEY_REALTIMEPIC_PREFIX + DateUtil.getToday(), nowTime, queBase);
-        redisTemplate.opsForHash().put(Constant.REDISKEY_ATTENDANCE_PREFIX + DateUtil.getToday(), nowTime, attBase);
-
-        //通知AI service
-        restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + nowTime + "\"}");
-
-    }
 
     /**
      * 请求和目接口得到缩略图，存到redis并通知AI service
@@ -73,11 +52,13 @@ public class CameraAiService {
         //作为key的时间戳精确到秒
         String timeKey = DateUtil.getCurrentSeconds();
         try {
-            CompletableFuture<Integer> queRes = andmuTaskService.doQuePicJob(timeKey);
-            CompletableFuture<Integer> attRes = andmuTaskService.doAttendPicJob(timeKey);
+            CompletableFuture<Integer> r0QueRes = andmuTaskService.doR0QuePicJob(timeKey);
+            CompletableFuture<Integer> r0AttRes = andmuTaskService.doR0AttendPicJob(timeKey);
+            CompletableFuture<Integer> r1QueRes = andmuTaskService.doR1QuePicJob(timeKey);
+            CompletableFuture<Integer> r1AttRes = andmuTaskService.doR1AttendPicJob(timeKey);
 
             //等待
-            CompletableFuture.allOf(queRes, attRes).join();
+            CompletableFuture.allOf(r0QueRes, r0AttRes, r1QueRes, r1AttRes).join();
 
             //通知AI service
             restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");

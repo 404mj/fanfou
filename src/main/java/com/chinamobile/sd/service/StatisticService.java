@@ -5,6 +5,7 @@ import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.model.ResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -25,27 +26,36 @@ public class StatisticService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-    public ResultModel getStatistic() {
-
+    public ResultModel getStatistic(Integer restaurant) {
         Map<String, Object> retMap = new HashMap<>();
+        String queLen = null;
+        String attend = null;
+        Double attProb = null;
+        float waitTime = 0;
+        Map<String, String> hisque = new LinkedHashMap<>();
 
-        //取最新排队人数和上座人数
+
         List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
         String lastKey = lastKeyList.get(0);
         //todo:: 如果还没有数据如何处理？？？
-        String queLen = redisTemplate.opsForHash().get(Constant.REDISKEY_PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
+
+        if (restaurant == 0) {
+            queLen = redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
+            attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
+            attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
+            waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
+            //todo: 获取历史排队人数
+        } else if (restaurant == 1) {
+            queLen = redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
+            attend = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
+            attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
+            waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
+            //todo: 获取历史排队人数
+        }
         retMap.put("quelength", queLen);
-        String attend = redisTemplate.opsForHash().get(Constant.REDISKEY_ATTENDANCEPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
-//        计算上座率和等待时长(秒)
-        Double attProb = Double.valueOf(attend) / Constant.B1_FULLSEAT_PEOPLE;
         retMap.put("attendprob", attProb.toString());
-        float waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
         retMap.put("waittime", waitTime);
-
-        //todo: 获取历史排队人数
-        Map<String, String> hisque = new LinkedHashMap<>();
         retMap.put("hisquecount", hisque);
-
 
         return ResultUtil.successResult(retMap);
     }

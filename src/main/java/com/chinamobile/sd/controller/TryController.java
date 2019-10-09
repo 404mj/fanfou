@@ -196,7 +196,7 @@ public class TryController {
         List<String> al = stringRedisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
         String lkey = al.get(0);
         logger.info("--------->>>>>completed key:::" + lkey);
-        return ResultUtil.successResult(stringRedisTemplate.opsForHash().get(Constant.REDISKEY_ATTENDANCEPROB_PREFIX + "20190930", lkey));
+        return ResultUtil.successResult(stringRedisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + "20190930", lkey));
     }
 
     @GetMapping("/dbainsert")

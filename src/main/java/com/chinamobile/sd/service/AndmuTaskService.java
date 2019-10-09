@@ -32,24 +32,46 @@ public class AndmuTaskService {
 
 
     @Async("picTaskExecutor")
-    public CompletableFuture<Integer> doQuePicJob(String timeKey) throws Exception {
-        String queJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
+    public CompletableFuture<Integer> doR0QuePicJob(String timeKey) throws Exception {
+        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
         String queurl = picJsonQue.get("data").toString();
         //存redis base64值
         String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-        redisTemplate.opsForHash().put(Constant.REDISKEY_REALTIMEPIC_PREFIX + DateUtil.getToday(), timeKey, queBase);
+        redisTemplate.opsForHash().put(Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday(), timeKey, queBase);
         return CompletableFuture.completedFuture(1);
     }
 
     @Async("picTaskExecutor")
-    public CompletableFuture<Integer> doAttendPicJob(String timeKey) throws Exception {
-        String attJson = "{\"deviceId\":\"" + Constant.DEVICE_ATTENDANCE + "\"}";
+    public CompletableFuture<Integer> doR0AttendPicJob(String timeKey) throws Exception {
+        String attJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_ATTENDANCE + "\"}";
         JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
         String atturl = picJsonAtt.get("data").toString();
         //存redis base64值
         String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
-        redisTemplate.opsForHash().put(Constant.REDISKEY_ATTENDANCE_PREFIX + DateUtil.getToday(), timeKey, attBase);
+        redisTemplate.opsForHash().put(Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday(), timeKey, attBase);
+        return CompletableFuture.completedFuture(1);
+    }
+
+    @Async("picTaskExecutor")
+    public CompletableFuture<Integer> doR1QuePicJob(String timeKey) throws Exception {
+        String queJson = "{\"deviceId\":\"" + Constant.R1_DEVICE_QUEUE + "\"}";
+        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
+        String queurl = picJsonQue.get("data").toString();
+        //存redis base64值
+        String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+        redisTemplate.opsForHash().put(Constant.REDIS_R1REALTIMEPIC_PREFIX + DateUtil.getToday(), timeKey, queBase);
+        return CompletableFuture.completedFuture(1);
+    }
+
+    @Async("picTaskExecutor")
+    public CompletableFuture<Integer> doR1AttendPicJob(String timeKey) throws Exception {
+        String attJson = "{\"deviceId\":\"" + Constant.R1_DEVICE_ATTENDANCE + "\"}";
+        JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
+        String atturl = picJsonAtt.get("data").toString();
+        //存redis base64值
+        String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
+        redisTemplate.opsForHash().put(Constant.REDIS_R1ATTENDANCE_PREFIX + DateUtil.getToday(), timeKey, attBase);
         return CompletableFuture.completedFuture(1);
     }
 }
