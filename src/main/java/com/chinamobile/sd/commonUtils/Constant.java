@@ -23,7 +23,7 @@ public class Constant {
     //计算排队通过速率
     public static float getPeopleFlowRate() {
         int i = (int) ((Math.random() * 4) + 1);
-        return (float) (6+(i/10.0));
+        return (float) (6 + (i / 10.0));
     }
 
     /**
@@ -38,6 +38,9 @@ public class Constant {
     //上座率
     public static final String REDISKEY_ATTENDANCE_PREFIX = "ATTENDPIC_";
     public static final String REDISKEY_ATTENDANCEPROB_PREFIX = "ATTENDCOUNT_";
+    //餐厅前缀
+    public static final String B1_RESTAURANT_PREFIX0 = "R0";
+    public static final String B1_RESTAURANT_PREFIX1 = "R1";
 
 
     /**

@@ -32,6 +32,7 @@ public class StatisticService {
         //取最新排队人数和上座人数
         List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
         String lastKey = lastKeyList.get(0);
+        //todo:: 如果还没有数据如何处理？？？
         String queLen = redisTemplate.opsForHash().get(Constant.REDISKEY_PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
         retMap.put("quelength", queLen);
         String attend = redisTemplate.opsForHash().get(Constant.REDISKEY_ATTENDANCEPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
