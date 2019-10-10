@@ -7,6 +7,10 @@ import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.model.User;
 import com.chinamobile.sd.service.*;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -232,7 +238,7 @@ public class TryController {
 //        return foodCommentService.addComment("红烧排骨是最爱了，谢谢大厨！！", DateUtil.getToday());
 //        foodCommentService.addComment("九转大肠太甜了。。。。不好吃", DateUtil.getToday());
 //        return foodCommentService.addComment("酸菜鱼做的太专业了，老家的味道！", DateUtil.getToday());
-        return foodCommentService.getCommentsByTime("2019-09-30",0);
+        return foodCommentService.getCommentsByTime("2019-09-30", 0);
     }
 
     @GetMapping("/testa")
@@ -246,10 +252,30 @@ public class TryController {
      * 上传excel文件
      */
     @PostMapping("/upload")
-    public ResultModel processExcel(@RequestParam("file") MultipartFile multipartFile) {
+    public ResultModel uploadExcel(@RequestParam("file") MultipartFile multipartFile) {
 //        InputStream inputStream = multipartFile.getInputStream();
 
         return ResultUtil.successResult(1);
     }
+
+    @GetMapping("/processexcel")
+    public ResultModel processExcel() {
+
+        String filepath = "D:\\downloads\\tmp\\副本综合楼菜谱10.8--10.14日(2).xlsx";
+        String res = null;
+        try {
+            XSSFWorkbook workbook = (XSSFWorkbook) XSSFWorkbookFactory.create(new File(filepath));
+            XSSFSheet sheet1 = workbook.getSheetAt(0);
+            logger.info(sheet1.getSheetName());
+            XSSFRow xssfRow = sheet1.getRow(2);
+            XSSFCell xssfCell = xssfRow.getCell(4);
+            res = xssfCell.getStringCellValue();
+            logger.info(res);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ResultUtil.successResult(res);
+    }
+
 
 }
