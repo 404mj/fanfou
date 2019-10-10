@@ -39,13 +39,13 @@ public class StatisticService {
         String lastKey = lastKeyList.get(0);
         //todo:: 如果还没有数据如何处理？？？
 
-        if (restaurant == 0) {
+        if (restaurant == 0) {//B1大餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
             attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
             attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
             //todo: 获取历史排队人数
-        } else if (restaurant == 1) {
+        } else if (restaurant == 1) {//B1小餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
             attend = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
             attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
