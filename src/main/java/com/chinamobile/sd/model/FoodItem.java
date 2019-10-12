@@ -12,6 +12,9 @@ public class FoodItem implements Serializable {
 
     private Integer foodId;
     private String foodDesc;
+    /**
+     * 食物的种类:0-水果;1-凉菜;2-热菜;3-面点;4-汤粥;5-现场制作;
+     */
     private Integer kind;
     private Boolean recommend;
     private Integer period;
