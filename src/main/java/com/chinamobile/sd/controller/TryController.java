@@ -211,11 +211,11 @@ public class TryController {
 //        return foodItemService.addItem(newItem);
         List<FoodItem> items = new ArrayList<>();
 //        FoodItem it1 = new FoodItem(null, "九转大肠", 0, false, 1, DateUtil.getToday(), 3, 5, 1, "B1餐厅");
-        FoodItem it2 = new FoodItem(null, "葱爆羊肉", 0, false, 1, DateUtil.getToday(), 3, 5, 1, 5, 0);
-        FoodItem it3 = new FoodItem(null, "酸菜鱼", 0, false, 1, DateUtil.getToday(), 3, 5, 1, 5, 0);
+//        FoodItem it2 = new FoodItem(null, "葱爆羊肉", 0, false, 1, DateUtil.getToday(), 3, 5, 1, 5, 0);
+//        FoodItem it3 = new FoodItem(null, "酸菜鱼", 0, false, 1, DateUtil.getToday(), 3, 5, 1, 5, 0);
 //        items.add(it1);
-        items.add(it2);
-        items.add(it3);
+//        items.add(it2);
+//        items.add(it3);
         return foodItemService.addItems(items);
 
 //        foodItemService.removeItemById(2);
@@ -261,20 +261,23 @@ public class TryController {
     @GetMapping("/processexcel")
     public ResultModel processExcel() {
 
-        String filepath = "D:\\downloads\\tmp\\副本综合楼菜谱10.8--10.14日(2).xlsx";
+        String filepath = "C:\\zsxhome\\forAICT\\B1大餐厅菜谱sample.xlsx";
         String res = null;
+        String[] resa = null;
         try {
             XSSFWorkbook workbook = (XSSFWorkbook) XSSFWorkbookFactory.create(new File(filepath));
-            XSSFSheet sheet1 = workbook.getSheetAt(0);
-            logger.info(sheet1.getSheetName());
-            XSSFRow xssfRow = sheet1.getRow(2);
-            XSSFCell xssfCell = xssfRow.getCell(4);
-            res = xssfCell.getStringCellValue();
+            XSSFSheet breakfast = workbook.getSheetAt(0);
+            XSSFRow xssfRow = breakfast.getRow(2);
+            XSSFCell xssfCell = xssfRow.getCell(3);
+            res = "老醋花生,凉拌双耳,猪头肉拌黄瓜,黄瓜拌猪肝";
+//            res = xssfCell.getStringCellValue().trim();
+            resa = res.split(",");
             logger.info(res);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ResultUtil.successResult(res);
+        return ResultUtil.successResult(resa);
     }
 
 

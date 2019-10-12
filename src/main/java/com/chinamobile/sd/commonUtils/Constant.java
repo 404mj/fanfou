@@ -1,5 +1,6 @@
 package com.chinamobile.sd.commonUtils;
 
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -13,7 +14,7 @@ public class Constant {
      */
     public static final String EMPTYSTR = "";
     public static final String SUC = "SUCCESS";
-
+    public static final String RECIPE_SEPRATE = "|";
     /**
      * number costant
      */
@@ -31,9 +32,7 @@ public class Constant {
      * redis key constant
      */
     public static final String REDISKEY_TOKEN = "ANDMU_FANFOU_TOKEN";
-    // 一个List作为队列，lpush，rpop(改为调用接口传参)，一个List作为lpush作为最新的数据，取则lrang
     public static final String REDISKEY_COMPLETED_LIST = "COMPLETED_LIST";
-    //两个hash，一个以每天为单位存储时间戳和图片，一个以天为单位存储时间戳和图片识别结果
     public static final String REDIS_R0REALTIMEPIC_PREFIX = "R0_WAITPIC_";
     public static final String REDIS_R0PEOPLECOUNT_PREFIX = "R0_WAITCOUNT_";
     //B1小餐厅
