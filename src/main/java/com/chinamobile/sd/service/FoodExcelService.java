@@ -4,6 +4,7 @@ import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.dao.FoodItemDao;
 import com.chinamobile.sd.model.FoodItem;
+import org.apache.commons.collections4.ListUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.temporal.WeekFields;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @Author: fengchen.zsx
@@ -33,22 +36,27 @@ public class FoodExcelService {
     @Autowired
     private FoodItemDao foodItemDao;
 
-    public List<FoodItem> processRecipeExcel(MultipartFile recipeFile) {
+    public int processRecipeExcel(MultipartFile recipeFile) {
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(recipeFile.getInputStream());
             XSSFSheet breakfast = workbook.getSheetAt(0);
-            XSSFSheet lunch = workbook.getSheetAt(0);
-            XSSFSheet dinner = workbook.getSheetAt(0);
+            XSSFSheet lunch = workbook.getSheetAt(1);
+            XSSFSheet dinner = workbook.getSheetAt(2);
 
             List<FoodItem> breakfastItems = processDishes(breakfast, 0);
             List<FoodItem> lunchItems = processDishes(lunch, 1);
             List<FoodItem> dinnerItems = processDishes(dinner, 2);
 
-            return breakfastItems;
+            List<FoodItem> weekFoods = Stream.of(breakfastItems, lunchItems, dinnerItems)
+                    .flatMap(Collection::stream)
+                    .collect(Collectors.toList());
+
+            return foodItemDao.createItems(weekFoods);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return 0;
     }
 
     /**
@@ -57,7 +65,7 @@ public class FoodExcelService {
      * @return
      */
     private List<FoodItem> processDishes(XSSFSheet periodRecipe, Integer period) {
-        List<FoodItem> foodItems = new ArrayList<>(25);
+        List<FoodItem> foodItems = new ArrayList<>(32);
 
         int rows = periodRecipe.getPhysicalNumberOfRows();
         String foodBelng = periodRecipe.getRow(0).getCell(0).getStringCellValue();
@@ -65,10 +73,12 @@ public class FoodExcelService {
         if (foodBelng.equals("B1小餐厅")) {
             restaurant = 1;
         }
+
+        //从第三行开始遍历每天的菜品
         for (int i = 2; i < rows; ++i) {
             XSSFRow dayFood = periodRecipe.getRow(i);
             //处理推荐
-            String[] recommend = dayFood.getCell(dayFood.getLastCellNum() - 1).getStringCellValue().split("|");
+            String[] recommend = dayFood.getCell(dayFood.getLastCellNum() - 1).getStringCellValue().split(Constant.RECIPE_SEPRATE);
             Set<String> recs = new HashSet<>(Arrays.asList(recommend));
             //日期
             String thisDay = DateUtil.date2String(dayFood.getCell(0).getDateCellValue(), "");
@@ -115,6 +125,20 @@ public class FoodExcelService {
             }
             foodItems.add(item);
         }
+    }
+
+
+    /**
+     * 修改菜的名字（不修改种类！！没有餐厅参数）
+     *
+     * @param itemDay
+     * @param period
+     * @param oldDesc
+     * @param newDesc
+     * @return
+     */
+    public int correctFoodItem(String itemDay, Integer period, String oldDesc, String newDesc) {
+        return foodItemDao.modifyItemDesc(itemDay, period, oldDesc, newDesc);
     }
 
 

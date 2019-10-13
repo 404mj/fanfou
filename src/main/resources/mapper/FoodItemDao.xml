@@ -71,4 +71,11 @@
         period=#{period} and food_time=#{day} and foodBelng=#{foodBelng};
     </select>
 
+    <update id="modifyItemDesc">
+        update food_item set food_desc=#{newDesc}
+        where
+        food_time=#{itemDay} and period=#{period} and food_desc=#{oldDesc}
+
+    </update>
+
 </mapper>

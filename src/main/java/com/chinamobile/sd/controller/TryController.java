@@ -26,13 +26,11 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @RestController
-@RequestMapping("/try")
+@RequestMapping("/fanfou/debug")
 public class TryController {
 
     private static final Logger logger = LoggerFactory.getLogger(TryController.class);
 
-    @Autowired
-    private UserService userService;
     @Autowired
     private RestClient4Andmu restClient4Andmu;
     @Autowired
@@ -71,10 +69,10 @@ public class TryController {
     }
 
     //    测试mysql+mybatis
-    @RequestMapping("/alluser")
-    public List<User> allUser() {
-        return userService.findAllUsers();
-    }
+//    @RequestMapping("/alluser")
+//    public List<User> allUser() {
+//        return userService.findAllUsers();
+//    }
 
     //    测试普通请求参数
     @RequestMapping("/testparam")
@@ -261,7 +259,9 @@ public class TryController {
     @GetMapping("/processexcel")
     public ResultModel processExcel() {
 
-        String filepath = "C:\\zsxhome\\forAICT\\B1大餐厅菜谱sample.xlsx";
+//        String filepath = "C:\\zsxhome\\forAICT\\B1大餐厅菜谱sample.xlsx";
+        String filepath = "D:\\tmp\\B1大餐厅菜谱sample.xlsx";
+
         String res = null;
         String[] resa = null;
         try {
@@ -269,15 +269,36 @@ public class TryController {
             XSSFSheet breakfast = workbook.getSheetAt(0);
             XSSFRow xssfRow = breakfast.getRow(2);
             XSSFCell xssfCell = xssfRow.getCell(3);
-            res = "老醋花生,凉拌双耳,猪头肉拌黄瓜,黄瓜拌猪肝";
+            res = "老醋花生|凉拌双耳|猪头肉拌黄瓜|黄瓜拌猪肝";
 //            res = xssfCell.getStringCellValue().trim();
-            resa = res.split(",");
+            resa = res.split("\\|");
             logger.info(res);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         return ResultUtil.successResult(resa);
+    }
+
+
+    /**
+     * 预备服务器上联调接口，避免重新编译上产的时间损耗
+     *
+     * @return
+     */
+    @GetMapping("/t_aiflow")
+    public String testAiflow() {
+        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
+        //作为key的时间戳精确到秒
+        String nowTime = DateUtil.getCurrentSeconds();
+        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
+        String queurl = picJsonQue.get("data").toString();
+        return queurl;
+    }
+
+    @GetMapping("/t_foodflow")
+    public String testFoodflow() {
+        return foodItemService.getItemsByDayAndPeriod(DateUtil.getToday(), 1, 0).toString();
     }
 
 

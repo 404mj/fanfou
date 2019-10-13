@@ -13,9 +13,13 @@ import java.util.List;
 @Mapper
 public interface FoodItemDao {
 
-    List<FoodItem> findRecommendByDayPeriod(@Param("day") String day, @Param("period") Integer period, @Param("foodBelng") Integer foodBelng);
+    List<FoodItem> findRecommendByDayPeriod(@Param("day") String day, @Param("period") Integer period,
+                                            @Param("foodBelng") Integer foodBelng);
 
-    List<FoodItem> findItemsByDayPeriod(@Param("day") String day, @Param("period") Integer period, @Param("foodBelng") Integer foodBelng);
+
+    List<FoodItem> findItemsByDayPeriod(@Param("day") String day, @Param("period") Integer period,
+                                        @Param("foodBelng") Integer foodBelng);
+
 
     Integer createItems(List<FoodItem> itemList);
 
@@ -29,6 +33,7 @@ public interface FoodItemDao {
 
     Integer addItemDown(@Param("foodId") Integer foodId);
 
-//    Integer modifyItemByTime(FoodItem foodItem);
+    Integer modifyItemDesc(@Param("itemDay") String itemDay, @Param("period") Integer period,
+                           @Param("oldDesc") String oldDesc, @Param("newDesc") String newDesc);
 
 }
