@@ -3,6 +3,7 @@ package com.chinamobile.sd.service;
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
+import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.model.ResultModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +27,10 @@ public class StatisticService {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
+    /**
+     * @param restaurant
+     * @return
+     */
     public ResultModel getStatistic(Integer restaurant) {
         Map<String, Object> retMap = new HashMap<>();
         String queLen = null;
@@ -36,8 +41,11 @@ public class StatisticService {
 
 
         List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
+        //还没有数据如何
+        if (lastKeyList == null || lastKeyList.size() == 0) {
+            return ResultUtil.failResult(ServiceEnum.NO_QUERY_ERROR, "sorry~ no info yet");
+        }
         String lastKey = lastKeyList.get(0);
-        //todo:: 如果还没有数据如何处理？？？
 
         if (restaurant == 0) {//B1大餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();

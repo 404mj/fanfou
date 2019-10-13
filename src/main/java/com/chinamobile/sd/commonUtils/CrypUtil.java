@@ -86,7 +86,6 @@ public class CrypUtil {
             URL imgURL = new URL(picUrl);
             InputStream is = imgURL.openStream();
             byte[] bytes = ByteStreams.toByteArray(is);
-            //todo 1.6s
             return Base64.getEncoder().encodeToString(bytes);
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -100,7 +99,6 @@ public class CrypUtil {
             BufferedImage netPic = ImageIO.read(imgURL);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(netPic, "jpg", baos);
-            //todo time 1.8s
             return Base64.getEncoder().encodeToString(baos.toByteArray());
         } catch (MalformedURLException e) {
             e.printStackTrace();

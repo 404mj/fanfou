@@ -24,14 +24,28 @@ public class FoodCommentService {
     @Autowired
     private FoodCommentDao foodCommentDao;
 
+    /**
+     * @param restaurant
+     * @return
+     */
     public ResultModel<List<FoodComment>> getTodayComments(Integer restaurant) {
         return this.getCommentsByTime(DateUtil.getToday(), restaurant);
     }
 
+    /**
+     * @param dayTime
+     * @param restaurant
+     * @return
+     */
     public ResultModel<List<FoodComment>> getCommentsByDay(String dayTime, Integer restaurant) {
         return this.getCommentsByTime(dayTime, restaurant);
     }
 
+    /**
+     * @param dayTime
+     * @param restaurant
+     * @return
+     */
     public ResultModel getCommentsByTime(String dayTime, Integer restaurant) {
         if (StringUtils.isEmpty(dayTime) || restaurant < 0) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());
@@ -41,6 +55,12 @@ public class FoodCommentService {
         return ResultUtil.successResult(resList);
     }
 
+    /**
+     * @param content
+     * @param time
+     * @param restaurant
+     * @return
+     */
     public ResultModel addComment(String content, String time, Integer restaurant) {
         if (StringUtils.isEmpty(content) || StringUtils.isEmpty(time)) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());

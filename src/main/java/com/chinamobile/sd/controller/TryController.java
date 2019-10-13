@@ -226,8 +226,9 @@ public class TryController {
 //        return foodItemService.getRecommendTodayPeriod(DateUtil.getToday(),1);
 //        return foodItemService.getRecommendTodayPeriod("2019-09-30", 1);
 
-        return foodItemService.upItem(6);
+//        return foodItemService.upItem(6);
 //        return foodItemService.downItem(6);
+        return null;
 
     }
 

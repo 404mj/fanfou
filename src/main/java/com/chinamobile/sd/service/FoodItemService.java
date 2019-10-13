@@ -79,20 +79,23 @@ public class FoodItemService {
     }
 
     /**
+     * @param restaurantId
      * @param foodId
      * @return
      */
-    public ResultModel<Integer> upItem(Integer foodId) {
-        Integer res = foodItemDao.addItemUp(foodId);
+    public ResultModel<Integer> upItem(Integer restaurantId, Integer foodId) {
+        //todo stars 与 赞踩的联动关系
+        Integer res = foodItemDao.addItemUp(restaurantId, foodId);
         return ResultUtil.successResult(res);
     }
 
     /**
+     * @param restaurantId
      * @param foodId
      * @return
      */
-    public ResultModel<Integer> downItem(Integer foodId) {
-        Integer res = foodItemDao.addItemDown(foodId);
+    public ResultModel<Integer> downItem(Integer restaurantId, Integer foodId) {
+        Integer res = foodItemDao.addItemDown(restaurantId, foodId);
         return ResultUtil.successResult(res);
     }
 

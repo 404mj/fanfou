@@ -29,9 +29,9 @@ public interface FoodItemDao {
 
     Integer removeItemByDayBelng(@Param("day") String day, @Param("foodBelng") Integer foodBelng);
 
-    Integer addItemUp(@Param("foodId") Integer foodId);
+    Integer addItemUp(@Param("restaurantId") Integer restaurantId, @Param("foodId") Integer foodId);
 
-    Integer addItemDown(@Param("foodId") Integer foodId);
+    Integer addItemDown(@Param("restaurantId") Integer restaurantId, @Param("foodId") Integer foodId);
 
     Integer modifyItemDesc(@Param("itemDay") String itemDay, @Param("period") Integer period,
                            @Param("oldDesc") String oldDesc, @Param("newDesc") String newDesc);

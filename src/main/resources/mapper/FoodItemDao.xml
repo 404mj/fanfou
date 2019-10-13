@@ -4,13 +4,13 @@
     <update id="addItemUp">
         update food_item
         set up=up+1
-        where food_id=#{foodId}
+        where food_id=#{foodId} and food_belng=#{restaurantId}
     </update>
 
     <update id="addItemDown">
         update food_item
         set down=down+1
-        where food_id=#{foodId}
+        where food_id=#{foodId} and food_belng=#{restaurantId}
     </update>
 
     <insert id="createItems" parameterType="com.chinamobile.sd.model.FoodItem">

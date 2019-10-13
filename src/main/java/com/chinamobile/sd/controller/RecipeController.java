@@ -1,5 +1,6 @@
 package com.chinamobile.sd.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
@@ -7,7 +8,9 @@ import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.commonUtils.StringUtil;
 import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
+import com.chinamobile.sd.service.FoodCommentService;
 import com.chinamobile.sd.service.FoodExcelService;
+import com.chinamobile.sd.service.FoodItemService;
 import org.apache.poi.xssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +37,10 @@ public class RecipeController {
 
     @Autowired
     private FoodExcelService foodExcelService;
+    @Autowired
+    private FoodItemService foodItemService;
+    @Autowired
+    private FoodCommentService foodCommentService;
 
     /**
      * 上传excel菜谱
@@ -75,6 +82,106 @@ public class RecipeController {
             return ResultUtil.successResult(res);
         }
         return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, "导入失败");
+    }
+
+    /**
+     * @param rid
+     * @param req
+     * @return
+     */
+    @PostMapping("/{rid}/getrecommend")
+    public ResultModel getRecommendItems(@PathVariable("rid") Integer rid, @RequestBody String req) {
+        if (rid == null || rid <= 0 || StringUtils.isEmpty(req)) {
+            return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
+        }
+
+        JSONObject reqjson = JSON.parseObject(req);
+        String day = reqjson.getString("daytime");
+        Integer period = reqjson.getInteger("period");
+
+        return foodItemService.getRecommendTodayPeriod(day, period, rid);
+    }
+
+    /**
+     * @param rid
+     * @param req
+     * @return
+     */
+    @PostMapping("/{rid}/getfoods")
+    public ResultModel getAllFoods(@PathVariable("rid") Integer rid, @RequestBody String req) {
+        if (rid == null || rid <= 0 || StringUtils.isEmpty(req)) {
+            return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
+        }
+
+        JSONObject reqjson = JSON.parseObject(req);
+        String day = reqjson.getString("daytime");
+        Integer period = reqjson.getInteger("period");
+
+        return foodItemService.getItemsByDayAndPeriod(day, period, rid);
+    }
+
+
+    /**
+     * @param rid
+     * @param req
+     * @return
+     */
+    @PostMapping("/{rid}/getcomments")
+    public ResultModel getDayComments(@PathVariable("rid") Integer rid, @RequestBody String req) {
+        if (rid == null || rid <= 0 || StringUtils.isEmpty(req)) {
+            return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
+        }
+
+        JSONObject reqjson = JSON.parseObject(req);
+        String day = reqjson.getString("daytime");
+
+        return foodCommentService.getCommentsByDay(day, rid);
+    }
+
+
+    /**
+     * @param rid
+     * @param req
+     * @return
+     */
+    @PostMapping("/{rid}/comment")
+    public ResultModel commentFood(@PathVariable("rid") Integer rid, @RequestBody String req) {
+        if (rid == null || rid <= 0 || StringUtils.isEmpty(req)) {
+            return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
+        }
+
+        JSONObject reqjson = JSON.parseObject(req);
+        String day = reqjson.getString("daytime");
+        String content = reqjson.getString("comment_content");
+
+        return foodCommentService.addComment(content, day, rid);
+    }
+
+    /**
+     * @param rid
+     * @param foodId
+     * @return
+     */
+    @PostMapping("/{rid}/up/{foodId}")
+    public ResultModel addFoodUp(@PathVariable("rid") Integer rid, @PathVariable("foodId") Integer foodId) {
+        if (rid == null || foodId == null || rid <= 0 || foodId <= 0) {
+            return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
+        }
+        return foodItemService.upItem(rid, foodId);
+    }
+
+
+    /**
+     * @param rid
+     * @param foodId
+     * @return
+     */
+    @PostMapping("/{rid}/down/{foodId}")
+    public ResultModel addFoodDown(@PathVariable("rid") Integer rid, @PathVariable("foodId") Integer foodId) {
+        if (rid == null || foodId == null || rid <= 0 || foodId <= 0) {
+            return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
+        }
+        return foodItemService.downItem(rid, foodId);
     }
 
 }
