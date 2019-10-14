@@ -303,5 +303,15 @@ public class TryController {
         return foodItemService.getItemsByDayAndPeriod(DateUtil.getToday(), 1, 0).toString();
     }
 
+    @GetMapping("/t_dblink")
+    public String testDbLink() {
+        return foodCommentService.getTodayComments(0).toString();
+    }
+
+    @GetMapping("t_redislink")
+    public String testRedisLink() {
+        stringRedisTemplate.opsForValue().set("lalatest", "sdfsfsdfds");
+        return stringRedisTemplate.opsForValue().get("lalatest");
+    }
 
 }

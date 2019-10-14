@@ -36,7 +36,7 @@ public class CameraAiService {
     /**
      * 每天的早中晚饭时间开始启动，30s执行一次
      */
-    @Scheduled(cron = "*/30 * 6-9,11-13,17-19  * * 1-5")
+    @Scheduled(cron = "*/30 * 6-9,11-13,17-19  * * 1-7")
     public void executePicTask() {
         logger.info("==================" + DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
     }
