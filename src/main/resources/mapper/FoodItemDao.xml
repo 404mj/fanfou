@@ -72,7 +72,7 @@
     <select id="findItemsByDayPeriod" resultType="com.chinamobile.sd.model.FoodItem">
         select * from food_item
         where
-        period=#{period} and food_time=#{day} and foodBelng=#{foodBelng};
+        period=#{period} and food_time=#{day} and food_belng=#{foodBelng};
     </select>
 
     <update id="modifyItemDesc">

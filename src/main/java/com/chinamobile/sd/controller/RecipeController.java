@@ -91,7 +91,7 @@ public class RecipeController {
      */
     @PostMapping("/{rid}/getrecommend")
     public ResultModel getRecommendItems(@PathVariable("rid") Integer rid, @RequestBody String req) {
-        if (rid == null || rid <= 0 || StringUtils.isEmpty(req)) {
+        if (rid == null || rid < 0 || StringUtils.isEmpty(req)) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
         }
 
@@ -109,7 +109,7 @@ public class RecipeController {
      */
     @PostMapping("/{rid}/getfoods")
     public ResultModel getAllFoods(@PathVariable("rid") Integer rid, @RequestBody String req) {
-        if (rid == null || rid <= 0 || StringUtils.isEmpty(req)) {
+        if (rid == null || rid < 0 || StringUtils.isEmpty(req)) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
         }
 
@@ -128,7 +128,7 @@ public class RecipeController {
      */
     @PostMapping("/{rid}/getcomments")
     public ResultModel getDayComments(@PathVariable("rid") Integer rid, @RequestBody String req) {
-        if (rid == null || rid <= 0 || StringUtils.isEmpty(req)) {
+        if (rid == null || rid < 0 || StringUtils.isEmpty(req)) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
         }
 
@@ -146,7 +146,7 @@ public class RecipeController {
      */
     @PostMapping("/{rid}/comment")
     public ResultModel commentFood(@PathVariable("rid") Integer rid, @RequestBody String req) {
-        if (rid == null || rid <= 0 || StringUtils.isEmpty(req)) {
+        if (rid == null || rid < 0 || StringUtils.isEmpty(req)) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
         }
 
@@ -164,7 +164,7 @@ public class RecipeController {
      */
     @PostMapping("/{rid}/up/{foodId}")
     public ResultModel addFoodUp(@PathVariable("rid") Integer rid, @PathVariable("foodId") Integer foodId) {
-        if (rid == null || foodId == null || rid <= 0 || foodId <= 0) {
+        if (rid == null || foodId == null || rid < 0 || foodId <= 0) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
         }
         return foodItemService.upItem(rid, foodId);
@@ -178,7 +178,7 @@ public class RecipeController {
      */
     @PostMapping("/{rid}/down/{foodId}")
     public ResultModel addFoodDown(@PathVariable("rid") Integer rid, @PathVariable("foodId") Integer foodId) {
-        if (rid == null || foodId == null || rid <= 0 || foodId <= 0) {
+        if (rid == null || foodId == null || rid < 0 || foodId <= 0) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
         }
         return foodItemService.downItem(rid, foodId);

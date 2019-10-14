@@ -71,3 +71,4 @@ alter table food_item
   modify column food_belng tinyint default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅';
 alter table food_comment
   add `restaurant` tinyint default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅';
+alter table food_item   modify column food_week varchar(5) default null comment '食物是周几的';

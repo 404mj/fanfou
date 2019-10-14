@@ -159,10 +159,11 @@ public class TryController {
 //        logger.info(String.valueOf((System.currentTimeMillis() / 1000)));
 
         //20190929设备到位调试摄像头到服务端
-        //        JSONArray jsonArray = restClient4Andmu.getDeviceList();
+        JSONArray jsonArray = restClient4Andmu.getDeviceList();
+        return jsonArray.toJSONString();
+//        return restClient4Andmu.getToken();
 
-
-        long st = System.currentTimeMillis();
+//        long st = System.currentTimeMillis();
 //        String queJson = "{\"deviceId\":\"" + Constant.DEVICE_QUEUE + "\"}";
 //        logger.info(DateUtil.date2String(new Date(),DateUtil.YYYY_MM_DD_HH_MM_SS));
 //        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
@@ -182,8 +183,8 @@ public class TryController {
 
 //        cameraAiService.syncPicSendRedisCallAiTask();
 
-        logger.info("+++++++++++++++++++++>>>>" + Constant.getPeopleFlowRate());
-        return String.valueOf(System.currentTimeMillis() - st);
+//        logger.info("+++++++++++++++++++++>>>>" + Constant.getPeopleFlowRate());
+//        return String.valueOf(System.currentTimeMillis() - st);
 //
         //测试统计数据返沪resultmodel行不行。--可以的。
 //        return statisticService.getStatistic();

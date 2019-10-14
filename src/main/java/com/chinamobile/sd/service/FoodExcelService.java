@@ -51,6 +51,8 @@ public class FoodExcelService {
                     .flatMap(Collection::stream)
                     .collect(Collectors.toList());
 
+            logger.info(weekFoods.toString());
+
             return foodItemDao.createItems(weekFoods);
 
         } catch (IOException e) {
