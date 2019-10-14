@@ -21,6 +21,8 @@ public interface FoodItemDao {
                                         @Param("foodBelng") Integer foodBelng);
 
 
+    FoodItem findItemById(@Param("foodId") Integer foodId);
+
     Integer createItems(List<FoodItem> itemList);
 
     Integer addItem(FoodItem foodItem);
@@ -35,5 +37,7 @@ public interface FoodItemDao {
 
     Integer modifyItemDesc(@Param("itemDay") String itemDay, @Param("period") Integer period,
                            @Param("oldDesc") String oldDesc, @Param("newDesc") String newDesc);
+
+    void updateStar(@Param("foodId") Integer foodId, @Param("star") Integer star);
 
 }

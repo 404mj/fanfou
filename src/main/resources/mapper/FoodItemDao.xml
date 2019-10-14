@@ -48,6 +48,10 @@
 
     </insert>
 
+    <select id="findItemById" resultType="com.chinamobile.sd.model.FoodItem">
+        select * from food_item where food_id=#{foodId}
+    </select>
+
 
     <delete id="removeItemById">
         delete from food_item
@@ -76,6 +80,9 @@
         where
         food_time=#{itemDay} and period=#{period} and food_desc=#{oldDesc}
 
+    </update>
+    <update id="updateStar">
+        update food_item set stars = #{star} where food_id=#{foodId}
     </update>
 
 </mapper>

@@ -79,12 +79,17 @@ public class FoodItemService {
     }
 
     /**
+     * 赞踩的同时联动star信息
+     *
      * @param restaurantId
      * @param foodId
      * @return
      */
     public ResultModel<Integer> upItem(Integer restaurantId, Integer foodId) {
-        //todo stars 与 赞踩的联动关系
+        FoodItem foodItem = foodItemDao.findItemById(foodId);
+        int star = starCaculator(foodItem, false);
+        foodItemDao.updateStar(foodId, star);
+
         Integer res = foodItemDao.addItemUp(restaurantId, foodId);
         return ResultUtil.successResult(res);
     }
@@ -95,12 +100,48 @@ public class FoodItemService {
      * @return
      */
     public ResultModel<Integer> downItem(Integer restaurantId, Integer foodId) {
+        FoodItem foodItem = foodItemDao.findItemById(foodId);
+        int star = starCaculator(foodItem, true);
+        foodItemDao.updateStar(foodId, star);
+
         Integer res = foodItemDao.addItemDown(restaurantId, foodId);
         return ResultUtil.successResult(res);
     }
 
+    /**
+     * @param foodId
+     */
     public void removeItemById(Integer foodId) {
         foodItemDao.removeItemById(foodId);
+    }
+
+
+    /**
+     * stars 与 赞踩的联动关系
+     *
+     * @param foodItem
+     * @param isDown
+     * @return
+     */
+    private int starCaculator(FoodItem foodItem, boolean isDown) {
+        float oldUp = foodItem.getUp();
+        float oldDown = foodItem.getDown();
+        int oldStar = foodItem.getStars();
+        if (isDown) {
+            float rate = (oldDown + 1) / (oldUp + oldDown + 1);
+        }
+        float rate = oldDown / (oldUp + oldDown + 1);
+        if (rate > 0.5 && rate <= 0.66) {
+            //扣1星
+            oldStar -= 1;
+        } else if (rate > 0.66 && rate <= 0.8) {
+            //扣2星
+            oldStar -= 2;
+        } else if (rate > 0.8) {
+            //扣3星
+            oldStar -= 3;
+        }
+        return oldStar;
     }
 
 }
