@@ -5,7 +5,8 @@ import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.CrypUtil;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.RestClient4Andmu;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -23,7 +24,7 @@ import java.util.concurrent.CompletableFuture;
  */
 @Service
 public class AndmuTaskService {
-    private Logger logger = LoggerFactory.getLogger(AndmuTaskService.class);
+    private Logger logger = LogManager.getLogger(AndmuTaskService.class);
 
     @Autowired
     private RestClient4Andmu restClient4Andmu;
@@ -36,6 +37,7 @@ public class AndmuTaskService {
         String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
         String queurl = picJsonQue.get("data").toString();
+        logger.info("r0quepic----" + queurl + " timeKey----" + timeKey);
         //存redis base64值
         String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
         redisTemplate.opsForHash().put(Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday(), timeKey, queBase);
@@ -47,6 +49,7 @@ public class AndmuTaskService {
         String attJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_ATTENDANCE + "\"}";
         JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
         String atturl = picJsonAtt.get("data").toString();
+        logger.info("r0attpic----" + atturl + " timeKey----" + timeKey);
         //存redis base64值
         String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
         redisTemplate.opsForHash().put(Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday(), timeKey, attBase);
@@ -58,6 +61,7 @@ public class AndmuTaskService {
         String queJson = "{\"deviceId\":\"" + Constant.R1_DEVICE_QUEUE + "\"}";
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
         String queurl = picJsonQue.get("data").toString();
+        logger.info("r1quepic----" + queurl + " timeKey----" + timeKey);
         //存redis base64值
         String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
         redisTemplate.opsForHash().put(Constant.REDIS_R1REALTIMEPIC_PREFIX + DateUtil.getToday(), timeKey, queBase);
@@ -69,6 +73,7 @@ public class AndmuTaskService {
         String attJson = "{\"deviceId\":\"" + Constant.R1_DEVICE_ATTENDANCE + "\"}";
         JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
         String atturl = picJsonAtt.get("data").toString();
+        logger.info("r1attpic----" + atturl + " timeKey----" + timeKey);
         //存redis base64值
         String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
         redisTemplate.opsForHash().put(Constant.REDIS_R1ATTENDANCE_PREFIX + DateUtil.getToday(), timeKey, attBase);

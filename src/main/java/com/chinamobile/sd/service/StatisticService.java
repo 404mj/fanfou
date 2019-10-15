@@ -33,8 +33,10 @@ public class StatisticService {
      */
     public ResultModel getStatistic(Integer restaurant) {
         Map<String, Object> retMap = new HashMap<>();
+        //排队人数
         String queLen = null;
         String attend = null;
+        //上座率
         Double attProb = null;
         float waitTime = 0;
         Map<String, String> hisque = new LinkedHashMap<>();
@@ -49,14 +51,17 @@ public class StatisticService {
 
         if (restaurant == 0) {//B1大餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
-            attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
-            attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
+//            attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
+//            attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
+            //上座率改为从先直出
+            attProb = (Double) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
             //todo: 获取历史排队人数
         } else if (restaurant == 1) {//B1小餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
-            attend = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
-            attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
+//            attend = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
+//            attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
+            attProb = (Double) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
             //todo: 获取历史排队人数
         }

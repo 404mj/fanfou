@@ -7,12 +7,12 @@ import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.model.User;
 import com.chinamobile.sd.service.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,13 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/fanfou/debug")
 public class TryController {
 
-    private static final Logger logger = LoggerFactory.getLogger(TryController.class);
+//    private Logger logger = LoggerFactory.getLogger(TryController.class);
+//    private static final Logger logger = LoggerFactory.getLogger(TryController.class);
+    /**
+     * 单独使用log4j,与slf4j桥接浪费性能
+     */
+    private Logger logger = LogManager.getLogger(TryController.class);
+
 
     @Autowired
     private RestClient4Andmu restClient4Andmu;
@@ -305,6 +311,7 @@ public class TryController {
 
     @GetMapping("/t_dblink")
     public String testDbLink() {
+        logger.info("===========================");
         return foodCommentService.getTodayComments(0).toString();
     }
 

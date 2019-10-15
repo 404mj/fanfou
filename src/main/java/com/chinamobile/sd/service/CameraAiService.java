@@ -5,7 +5,8 @@ import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.CrypUtil;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.RestClient4Andmu;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class CameraAiService {
-    private final Logger logger = LoggerFactory.getLogger(CameraAiService.class);
+    private final Logger logger = LogManager.getLogger(CameraAiService.class);
     @Autowired
     private RestClient4Andmu restClient4Andmu;
     @Autowired

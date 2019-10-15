@@ -11,8 +11,9 @@ import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.service.FoodCommentService;
 import com.chinamobile.sd.service.FoodExcelService;
 import com.chinamobile.sd.service.FoodItemService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.xssf.usermodel.*;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -33,7 +34,7 @@ import java.util.List;
 @RequestMapping("/fanfou/restaurant")
 public class RecipeController {
 
-    private static final Logger logger = LoggerFactory.getLogger(RecipeController.class);
+    private static final Logger logger = LogManager.getLogger(RecipeController.class);
 
     @Autowired
     private FoodExcelService foodExcelService;
