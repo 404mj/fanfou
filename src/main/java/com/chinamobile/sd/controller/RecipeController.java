@@ -152,9 +152,8 @@ public class RecipeController {
         }
 
         JSONObject reqjson = JSON.parseObject(req);
-        String day = reqjson.getString("daytime");
         String content = reqjson.getString("comment_content");
-
+        String day = DateUtil.getToday();
         return foodCommentService.addComment(content, day, rid);
     }
 
