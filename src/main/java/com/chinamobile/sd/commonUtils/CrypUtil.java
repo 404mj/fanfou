@@ -19,6 +19,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.PrivateKey;
@@ -81,8 +83,16 @@ public class CrypUtil {
     }
 
 
-    public static String encodeUrlPicToBase64(String picUrl) {
+    public static void savePicFromUrl(String picUrl) {
+        try (InputStream in = new URL(picUrl).openStream()) {
+            Files.copy(in, Paths.get("C:/zsxhome/t_aiflow/image.jpg"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+
+    public static String encodeUrlPicToBase64(String picUrl) {
         try {
             URL imgURL = new URL(picUrl);
             InputStream is = imgURL.openStream();

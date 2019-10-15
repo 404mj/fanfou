@@ -296,11 +296,12 @@ public class TryController {
      */
     @GetMapping("/t_aiflow")
     public String testAiflow() {
-        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
+        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_ATTENDANCE + "\"}";
         //作为key的时间戳精确到秒
         String nowTime = DateUtil.getCurrentSeconds();
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
         String queurl = picJsonQue.get("data").toString();
+        CrypUtil.savePicFromUrl(queurl);
         return queurl;
     }
 
@@ -315,7 +316,7 @@ public class TryController {
         return foodCommentService.getTodayComments(0).toString();
     }
 
-    @GetMapping("t_redislink")
+    @GetMapping("/t_redislink")
     public String testRedisLink() {
         stringRedisTemplate.opsForValue().set("lalatest", "sdfsfsdfds");
         return stringRedisTemplate.opsForValue().get("lalatest");

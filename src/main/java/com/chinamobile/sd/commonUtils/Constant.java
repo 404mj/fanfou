@@ -67,8 +67,8 @@ public class Constant {
     public static final String R0_DEVICE_QUEUE = "xxxxS_001231404901";
     public static final String R0_DEVICE_ATTENDANCE = "xxxxS_0012313a1fc1";
     //B1小餐厅设备
-    public static final String R1_DEVICE_QUEUE = "";
-    public static final String R1_DEVICE_ATTENDANCE = "";
+    public static final String R1_DEVICE_QUEUE = "xxxxS_0012313a1c9b";
+    public static final String R1_DEVICE_ATTENDANCE = "xxxxS_0012313a2036";
 
 
 }
