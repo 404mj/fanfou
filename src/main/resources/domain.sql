@@ -37,10 +37,11 @@ create table `food_comment`
 (
   `comment_id`   int not null primary key auto_increment comment '主键',
   `content`      varchar(512) default null comment '评论内容',
-  `comment_time` date         default null comment '针对某天食物的评论',
+  `comment_time` date         default null comment '评论的时间',
+  `food_time`    date         default null comment '食物是哪一天的',
   `restaurant`   tinyint      default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅',
   `discusser`    varchar(20)  default null comment '评论人',
-  UNIQUE `index_day` (`content`, `comment_time`, `restaurant`)
+  UNIQUE `index_day` (`content`, `food_time`, `restaurant`)
 ) engine = InnoDB
   auto_increment = 1
   default charset = utf8;
@@ -71,4 +72,8 @@ alter table food_item
   modify column food_belng tinyint default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅';
 alter table food_comment
   add `restaurant` tinyint default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅';
-alter table food_item   modify column food_week varchar(5) default null comment '食物是周几的';
+alter table food_item
+  modify column food_week varchar(5) default null comment '食物是周几的';
+alter table food_comment
+  add `food_time` date default null comment '食物是哪一天的';
+

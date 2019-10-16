@@ -3,14 +3,14 @@
 <mapper namespace="com.chinamobile.sd.dao.FoodCommentDao">
 
     <insert id="addComment">
-        insert into food_comment(content, comment_time, restaurant , discusser) VALUES
-        (#{content},#{day},#{restaurant},'');
+        insert into food_comment(content, comment_time, food_time, restaurant , discusser) VALUES
+        (#{content},#{day},#{foodTime},#{restaurant},'');
     </insert>
 
     <select id="findDiscussContentsByTime" resultType="com.chinamobile.sd.model.FoodComment">
         select * from food_comment
         where
-        comment_time = #{day} and restaurant=#{restaurant}
+        food_time = #{foodTime} and restaurant=#{restaurant}
         order by comment_id;
     </select>
 </mapper>

@@ -13,26 +13,26 @@ public class FoodComment implements Serializable {
     private Integer commentId;
     private String content;
     private String commentTime;
+    private String foodTime;
     private String discusser;
     private String restaurant;
 
-    public FoodComment(Integer commentId, String content, String commentTime, String discusser, String restaurant) {
+    public FoodComment(Integer commentId, String content, String commentTime,
+                       String foodTime, String discusser, String restaurant) {
         this.commentId = commentId;
         this.content = content;
         this.commentTime = commentTime;
+        this.foodTime = foodTime;
         this.discusser = discusser;
         this.restaurant = restaurant;
     }
 
-    @Override
-    public String toString() {
-        return "FoodComment{" +
-                "commentId=" + commentId +
-                ", content='" + content + '\'' +
-                ", commentTime='" + commentTime + '\'' +
-                ", discusser='" + discusser + '\'' +
-                ", restaurant='" + restaurant + '\'' +
-                '}';
+    public String getFoodTime() {
+        return foodTime;
+    }
+
+    public void setFoodTime(String foodTime) {
+        this.foodTime = foodTime;
     }
 
     public String getRestaurant() {

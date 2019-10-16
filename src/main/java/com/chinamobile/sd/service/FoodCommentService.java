@@ -46,7 +46,7 @@ public class FoodCommentService {
      * @param restaurant
      * @return
      */
-    public ResultModel getCommentsByTime(String dayTime, Integer restaurant) {
+    public ResultModel<List<FoodComment>> getCommentsByTime(String dayTime, Integer restaurant) {
         if (StringUtils.isEmpty(dayTime) || restaurant < 0) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());
         }
@@ -59,14 +59,15 @@ public class FoodCommentService {
      * @param content
      * @param time
      * @param restaurant
+     * @param foodTime
      * @return
      */
-    public ResultModel addComment(String content, String time, Integer restaurant) {
+    public ResultModel addComment(String content, String time, Integer restaurant, String foodTime) {
         if (StringUtils.isEmpty(content) || StringUtils.isEmpty(time)) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());
         }
 
-        Integer res = foodCommentDao.addComment(time, content, restaurant);
+        Integer res = foodCommentDao.addComment(time, content, restaurant, foodTime);
         if (res > 0) {
             return ResultUtil.successResult(res);
         }

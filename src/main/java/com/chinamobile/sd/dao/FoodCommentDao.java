@@ -13,8 +13,9 @@ import java.util.List;
 @Mapper
 public interface FoodCommentDao {
 
-    Integer addComment(@Param("day") String day, @Param("content") String content, @Param("restaurant") Integer restaurant);
+    Integer addComment(@Param("day") String day, @Param("content") String content,
+                       @Param("restaurant") Integer restaurant, @Param("foodTime") String foodTime);
 
-    List<FoodComment> findDiscussContentsByTime(@Param("day") String day, @Param("restaurant") Integer restaurant);
+    List<FoodComment> findDiscussContentsByTime(@Param("foodTime") String foodTime, @Param("restaurant") Integer restaurant);
 
 }
