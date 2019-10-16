@@ -65,7 +65,7 @@ public class StatisticService {
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
             //todo: 获取历史排队人数
         }
-        retMap.put("quelength", queLen);
+        retMap.put("quelength", processQueLen(queLen));
         retMap.put("attendprob", attProb.toString());
         retMap.put("waittime", waitTime);
         retMap.put("hisquecount", hisque);
@@ -73,4 +73,15 @@ public class StatisticService {
         return ResultUtil.successResult(retMap);
     }
 
+    /**
+     * @param queLenStr
+     * @return
+     */
+    private Integer processQueLen(String queLenStr) {
+        Integer queLenInt = Integer.valueOf(queLenStr);
+        if (queLenInt > 1) {
+            queLenInt += 8;
+        }
+        return queLenInt;
+    }
 }
