@@ -301,8 +301,9 @@ public class TryController {
         String nowTime = DateUtil.getCurrentSeconds();
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
         String queurl = picJsonQue.get("data").toString();
-        CrypUtil.savePicFromUrl(queurl);
-        return queurl;
+//        CrypUtil.savePicFromUrl(queurl);
+        return CrypUtil.encodeUrlPicToBase64(queurl);
+
     }
 
     @GetMapping("/t_foodflow")
@@ -312,7 +313,6 @@ public class TryController {
 
     @GetMapping("/t_dblink")
     public String testDbLink() {
-        logger.info("===========================");
         return foodCommentService.getTodayComments(0).toString();
     }
 

@@ -99,9 +99,9 @@ public class CrypUtil {
             byte[] bytes = ByteStreams.toByteArray(is);
             return Base64.getEncoder().encodeToString(bytes);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.error(e.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.toString());
         }
 
         /*

@@ -39,7 +39,7 @@ public class CameraAiService {
      */
     @Scheduled(cron = "*/30 * 6-9,11-13,17-19  * * 1-7")
     public void executePicTask() {
-        logger.info("==================" + DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
+        logger.info("========scheduled task start==========" + DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
     }
 
     /**

@@ -59,7 +59,7 @@
         <Logger name="org.springframework" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
-        <Root level="debug">
+        <Root level="info">
             <AppenderRef ref="Console" level="debug"/>
             <AppenderRef ref="Filelog"/>
             <AppenderRef ref="RollingFileInfo"/>
