@@ -39,7 +39,8 @@ public class CameraAiService {
      */
     @Scheduled(cron = "*/30 * 6-9,11-13,17-19  * * 1-7")
     public void executePicTask() {
-        logger.info("========scheduled task start==========" + DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
+        logger.info("Current Thread: {} - Cron Task Exec Time: {}", Thread.currentThread().getName(),
+                DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
     }
 
     /**
@@ -64,7 +65,7 @@ public class CameraAiService {
             //通知AI service
             restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {
-            logger.error(e.toString());
+            logger.error(e.toString() + e.getStackTrace());
         }
 
     }
