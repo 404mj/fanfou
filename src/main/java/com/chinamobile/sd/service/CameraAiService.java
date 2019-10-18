@@ -2,11 +2,11 @@ package com.chinamobile.sd.service;
 
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
+import com.chinamobile.sd.commonUtils.NotifyService;
 import com.chinamobile.sd.commonUtils.RestClient4Andmu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +23,7 @@ import java.util.concurrent.CompletableFuture;
 public class CameraAiService {
     private final Logger logger = LogManager.getLogger(CameraAiService.class);
     @Autowired
-    private RestClient4Andmu restClient4Andmu;
-    @Autowired
-    private StringRedisTemplate redisTemplate;
+    private NotifyService notifyService;
     @Autowired
     private AndmuTaskService andmuTaskService;
 
@@ -58,7 +56,7 @@ public class CameraAiService {
             CompletableFuture.allOf(r0QueRes, r0AttRes, r1QueRes, r1AttRes).join();
 
             //通知AI service
-            restClient4Andmu.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {
             logger.error(e.toString() + e.getStackTrace());
         }

@@ -168,34 +168,4 @@ public class RestClient4Andmu {
         }
         return null;
     }
-
-
-    /**
-     * 通知模型服务
-     *
-     * @param url
-     * @param requestBody
-     */
-    public void notifyAiService(String url, String requestBody) {
-        CloseableHttpClient restClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(url);
-        try {
-            StringEntity entity = new StringEntity(requestBody);
-            entity.setContentType("application/json");
-            httpPost.setEntity(entity);
-            restClient.execute(httpPost);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            logger.error(e.toString());
-        } catch (IOException e) {
-            logger.error(e.toString());
-        } finally {
-            try {
-                restClient.close();
-            } catch (IOException e) {
-                logger.error(e.toString());
-            }
-        }
-    }
 }
