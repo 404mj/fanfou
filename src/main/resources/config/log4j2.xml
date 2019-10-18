@@ -60,7 +60,7 @@
             <AppenderRef ref="Console"/>
         </Logger>
         <Root level="info">
-            <AppenderRef ref="Console" level="debug"/>
+            <AppenderRef ref="Console"/>
             <AppenderRef ref="Filelog"/>
             <AppenderRef ref="RollingFileInfo"/>
             <AppenderRef ref="RollingFileWarn"/>

@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: fengchen.zsx
@@ -41,7 +38,7 @@ public class StatisticService {
         Map<String, String> hisque = new LinkedHashMap<>();
 
 
-        List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
+        List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, Constant.ONEHOUR_HIST - 1);
         //还没有数据如何
         if (lastKeyList == null || lastKeyList.size() == 0) {
             return ResultUtil.failResult(ServiceEnum.NO_QUERY_ERROR, "sorry~ no info yet");
@@ -56,6 +53,10 @@ public class StatisticService {
             attProb = (Double) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
             //todo 前1小时,15分钟段,四个数据
+            hisque.put(lastKey, queLen);
+            if (lastKeyList.size() < Constant.ONEHOUR_HIST) {
+
+            }
 
         } else if (restaurant == 1) {//B1小餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
