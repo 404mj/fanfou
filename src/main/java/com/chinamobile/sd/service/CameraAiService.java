@@ -1,13 +1,10 @@
 package com.chinamobile.sd.service;
 
-import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.Constant;
-import com.chinamobile.sd.commonUtils.CrypUtil;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.RestClient4Andmu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,8 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: fengchen.zsx

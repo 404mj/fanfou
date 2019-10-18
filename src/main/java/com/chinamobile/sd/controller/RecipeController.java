@@ -5,24 +5,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.commonUtils.ServiceEnum;
-import com.chinamobile.sd.commonUtils.StringUtil;
-import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.service.FoodCommentService;
 import com.chinamobile.sd.service.FoodExcelService;
 import com.chinamobile.sd.service.FoodItemService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.xssf.usermodel.*;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * @Author: fengchen.zsx

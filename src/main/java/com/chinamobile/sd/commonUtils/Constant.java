@@ -20,7 +20,7 @@ public class Constant {
      */
     //主要餐桌位总承载人数
     public static Integer R0_FULLSEAT_PEOPLE = 256;
-    public static Integer R1_FULLSEAT_PEOPLE = 256;
+    public static Integer R1_FULLSEAT_PEOPLE = 128;
 
     //计算排队通过速率
     public static float getPeopleFlowRate() {
@@ -44,10 +44,14 @@ public class Constant {
     //B1小餐厅上座率
     public static final String REDIS_R1ATTENDANCE_PREFIX = "R1_ATTENDPIC_";
     public static final String REDIS_R1ATTENDPROB_PREFIX = "R1_ATTENDCOUNT_";
-    //餐厅前缀
-    public static final String B1_RESTAURANT_PREFIX0 = "R0";
-    public static final String B1_RESTAURANT_PREFIX1 = "R1";
 
+
+    /**
+     * redis key expires
+     */
+
+    //7*24*60=一周过期时间
+    public static final Long REDISKEY_EXPIRES = new Long(10080);
 
     /**
      * api list

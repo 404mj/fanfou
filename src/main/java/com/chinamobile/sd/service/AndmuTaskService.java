@@ -7,14 +7,13 @@ import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.RestClient4Andmu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: fengchen.zsx
@@ -40,7 +39,9 @@ public class AndmuTaskService {
         logger.info("r0quepic----" + queurl + " timeKey----" + timeKey);
         //存redis base64值
         String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-        redisTemplate.opsForHash().put(Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday(), timeKey, queBase);
+        String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
+        redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
+        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         return CompletableFuture.completedFuture(1);
     }
 
@@ -52,7 +53,9 @@ public class AndmuTaskService {
         logger.info("r0attpic----" + atturl + " timeKey----" + timeKey);
         //存redis base64值
         String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
-        redisTemplate.opsForHash().put(Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday(), timeKey, attBase);
+        String nowHkey = Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday();
+        redisTemplate.opsForHash().put(nowHkey, timeKey, attBase);
+        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         return CompletableFuture.completedFuture(1);
     }
 
@@ -64,7 +67,9 @@ public class AndmuTaskService {
         logger.info("r1quepic----" + queurl + " timeKey----" + timeKey);
         //存redis base64值
         String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-        redisTemplate.opsForHash().put(Constant.REDIS_R1REALTIMEPIC_PREFIX + DateUtil.getToday(), timeKey, queBase);
+        String nowHkey = Constant.REDIS_R1REALTIMEPIC_PREFIX + DateUtil.getToday();
+        redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
+        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         return CompletableFuture.completedFuture(1);
     }
 
@@ -76,7 +81,9 @@ public class AndmuTaskService {
         logger.info("r1attpic----" + atturl + " timeKey----" + timeKey);
         //存redis base64值
         String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
-        redisTemplate.opsForHash().put(Constant.REDIS_R1ATTENDANCE_PREFIX + DateUtil.getToday(), timeKey, attBase);
+        String nowHkey = Constant.REDIS_R1ATTENDANCE_PREFIX + DateUtil.getToday();
+        redisTemplate.opsForHash().put(nowHkey, timeKey, attBase);
+        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         return CompletableFuture.completedFuture(1);
     }
 }
