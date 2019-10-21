@@ -28,49 +28,45 @@ public class StatisticService {
      * @return
      */
     public ResultModel getStatistic(Integer restaurant) {
+        List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
+        if (lastKeyList == null || lastKeyList.size() == 0) {
+            return ResultUtil.failResult(ServiceEnum.NO_QUERY_ERROR, "sorry~ no info yet");
+        }
+
         Map<String, Object> retMap = new HashMap<>();
-        //排队人数
         String queLen = null;
-        String attend = null;
-        //上座率
+        //String attend = null;
         Double attProb = null;
         float waitTime = 0;
         Map<String, String> hisque = new LinkedHashMap<>();
 
 
-        List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, Constant.ONEHOUR_HIST - 1);
-        //还没有数据如何
-        if (lastKeyList == null || lastKeyList.size() == 0) {
-            return ResultUtil.failResult(ServiceEnum.NO_QUERY_ERROR, "sorry~ no info yet");
-        }
         String lastKey = lastKeyList.get(0);
-
         if (restaurant == 0) {//B1大餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
-//            attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
-//            attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
+            //attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
+            //attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
             //上座率改为从先直出
             attProb = (Double) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
-            //todo 前1小时,15分钟段,四个数据
+            //前1小时,15分钟段,四个数据
             hisque.put(lastKey, queLen);
-            if (lastKeyList.size() < Constant.ONEHOUR_HIST) {
-
-            }
-
+            processHisQue(hisque, 0);
         } else if (restaurant == 1) {//B1小餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
-//            attend = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
-//            attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
+            //attend = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
+            //attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
             attProb = (Double) redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
-            //todo: 获取历史排队人数
+            hisque.put(lastKey, queLen);
+            processHisQue(hisque, 1);
         }
+
+
         retMap.put("quelength", processQueLen(queLen));
         retMap.put("attendprob", attProb.toString());
         retMap.put("waittime", waitTime);
         retMap.put("hisquecount", hisque);
-
         return ResultUtil.successResult(retMap);
     }
 
@@ -84,5 +80,41 @@ public class StatisticService {
             queLenInt += 8;
         }
         return queLenInt;
+    }
+
+
+    /**
+     * @param hisque
+     * @param rest
+     */
+    private void processHisQue(Map<String, String> hisque, Integer rest) {
+        List<String> secondKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 39, 39);
+        List<String> thirdKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 79, 79);
+        List<String> fourthKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 119, 119);
+        String redisKey = Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday();
+
+        //B1大餐厅
+        if (rest == 1) {
+            redisKey = Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday();
+        }
+
+        //递进判断
+        if (secondKeyList != null && secondKeyList.size() > 0) {
+            String secondKey = secondKeyList.get(0);
+            String queLen2 = redisTemplate.opsForHash().get(redisKey, secondKey).toString();
+            hisque.put(secondKey, queLen2);
+
+            if (thirdKeyList != null && thirdKeyList.size() > 0) {
+                String thirdKey = thirdKeyList.get(0);
+                String queLen3 = redisTemplate.opsForHash().get(redisKey, thirdKey).toString();
+                hisque.put(thirdKey, queLen3);
+
+                if (fourthKeyList != null && fourthKeyList.size() > 0) {
+                    String fourthKey = fourthKeyList.get(0);
+                    String queLen4 = redisTemplate.opsForHash().get(redisKey, fourthKey).toString();
+                    hisque.put(thirdKey, queLen4);
+                }
+            }
+        }
     }
 }

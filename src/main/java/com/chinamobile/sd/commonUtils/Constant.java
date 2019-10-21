@@ -1,7 +1,5 @@
 package com.chinamobile.sd.commonUtils;
 
-import java.util.HashMap;
-import java.util.Random;
 
 /**
  * @Author: fengchen.zsx

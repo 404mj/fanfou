@@ -148,7 +148,7 @@ public class RecipeController {
         String content = reqjson.getString("comment_content");
         String foodTime = reqjson.getString("food_time");
         String commentTime = DateUtil.getToday();
-        return foodCommentService.addComment(content, commentTime, rid,foodTime);
+        return foodCommentService.addComment(content, commentTime, rid, foodTime);
     }
 
     /**

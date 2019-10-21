@@ -90,43 +90,6 @@ public class DateUtil {
      */
     public static final String HHmm = "HHmm";
 
-    /**
-     * 年月日定义
-     */
-    private static final String REF_HOUR = "hour";
-    private static final String REF_DAY = "day";
-    private static final String REF_MONTH = "month";
-    private static final String REF_YEAR = "year";
-    private static final String REF_WEEK = "week";
-
-    /**
-     * 转换MM-dd和yyyy-MM定义长度
-     */
-    private static final Integer MMDD_LEN = 5;
-    private static final Integer YYYYMM_LEN = 7;
-
-    /**
-     * 获取以前的某个日期
-     *
-     * @param currentDate
-     * @param year
-     * @param month
-     * @param day
-     * @return
-     */
-    public static Date getDate(Date currentDate, int year, int month, int day) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(currentDate);
-        return getDate(year, month, day, cal);
-    }
-
-    private static Date getDate(int year, int month, int day, Calendar cal) {
-        cal.set(cal.YEAR, cal.get(Calendar.YEAR) + year);
-        cal.set(cal.MONTH, cal.get(Calendar.MONTH) + month);
-        cal.set(cal.DAY_OF_YEAR, cal.get(Calendar.DAY_OF_YEAR) + day);
-        return cal.getTime();
-    }
-
 
     /**
      * 按指定的格式sFormat将日期dDate转化为字符串，sFormat的取值在类中定义了常量，也可以自己设置字符串，默认为yyyy-MM-dd
@@ -202,24 +165,6 @@ public class DateUtil {
 
 
     /**
-     * 返回当天所在的年月
-     *
-     * @return String "yyyyMM"
-     */
-    public static String getCurrentYearMonth() {
-        String res = "";
-        Calendar caldTmp = Calendar.getInstance();
-        caldTmp.setTime(new Date());
-        if (caldTmp.get(Calendar.MONTH) + 1 < 10)
-            res = caldTmp.get(Calendar.YEAR) + "0"
-                    + (caldTmp.get(Calendar.MONTH) + 1);
-        else
-            res = caldTmp.get(Calendar.YEAR) + ""
-                    + (caldTmp.get(Calendar.MONTH) + 1);
-        return res;
-    }
-
-    /**
      * 取得当前日期的月份，以MM格式返回.
      *
      * @return 当前月份 MM
@@ -249,42 +194,6 @@ public class DateUtil {
         return date2String(new Date(), format);
     }
 
-
-    /**
-     * 对当前时间，取向前（为负值时向后）多少秒
-     *
-     * @param dInput         输入时间
-     * @param numberOfSecond 偏移的秒数
-     * @return Date 结果时间
-     */
-    public static Date addSecond(Date dInput, int numberOfSecond) {
-        if (dInput == null) {
-            return null;
-        }
-        java.util.Calendar c = java.util.Calendar.getInstance();
-        c.setTime(dInput);
-        c.add(java.util.Calendar.SECOND, numberOfSecond);
-        return c.getTime();
-    }
-
-    /**
-     * 取得前后day天数的日期,day为负数表示以前的日期
-     *
-     * @param date
-     * @param day
-     * @return
-     */
-    public static Date nextDate(Date date, int day) {
-        if (date == null) {
-            return null;
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + day);
-        return calendar.getTime();
-    }
-
-
     /**
      * 省略掉时间的毫秒，设置millisecond为0
      *
@@ -299,6 +208,15 @@ public class DateUtil {
         cal.setTime(dDate);
         cal.set(Calendar.MILLISECOND, 0);
         return cal.getTime();
+    }
+
+    /**
+     * trimMillis 字符串返回
+     *
+     * @return
+     */
+    public static String getCurrentSeconds() {
+        return String.valueOf((System.currentTimeMillis() / 1000));
     }
 
     /**
@@ -318,44 +236,4 @@ public class DateUtil {
     public static String getTodayDate() {
         return DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
     }
-
-    /**
-     * 根据所给的起始时间,间隔天数来计算终止时间
-     *
-     * @param date
-     * @param step
-     * @return 终止时间
-     */
-    public static java.sql.Date getStepDay(java.sql.Date date, int step) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(Calendar.DAY_OF_YEAR, step);
-        return new java.sql.Date(calendar.getTime().getTime());
-    }
-
-    /**
-     * 得到将date增加指定月数后的date
-     *
-     * @param date
-     * @param intBetween
-     * @return date加上intBetween月数后的日期
-     */
-    public static java.sql.Date getStepMonth(Date date, int intBetween) {
-        Calendar calo = Calendar.getInstance();
-        calo.setTime(date);
-        calo.add(Calendar.MONTH, intBetween);
-        return new java.sql.Date(calo.getTime().getTime());
-    }
-
-    public static Date stringTimeToDate(String value) {
-        if (StringUtils.isEmpty(value)) {
-            return null;
-        }
-        return new Date(Long.parseLong(value));
-    }
-
-    public static String getCurrentSeconds() {
-        return String.valueOf((System.currentTimeMillis() / 1000));
-    }
-
 }

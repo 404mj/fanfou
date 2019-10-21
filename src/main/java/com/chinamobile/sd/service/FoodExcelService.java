@@ -52,7 +52,7 @@ public class FoodExcelService {
             return foodItemDao.createItems(weekFoods);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getStackTrace());
         }
         return 0;
     }
