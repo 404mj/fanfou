@@ -306,6 +306,11 @@ public class TryController {
 
     }
 
+    @GetMapping("/t_frontend")
+    public String testUnion() {
+        return "hello world";
+    }
+
     @GetMapping("/t_foodflow")
     public String testFoodflow() {
         return foodItemService.getItemsByDayAndPeriod(DateUtil.getToday(), 1, 0).toString();
