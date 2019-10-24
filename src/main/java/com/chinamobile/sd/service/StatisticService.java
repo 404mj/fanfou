@@ -5,6 +5,7 @@ import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.model.ResultModel;
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ import java.util.*;
 @Service
 public class StatisticService {
 
+    private HashSet<String> RESTHOURFILTER = Sets.newHashSet("6", "7", "8", "9", "11", "12",
+            "13", "17", "18", "19");
+
     @Autowired
     private StringRedisTemplate redisTemplate;
 
@@ -28,19 +32,28 @@ public class StatisticService {
      * @return
      */
     public ResultModel getStatistic(Integer restaurant) {
+        Map<String, Object> retMap = new HashMap<>();
+        String queLen = "0";
+        //String attend = null;
+        Double attProb = 0.0;
+        float waitTime = 0;
+        Map<String, String> hisque = new LinkedHashMap<>();
+
+        //过滤饭点请求
+        String nowHour = DateUtil.getCurrentHour();
+        if (!RESTHOURFILTER.contains(nowHour)) {
+            retMap.put("quelength", queLen);
+            retMap.put("attendprob", attProb);
+            retMap.put("waittime", waitTime);
+            retMap.put("hisquecount", hisque);
+            return ResultUtil.successResult(retMap);
+        }
+
+
         List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
         if (lastKeyList == null || lastKeyList.size() == 0) {
             return ResultUtil.failResult(ServiceEnum.NO_QUERY_ERROR, "sorry~ no info yet");
         }
-
-        Map<String, Object> retMap = new HashMap<>();
-        String queLen = null;
-        //String attend = null;
-        Double attProb = null;
-        float waitTime = 0;
-        Map<String, String> hisque = new LinkedHashMap<>();
-
-
         String lastKey = lastKeyList.get(0);
         if (restaurant == 0) {//B1大餐厅
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
@@ -64,7 +77,7 @@ public class StatisticService {
 
 
         retMap.put("quelength", processQueLen(queLen));
-        retMap.put("attendprob", attProb.toString());
+        retMap.put("attendprob", attProb);
         retMap.put("waittime", waitTime);
         retMap.put("hisquecount", hisque);
         return ResultUtil.successResult(retMap);

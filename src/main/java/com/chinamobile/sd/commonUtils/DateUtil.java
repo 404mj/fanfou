@@ -183,6 +183,16 @@ public class DateUtil {
     }
 
     /**
+     * 取得当前时间的小时
+     *
+     * @return MM
+     */
+    public static String getCurrentHour() {
+        return getFormatCurrentTime("HH");
+    }
+
+
+    /**
      * 根据给定的格式，返回时间字符串
      * <p>
      * 参照DateFormator类，是调用了DateFormator类的date2String方法。
