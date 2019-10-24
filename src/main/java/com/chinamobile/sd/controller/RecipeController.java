@@ -147,7 +147,7 @@ public class RecipeController {
         JSONObject reqjson = JSON.parseObject(req);
         String content = reqjson.getString("comment_content");
         String foodTime = reqjson.getString("food_time");
-        String commentTime = DateUtil.getToday();
+        String commentTime = DateUtil.getTodayWithSlash();
         return foodCommentService.addComment(content, commentTime, rid, foodTime);
     }
 

@@ -47,6 +47,8 @@ public class TryController {
     private FoodItemService foodItemService;
     @Autowired
     private FoodCommentService foodCommentService;
+    @Autowired
+    private NotifyService notifyService;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -313,7 +315,7 @@ public class TryController {
 
     @GetMapping("/t_foodflow")
     public String testFoodflow() {
-        return foodItemService.getItemsByDayAndPeriod(DateUtil.getToday(), 1, 0).toString();
+        return foodItemService.getItemsByDayAndPeriod(DateUtil.getTodayWithSlash(), 1, 0).toString();
     }
 
     @GetMapping("/t_dblink")
@@ -325,6 +327,11 @@ public class TryController {
     public String testRedisLink() {
         stringRedisTemplate.opsForValue().set("lalatest", "sdfsfsdfds");
         return stringRedisTemplate.opsForValue().get("lalatest");
+    }
+
+    @GetMapping("/t_notify")
+    public void testNotify() {
+        notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + 123123123 + "\"}");
     }
 
 }

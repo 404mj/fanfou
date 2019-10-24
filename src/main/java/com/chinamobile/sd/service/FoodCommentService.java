@@ -29,7 +29,7 @@ public class FoodCommentService {
      * @return
      */
     public ResultModel<List<FoodComment>> getTodayComments(Integer restaurant) {
-        return this.getCommentsByTime(DateUtil.getToday(), restaurant);
+        return this.getCommentsByTime(DateUtil.getTodayWithSlash(), restaurant);
     }
 
     /**

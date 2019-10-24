@@ -232,9 +232,18 @@ public class DateUtil {
     /**
      * 返回当天的日期
      *
-     * @return "YYYY-MM-DD"
+     * @return "YYYYMMDD"
      */
     public static String getToday() {
+        return DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
+    }
+
+    /**
+     * 返回当天的日期
+     *
+     * @return "YYYY-MM-DD"
+     */
+    public static String getTodayWithSlash() {
         return DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD);
     }
 

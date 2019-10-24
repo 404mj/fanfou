@@ -35,7 +35,7 @@ public class CameraAiService {
         logger.info("Current Thread: {} - Cron Task Exec Time: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
 
-        asyncPicSendRedisCallAiTask();
+//        asyncPicSendRedisCallAiTask();
     }
 
     /**
@@ -64,5 +64,4 @@ public class CameraAiService {
         }
 
     }
-
 }
