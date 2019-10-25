@@ -14,6 +14,7 @@ public enum ServiceEnum {
     NO_QUERY_INFO("FAIL_BIZ_NO_QUERY_INFO", "查询信息不存在"),
     DELETE_ERROR("FAIL_BIZ_DELETE_ERROR", "信息删除失败"),
     SAVE_ERROR("SAVE_ERROR", "信息添加失败"),
+    UPDATE_ERROR("UPDATE_ERROR", "修改信息失败"),
     COMMIT_REPEAT_ERROR("FAIL_BIZ_COMMIT_REPEAT_ERROR", "不能重复提交"),
     NO_QUERY_ERROR("FAIL_BIZ_NO_QUERY_ERROR", "您请求的信息不存在。"),
     SYSTEM_ERROR("FAIL_BIZ_SYSTEM_ERROR", "系统开小差啦~请稍后再试");

@@ -69,6 +69,22 @@ public class ResultUtil implements Serializable {
     }
 
     /**
+     * 构造失败结果
+     *
+     * @param serviceEnum
+     * @param info
+     * @return
+     */
+    public static ResultModel failResult(ServiceEnum serviceEnum, String info, String data) {
+        ResultModel result = new ResultModel();
+        result.setSuccess(false);
+        result.setStatus(serviceEnum.getCode());
+        result.setMsg(serviceEnum.getValue() + info);
+        result.setData(data);
+        return result;
+    }
+
+    /**
      * 构造成功结果
      *
      * @param obj

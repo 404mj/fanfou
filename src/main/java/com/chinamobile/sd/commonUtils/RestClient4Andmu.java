@@ -149,7 +149,7 @@ public class RestClient4Andmu {
                     logger.info(hs[i].toString());
                 }
                 */
-                logger.info(sb.toString());
+                //logger.info(sb.toString());
                 return JSONObject.parseObject(sb.toString());
             }
         } catch (UnsupportedEncodingException e) {

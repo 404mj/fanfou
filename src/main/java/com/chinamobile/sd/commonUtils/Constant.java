@@ -73,6 +73,4 @@ public class Constant {
     //B1小餐厅设备
     public static final String R1_DEVICE_QUEUE = "xxxxS_0012313a1c9b";
     public static final String R1_DEVICE_ATTENDANCE = "xxxxS_0012313a2036";
-
-
 }

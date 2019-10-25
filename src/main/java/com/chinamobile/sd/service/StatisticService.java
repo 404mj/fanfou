@@ -40,7 +40,7 @@ public class StatisticService {
         //String attend = null;
         Double attProb = 0.0;
         float waitTime = 0;
-        Map<String, String> hisque = new LinkedHashMap<>();
+        Map<String, String> hisque = new LinkedHashMap<>(16);
 
         //过滤饭点请求
         String nowHour = DateUtil.getCurrentHour();
@@ -84,6 +84,7 @@ public class StatisticService {
         retMap.put("attendprob", attProb);
         retMap.put("waittime", waitTime);
         retMap.put("hisquecount", hisque);
+        logger.info(retMap);
         return ResultUtil.successResult(retMap);
     }
 
@@ -129,7 +130,7 @@ public class StatisticService {
                 if (fourthKeyList != null && fourthKeyList.size() > 0) {
                     String fourthKey = fourthKeyList.get(0);
                     String queLen4 = redisTemplate.opsForHash().get(redisKey, fourthKey).toString();
-                    hisque.put(thirdKey, queLen4);
+                    hisque.put(fourthKey, queLen4);
                 }
             }
         }

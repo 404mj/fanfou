@@ -75,7 +75,7 @@ public class RecipeController {
         if (res > 0) {
             return ResultUtil.successResult(res);
         }
-        return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, "导入失败");
+        return ResultUtil.failResult(ServiceEnum.UPDATE_ERROR, "", "提供信息有误，无法进行修改");
     }
 
     /**

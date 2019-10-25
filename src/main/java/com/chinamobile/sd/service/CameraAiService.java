@@ -9,8 +9,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import sun.util.resources.TimeZoneNames;
 
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -29,10 +31,11 @@ public class CameraAiService {
 
     /**
      * 每天的早中晚饭时间开始启动，30s执行一次
+     * 秒 分 时 每月第几天 月 星期 年
      */
-    @Scheduled(cron = "*/30 * 6-9,11-13,17-19  * * 1-7")
+    @Scheduled(cron = "*/30 * 6-9,11-13,17-19 * * *")
     public void executePicTask() {
-        logger.info("Current Thread: {} - Cron Task Exec Time: {}", Thread.currentThread().getName(),
+        logger.info("CurrentThread: {} - CronTaskExecTime: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
 
 //        asyncPicSendRedisCallAiTask();

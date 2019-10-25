@@ -37,7 +37,9 @@ public class StatisticController {
             return ResultUtil.failResult(ServiceEnum.VALIDATE_ERROR, "error param");
         }
 
-        return statisticService.getStatistic(rid);
+        ResultModel res = statisticService.getStatistic(rid);
+        logger.info(res);
+        return res;
     }
 
 }
