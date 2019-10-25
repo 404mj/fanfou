@@ -8,9 +8,9 @@
     </insert>
 
     <select id="findDiscussContentsByTime" resultType="com.chinamobile.sd.model.FoodComment">
-        select * from food_comment
+        select comment_id, content, comment_time, food_time, restaurant, discusser from food_comment
         where
-        food_time = #{foodTime} and restaurant=#{restaurant}
+        food_time = #{foodTime} and restaurant=#{restaurant} and visible=1
         order by comment_id;
     </select>
 </mapper>

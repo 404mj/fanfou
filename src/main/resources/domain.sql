@@ -41,6 +41,7 @@ create table `food_comment`
   `food_time`    date         default null comment '食物是哪一天的',
   `restaurant`   tinyint      default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅',
   `discusser`    varchar(20)  default null comment '评论人',
+  `visible`      tinyint      default 1    comment '评论是否可见m默认1可见,0不可见',
   UNIQUE `index_day` (`content`, `food_time`, `restaurant`)
 ) engine = InnoDB
   auto_increment = 1
@@ -76,4 +77,5 @@ alter table food_item
   modify column food_week varchar(5) default null comment '食物是周几的';
 alter table food_comment
   add `food_time` date default null comment '食物是哪一天的';
+alter table food_comment add `visible` tinyint default 1;
 
