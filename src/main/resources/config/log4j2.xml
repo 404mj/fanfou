@@ -53,12 +53,22 @@
 
     <Loggers>
         <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
-        <Logger name="org.mybatis" level="info" additivity="false">
-            <AppenderRef ref="Console"/>
-        </Logger>
+        <!--<Logger name="org.mybatis" level="info" additivity="false">-->
+            <!--<AppenderRef ref="Console"/>-->
+        <!--</Logger>-->
         <Logger name="org.springframework" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="org.apache.http" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="io.lettuce" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="com.zaxxer.hikari" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
         <Root level="debug">
             <AppenderRef ref="Console"/>
             <AppenderRef ref="Filelog"/>

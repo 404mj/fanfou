@@ -6,6 +6,8 @@ import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.model.ResultModel;
 import com.google.common.collect.Sets;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,8 @@ import java.util.*;
 @Service
 public class StatisticService {
 
-    private HashSet<String> RESTHOURFILTER = Sets.newHashSet("6", "7", "8", "9", "11", "12",
+    private Logger logger = LogManager.getLogger(StatisticService.class);
+    private HashSet<String> RESTHOURFILTER = Sets.newHashSet("06", "07", "08", "09", "11", "12",
             "13", "17", "18", "19");
 
     @Autowired
@@ -41,6 +44,7 @@ public class StatisticService {
 
         //过滤饭点请求
         String nowHour = DateUtil.getCurrentHour();
+        logger.info("===>>nowHour:" + nowHour + "<<===");
         if (!RESTHOURFILTER.contains(nowHour)) {
             retMap.put("quelength", queLen);
             retMap.put("attendprob", attProb);
@@ -51,7 +55,7 @@ public class StatisticService {
 
 
         List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
-        if (lastKeyList == null || lastKeyList.size() == 0) {
+        if (lastKeyList == null) {
             return ResultUtil.failResult(ServiceEnum.NO_QUERY_ERROR, "sorry~ no info yet");
         }
         String lastKey = lastKeyList.get(0);
