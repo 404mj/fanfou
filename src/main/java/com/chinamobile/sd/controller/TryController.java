@@ -49,6 +49,8 @@ public class TryController {
     private FoodCommentService foodCommentService;
     @Autowired
     private NotifyService notifyService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -297,14 +299,20 @@ public class TryController {
      * @return
      */
     @GetMapping("/t_aiflow")
-    public String testAiflow() {
-        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_ATTENDANCE + "\"}";
+    public void testAiflow() {
+        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
         //作为key的时间戳精确到秒
         String nowTime = DateUtil.getCurrentSeconds();
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
         String queurl = picJsonQue.get("data").toString();
 //        CrypUtil.savePicFromUrl(queurl);
-        return CrypUtil.encodeUrlPicToBase64(queurl);
+        String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+        String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
+        String timeKey = DateUtil.getCurrentSeconds();
+        redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
+        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+
 
     }
 

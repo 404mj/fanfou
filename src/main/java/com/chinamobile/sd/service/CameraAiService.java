@@ -3,16 +3,13 @@ package com.chinamobile.sd.service;
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.NotifyService;
-import com.chinamobile.sd.commonUtils.RestClient4Andmu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import sun.util.resources.TimeZoneNames;
 
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.concurrent.CompletableFuture;
 
 /**

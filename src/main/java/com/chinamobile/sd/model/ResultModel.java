@@ -54,4 +54,14 @@ public class ResultModel<T> implements Serializable {
         this.msg = msg;
         this.data = data;
     }
+
+    @Override
+    public String toString() {
+        return "ResultModel{" +
+                "success=" + success +
+                ", status='" + status + '\'' +
+                ", msg='" + msg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

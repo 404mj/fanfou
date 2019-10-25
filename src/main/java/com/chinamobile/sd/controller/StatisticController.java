@@ -1,5 +1,6 @@
 package com.chinamobile.sd.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.model.ResultModel;
@@ -38,7 +39,7 @@ public class StatisticController {
         }
 
         ResultModel res = statisticService.getStatistic(rid);
-        logger.info(res);
+        logger.info(res.toString());
         return res;
     }
 

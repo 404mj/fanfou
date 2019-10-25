@@ -39,6 +39,7 @@ public class StatisticService {
         String queLen = "0";
         //String attend = null;
         Double attProb = 0.0;
+        //mins
         float waitTime = 0;
         Map<String, String> hisque = new LinkedHashMap<>(16);
 
@@ -64,7 +65,7 @@ public class StatisticService {
             //attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
             //attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
             //上座率改为从先直出
-            attProb = (Double) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
+            attProb = Double.parseDouble(redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString());
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
             //前1小时,15分钟段,四个数据
             hisque.put(lastKey, queLen);
@@ -73,7 +74,7 @@ public class StatisticService {
             queLen = redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey).toString();
             //attend = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
             //attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
-            attProb = (Double) redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
+            attProb = Double.parseDouble(redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString());
             waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
             hisque.put(lastKey, queLen);
             processHisQue(hisque, 1);
@@ -84,7 +85,6 @@ public class StatisticService {
         retMap.put("attendprob", attProb);
         retMap.put("waittime", waitTime);
         retMap.put("hisquecount", hisque);
-        logger.info(retMap);
         return ResultUtil.successResult(retMap);
     }
 
