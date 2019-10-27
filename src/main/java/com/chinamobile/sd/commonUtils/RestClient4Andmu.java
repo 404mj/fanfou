@@ -121,51 +121,7 @@ public class RestClient4Andmu {
      * @return 响应json
      */
     public JSONObject requestApi(String url, String requestBody, Boolean needToken) {
-        CloseableHttpClient restClient = HttpClients.createDefault();
-        HttpPost httpPost = new HttpPost(url);
-        InputStream inStream = null;
-        try {
-            StringEntity entity = new StringEntity(requestBody);
-            entity.setContentType("application/json");
-            httpPost.setEntity(entity);
-
-            Map<String, String> headers = getHeader(CrypUtil.MD5Sum(requestBody), needToken);
-            for (Map.Entry<String, String> header : headers.entrySet()) {
-                httpPost.setHeader(header.getKey(), header.getValue());
-            }
-            CloseableHttpResponse response = restClient.execute(httpPost);
-            HttpEntity responseEntity = response.getEntity();
-            if (responseEntity != null) {
-                inStream = responseEntity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
-                StringBuilder sb = new StringBuilder();
-                String resBuf = null;
-                while ((resBuf = reader.readLine()) != null) {
-                    sb.append(resBuf);
-                }
-                /*
-                Header[] hs = response.getAllHeaders();
-                for (int i = 0; i < hs.length; i++) {
-                    logger.info(hs[i].toString());
-                }
-                */
-                //logger.info(sb.toString());
-                return JSONObject.parseObject(sb.toString());
-            }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
-            logger.error(e.toString());
-        } catch (IOException e) {
-            logger.error(e.toString());
-        } finally {
-            try {
-                inStream.close();
-                restClient.close();
-            } catch (IOException e) {
-                logger.error(e.toString());
-            }
-        }
-        return null;
+        Map<String, String> headers = getHeader(CrypUtil.MD5Sum(requestBody), needToken);
+        return HttpRequestUtil.httpPost(url, requestBody, headers);
     }
 }
