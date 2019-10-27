@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.CrypUtil;
 import com.chinamobile.sd.commonUtils.DateUtil;
-import com.chinamobile.sd.commonUtils.RestClient4Andmu;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class AndmuTaskService {
     private Logger logger = LogManager.getLogger(AndmuTaskService.class);
 
     @Autowired
-    private RestClient4Andmu restClient4Andmu;
+    private AndmuRestClientService restClient4Andmu;
     @Autowired
     private StringRedisTemplate redisTemplate;
 

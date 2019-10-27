@@ -2,7 +2,6 @@ package com.chinamobile.sd.service;
 
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
-import com.chinamobile.sd.commonUtils.NotifyService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

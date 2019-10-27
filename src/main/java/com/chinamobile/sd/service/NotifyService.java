@@ -1,4 +1,4 @@
-package com.chinamobile.sd.commonUtils;
+package com.chinamobile.sd.service;
 
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;

@@ -5,13 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.*;
 import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
-import com.chinamobile.sd.model.User;
 import com.chinamobile.sd.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -21,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -38,7 +33,7 @@ public class TryController {
 
 
     @Autowired
-    private RestClient4Andmu restClient4Andmu;
+    private AndmuRestClientService restClient4Andmu;
     @Autowired
     private CameraAiService cameraAiService;
     @Autowired
