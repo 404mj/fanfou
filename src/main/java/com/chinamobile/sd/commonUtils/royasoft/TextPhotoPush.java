@@ -3,11 +3,15 @@ package com.chinamobile.sd.commonUtils.royasoft;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.HttpRequestUtil;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TextPhotoPush {
+
+    private static Logger logger = LogManager.getLogger(TextPhotoPush.class);
     /**
      * 备注：
      * 单独下载JCE 扩展：需单独从Oracle官网下载对应JDK版本的Java Cryptography Extension (JCE) Unlimited Strength Jurisdiction Policy Files
@@ -28,7 +32,7 @@ public class TextPhotoPush {
 
     public static void main(String[] args) {
         //发送文本信息示例
-        sendText();
+        sendText("test");
         //发送图文消息示例
         sendPhotoText();
     }
@@ -48,88 +52,108 @@ public class TextPhotoPush {
             HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
             httpRequestUtil.postMethod(ESIP_services_url, sendParams);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getStackTrace() + e.getMessage());
         }
     }
 
-    //发送文本信息示例
-    public static void sendText() {
+    /**
+     * @param text
+     */
+    public static void sendText(String text) {
         try {
             JSONObject json = new JSONObject();
             json.put("fromType", "1");
-            json.put("receiverType", "01");//图文接收者范围:01(预置服务号为全部用户、其他服务号为关注此服务号的用户) 02(单个或多个手机号) 03(单个或多个用户ID)
-            json.put("receiverPerson", "135XXXXXXXX");//多个发送对象以逗号分割
+            //图文接收者范围:01(预置服务号为全部用户、其他服务号为关注此服务号的用户) 02(单个或多个手机号) 03(单个或多个用户ID)
+            json.put("receiverType", "01");
+            //多个发送对象以逗号分割
+            json.put("receiverPerson", "135XXXXXXXX");
 
             json.put("serviceID", serviceID);
             json.put("securityID", securityID);
             json.put("securityKey", securityKey);
 
 
-            //文本消息--示例-start
+            //文本消息--start
             json.put("messageType", "01");//文本类型为01
-            json.put("messageContent", Base64.encodeBytes("移动社区-应用接口-文本消息推送示例".getBytes()));
-            //文本消息--示例-end
+            json.put("messageContent", Base64.encodeBytes(text.getBytes("utf-8")));
+            //文本消息--end
 
             sendMessage(json.toJSONString());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getStackTrace() + e.getMessage());
         }
     }
 
-    //发送图文消息示例
+    /**
+     * 发送图文消息
+     */
     public static void sendPhotoText() {
         try {
             JSONObject json = new JSONObject();
             json.put("fromType", "1");
-            json.put("receiverType", "01");//图文接收者范围:01(预置服务号为全部用户、其他服务号为关注此服务号的用户) 02(单个或多个手机号) 03(单个或多个用户ID)
-            json.put("receiverPerson", "135XXXXXXXX");//多个发送对象以逗号分割
+            //图文接收者范围:01(预置服务号为全部用户、其他服务号为关注此服务号的用户) 02(单个或多个手机号) 03(单个或多个用户ID)
+            json.put("receiverType", "01");
+            //多个发送对象以逗号分割
+            json.put("receiverPerson", "135XXXXXXXX");
 
             json.put("serviceID", serviceID);
             json.put("securityID", securityID);
             json.put("securityKey", securityKey);
 
 
-            //图文消息-示例-start           
-            json.put("messageType", "02");//图文类型为02
+            //图文类型为02-start
+            json.put("messageType", "02");
 
             JSONArray photo_text_array = new JSONArray();
             JSONObject photo_text_json;
 
             photo_text_json = new JSONObject();
-            photo_text_json.put("type", "mainTitle");//mainTitle表示主节点、sc表示子节点
-            photo_text_json.put("titleDesc", Base64.encodeBytes("移动社区-应用接口-图文推送接口-主标题".getBytes()));//标题内容
-            photo_text_json.put("titlePicUrl", "http://223.99.142.2/v_help/images/1.png"); //标题背景图片url
-            photo_text_json.put("clickUrl", "http://223.99.142.2/h5/html/material/index.html?gid=170&serviceid=8cb38b7c-5029-4d5b-889c-6ea3519f8d8a");//标题内容链接地址
+            //mainTitle表示主节点、sc表示子节点
+            photo_text_json.put("type", "");
+            //标题内容
+            photo_text_json.put("titleDesc", Base64.encodeBytes("".getBytes()));
+            //标题背景图片url
+            photo_text_json.put("titlePicUrl", "");
+            //标题内容链接地址
+            photo_text_json.put("clickUrl", "");
             photo_text_array.add(photo_text_json);
 
             photo_text_json = new JSONObject();
-            photo_text_json.put("type", "sc");//mainTitle表示主节点、sc表示子节点
-            photo_text_json.put("titleDesc", Base64.encodeBytes("移动社区-应用接口-图文推送接口-子标题1".getBytes()));//标题内容
-            photo_text_json.put("titlePicUrl", "http://223.99.142.2/v_help/images/2.png"); //标题背景图片url
-            photo_text_json.put("clickUrl", "http://223.99.142.2/h5/html/material/index.html?gid=223&serviceid=8cb38b7c-5029-4d5b-889c-6ea3519f8d8a");//标题内容链接地址
+            //mainTitle表示主节点、sc表示子节点
+            photo_text_json.put("type", "sc");
+            //标题内容
+            photo_text_json.put("titleDesc", Base64.encodeBytes("".getBytes()));
+            //标题背景图片url
+            photo_text_json.put("titlePicUrl", "");
+            //标题内容链接地址
+            photo_text_json.put("clickUrl", "");
             photo_text_array.add(photo_text_json);
 
             photo_text_json = new JSONObject();
-            photo_text_json.put("type", "sc");//mainTitle表示主节点、sc表示子节点
-            photo_text_json.put("titleDesc", Base64.encodeBytes("移动社区-应用接口-图文推送接口-子标题2".getBytes()));//标题内容
-            photo_text_json.put("titlePicUrl", "http://223.99.142.2/v_help/images/2.png"); //标题背景图片url
-            photo_text_json.put("clickUrl", "http://223.99.142.2/h5/html/material/index.html?gid=223&serviceid=8cb38b7c-5029-4d5b-889c-6ea3519f8d8a");//标题内容链接地址
+            photo_text_json.put("type", "sc");
+            photo_text_json.put("titleDesc", Base64.encodeBytes("".getBytes()));
+            photo_text_json.put("titlePicUrl", "");
+            photo_text_json.put("clickUrl", "");
             photo_text_array.add(photo_text_json);
 
             photo_text_json = new JSONObject();
-            photo_text_json.put("type", "sc");//mainTitle表示主节点、sc表示子节点
-            photo_text_json.put("titleDesc", Base64.encodeBytes("移动社区-应用接口-图文推送接口-子标题3".getBytes()));//标题内容
-            photo_text_json.put("titlePicUrl", "http://223.99.142.2/v_help/images/2.png"); //标题背景图片url
-            photo_text_json.put("clickUrl", "http://223.99.142.2/h5/html/material/index.html?gid=223&serviceid=8cb38b7c-5029-4d5b-889c-6ea3519f8d8a");//标题内容链接地址
+            //mainTitle表示主节点、sc表示子节点
+            photo_text_json.put("type", "");
+            //标题内容
+            photo_text_json.put("titleDesc", Base64.encodeBytes("".getBytes()));
+            //标题背景图片url
+            photo_text_json.put("titlePicUrl", "");
+            //标题内容链接地址
+            photo_text_json.put("clickUrl", "");
             photo_text_array.add(photo_text_json);
 
 
             json.put("messageContent", photo_text_array.toJSONString());
-            //图文消息-示例-end
+            //图文消息-end
 
             sendMessage(json.toJSONString());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getStackTrace() + e.getMessage());
         }
     }
 
