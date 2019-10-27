@@ -2,7 +2,7 @@
 <!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
 <Configuration monitorInterval="60" status="INFO">
     <Properties>
-        <Property name="LOG_PATTERN" value="%date{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+        <Property name="LOG_PATTERN" value="%d{DEFAULT} [%thread] %-5level %logger{36} - %msg%n"/>
         <Property name="FILE_PATH" value="C:/logs/dev"/>
         <Property name="FILE_NAME" value="boot-log4j2.log"/>
     </Properties>
@@ -54,7 +54,7 @@
     <Loggers>
         <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
         <!--<Logger name="org.mybatis" level="info" additivity="false">-->
-            <!--<AppenderRef ref="Console"/>-->
+        <!--<AppenderRef ref="Console"/>-->
         <!--</Logger>-->
         <Logger name="org.springframework" level="info" additivity="false">
             <AppenderRef ref="Console"/>

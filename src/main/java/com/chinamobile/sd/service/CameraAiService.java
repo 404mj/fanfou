@@ -29,7 +29,7 @@ public class CameraAiService {
      * 每天的早中晚饭时间开始启动，30s执行一次
      * 秒 分 时 每月第几天 月 星期 年
      */
-    @Scheduled(cron = "*/30 * 6-9,11-13,17-19 * * *")
+    @Scheduled(cron = "*/30 * 6-8,11-13,17-19 * * *")
     public void executePicTask() {
         logger.info("CurrentThread: {} - CronTaskExecTime: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));

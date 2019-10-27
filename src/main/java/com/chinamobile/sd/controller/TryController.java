@@ -336,5 +336,4 @@ public class TryController {
     public void testNotify() {
         notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + 123123123 + "\"}");
     }
-
 }
