@@ -46,6 +46,7 @@ public class StatisticService {
         //过滤饭点请求
         String nowHour = DateUtil.getCurrentHour();
         if (!RESTHOURFILTER.contains(nowHour)) {
+            logger.info("not_eatting_time - " + nowHour);
             retMap.put("quelength", queLen);
             retMap.put("attendprob", attProb);
             retMap.put("waittime", waitTime);

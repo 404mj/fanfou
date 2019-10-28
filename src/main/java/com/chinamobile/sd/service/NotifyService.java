@@ -53,10 +53,12 @@ public class NotifyService {
         } finally {
             try {
                 restClient.close();
+                httpPost.releaseConnection();
             } catch (IOException e) {
                 logger.error(e.toString());
             }
         }
+        logger.info("notified_ai_service : " + requestBody);
     }
 
 }
