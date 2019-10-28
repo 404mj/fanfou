@@ -45,7 +45,6 @@ public class StatisticService {
 
         //过滤饭点请求
         String nowHour = DateUtil.getCurrentHour();
-        logger.info("===>>nowHour:" + nowHour + "<<===");
         if (!RESTHOURFILTER.contains(nowHour)) {
             retMap.put("quelength", queLen);
             retMap.put("attendprob", attProb);
@@ -119,17 +118,20 @@ public class StatisticService {
         //递进判断
         if (secondKeyList != null && secondKeyList.size() > 0) {
             String secondKey = secondKeyList.get(0);
-            String queLen2 = redisTemplate.opsForHash().get(redisKey, secondKey).toString();
+            logger.info("get queLen2  redisKey: " + redisKey + " completed_list_key: " + secondKey);
+            String queLen2 = (String) redisTemplate.opsForHash().get(redisKey, secondKey);
             hisque.put(secondKey, queLen2);
 
             if (thirdKeyList != null && thirdKeyList.size() > 0) {
                 String thirdKey = thirdKeyList.get(0);
-                String queLen3 = redisTemplate.opsForHash().get(redisKey, thirdKey).toString();
+                logger.info("get queLen3  redisKey: " + redisKey + " completed_list_key: " + thirdKey);
+                String queLen3 = (String) redisTemplate.opsForHash().get(redisKey, thirdKey);
                 hisque.put(thirdKey, queLen3);
 
                 if (fourthKeyList != null && fourthKeyList.size() > 0) {
                     String fourthKey = fourthKeyList.get(0);
-                    String queLen4 = redisTemplate.opsForHash().get(redisKey, fourthKey).toString();
+                    logger.info("get queLen4  redisKey: " + redisKey + " completed_list_key: " + fourthKey);
+                    String queLen4 = (String) redisTemplate.opsForHash().get(redisKey, fourthKey);
                     hisque.put(fourthKey, queLen4);
                 }
             }
