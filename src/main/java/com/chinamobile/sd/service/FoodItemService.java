@@ -1,5 +1,6 @@
 package com.chinamobile.sd.service;
 
+import com.chinamobile.sd.commonUtils.IntegerUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.dao.FoodItemDao;
@@ -29,7 +30,7 @@ public class FoodItemService {
      * @return
      */
     public ResultModel<List<FoodItem>> getRecommendTodayPeriod(String day, Integer period, Integer foodBelng) {
-        if (StringUtils.isEmpty(day) || period < 0 || period >= 3 || foodBelng < 0) {
+        if (StringUtils.isEmpty(day) || IntegerUtil.wrongInteger(period, 2) || IntegerUtil.wrongInteger(foodBelng, 1)) {
             return ResultUtil.failResult(ServiceEnum.VALIDATE_ERROR, ServiceEnum.VALIDATE_ERROR.getValue());
         }
         List<FoodItem> items = foodItemDao.findRecommendByDayPeriod(day, period, foodBelng);
@@ -42,7 +43,7 @@ public class FoodItemService {
      * @return
      */
     public ResultModel<List<FoodItem>> getItemsByDayAndPeriod(String day, Integer period, Integer foodBelng) {
-        if (StringUtils.isEmpty(day) || period < 0 || period >= 3 || foodBelng < 0) {
+        if (StringUtils.isEmpty(day) || IntegerUtil.wrongInteger(period, 2) || IntegerUtil.wrongInteger(foodBelng, 1)) {
             return ResultUtil.failResult(ServiceEnum.VALIDATE_ERROR, ServiceEnum.VALIDATE_ERROR.getValue());
         }
         List<FoodItem> items = foodItemDao.findItemsByDayPeriod(day, period, foodBelng);
