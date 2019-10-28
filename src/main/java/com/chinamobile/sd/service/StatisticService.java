@@ -94,7 +94,7 @@ public class StatisticService {
      */
     private Integer processQueLen(String queLenStr) {
         Integer queLenInt = Integer.valueOf(queLenStr);
-        if (queLenInt > 1) {
+        if (queLenInt >= 1) {
             queLenInt += 8;
         }
         return queLenInt;

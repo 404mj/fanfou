@@ -5,10 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.HttpRequestUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Component
 public class TextPhotoPush {
 
     private static Logger logger = LogManager.getLogger(TextPhotoPush.class);
@@ -21,24 +24,15 @@ public class TextPhotoPush {
      * 2、在OMC中对此服务号设置第三方允许访问IP地址
      * 3、获取OMC中服务号的三个信息：服务号ID（serviceID）/安全身份ID（securityID）/安全密钥（securityKey）
      */
-    private static String serviceID = "e42de1a7-2460-45b6-8222-823267d33f0a";
-    private static String securityID = "ID__347823_1472470377255";
-    private static String securityKey = "YLCUJMN9KULQYYGB5GOH";
+    private static String serviceID = "8f4dc768-fe42-490e-9fc1-de3b8412ee27";
+    private static String securityID = "ID__026487_1572230881545";
+    private static String securityKey = "MEQQ6GCW0YYONRWPM079";
 
-    //测试环境-公网地址：http://223.99.142.5/esip/ 内网地址：http://10.19.110.72/esip/
-    //生产环境-公网地址：http://223.99.142.2/esip/ 内网地址：http://10.19.110.66/esip/
-    private static String ESIP_services_url = "http://223.99.142.5/esip/";
-
-
-    public static void main(String[] args) {
-        //发送文本信息示例
-        sendText("test");
-        //发送图文消息示例
-        sendPhotoText();
-    }
+    @Value("${service.url.esip.push}")
+    private String ESIP_services_url;
 
     //发送图文方法
-    public static void sendMessage(String json) {
+    public void sendMessage(String json) {
         try {
             String aes_encode_body = AESUtil.encode(securityKey, json);
 
@@ -59,7 +53,7 @@ public class TextPhotoPush {
     /**
      * @param text
      */
-    public static void sendText(String text) {
+    public void sendText(String text) {
         try {
             JSONObject json = new JSONObject();
             json.put("fromType", "1");
@@ -87,7 +81,7 @@ public class TextPhotoPush {
     /**
      * 发送图文消息
      */
-    public static void sendPhotoText() {
+    public void sendPhotoText() {
         try {
             JSONObject json = new JSONObject();
             json.put("fromType", "1");
