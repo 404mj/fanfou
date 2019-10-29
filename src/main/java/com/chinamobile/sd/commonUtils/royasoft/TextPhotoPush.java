@@ -60,7 +60,7 @@ public class TextPhotoPush {
             //图文接收者范围:01(预置服务号为全部用户、其他服务号为关注此服务号的用户) 02(单个或多个手机号) 03(单个或多个用户ID)
             json.put("receiverType", "01");
             //多个发送对象以逗号分割
-            json.put("receiverPerson", "135XXXXXXXX");
+//            json.put("receiverPerson", "135XXXXXXXX");
 
             json.put("serviceID", serviceID);
             json.put("securityID", securityID);

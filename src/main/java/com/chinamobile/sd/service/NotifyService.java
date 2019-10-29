@@ -1,5 +1,7 @@
 package com.chinamobile.sd.service;
 
+import com.chinamobile.sd.commonUtils.DateUtil;
+import com.chinamobile.sd.commonUtils.royasoft.TextPhotoPush;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -7,10 +9,13 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 
 /**
  * @Author: fengchen.zsx
@@ -22,11 +27,17 @@ public class NotifyService {
     private Logger logger = LogManager.getLogger(NotifyService.class);
 
 
+    @Autowired
+    private TextPhotoPush textPhotoPush;
+    @Value("${fanfou.mobile.msg}")
+    private String mobileMsg;
+
     /**
      * 通知移动社区用户
      */
     public void notifyMobile() {
-
+        logger.info("-----------notify_mobile: " + DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
+        textPhotoPush.sendText(mobileMsg);
     }
 
 

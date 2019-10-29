@@ -2,14 +2,18 @@ package com.chinamobile.sd.service;
 
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
+import com.chinamobile.sd.commonUtils.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author: fengchen.zsx
@@ -24,6 +28,8 @@ public class CameraAiService {
     private NotifyService notifyService;
     @Autowired
     private AndmuTaskService andmuTaskService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     /**
      * 每天的早中晚饭时间开始启动，30s执行一次
@@ -33,6 +39,14 @@ public class CameraAiService {
     public void executePicTask() {
         logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
+
+        //推送移动社区
+        String pushValue = redisTemplate.opsForValue().get(Constant.REDIS_MOBILE_PUSHFLAG);
+        if (StringUtils.isEmpty(pushValue)) {
+            redisTemplate.opsForValue().set(Constant.REDIS_MOBILE_PUSHFLAG, Constant.REDIS_MOBILE_PUSHVALUE,
+                    Constant.PUSHFLAG_EXPIRES, TimeUnit.MINUTES);
+            notifyService.notifyMobile();
+        }
 
         asyncPicSendRedisCallAiTask();
     }
