@@ -6,6 +6,8 @@ import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.dao.FoodCommentDao;
 import com.chinamobile.sd.model.FoodComment;
 import com.chinamobile.sd.model.ResultModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -20,6 +22,8 @@ import java.util.List;
  */
 @Service
 public class FoodCommentService {
+
+    private Logger logger = LogManager.getLogger(FoodCommentService.class);
 
     @Autowired
     private FoodCommentDao foodCommentDao;
@@ -67,9 +71,13 @@ public class FoodCommentService {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());
         }
 
-        Integer res = foodCommentDao.addComment(time, content, restaurant, foodTime);
-        if (res > 0) {
-            return ResultUtil.successResult(res);
+        try {
+            Integer res = foodCommentDao.addComment(time, content, restaurant, foodTime);
+            if (res > 0) {
+                return ResultUtil.successResult(res);
+            }
+        } catch (Exception e) {
+            logger.error(e.getStackTrace() + e.getMessage());
         }
         return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
     }

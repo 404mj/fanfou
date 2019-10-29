@@ -9,8 +9,10 @@ import org.apache.logging.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.tomcat.util.http.fileupload.MultipartStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -35,22 +37,28 @@ public class FoodExcelService {
     public int processRecipeExcel(MultipartFile recipeFile) {
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(recipeFile.getInputStream());
-            XSSFSheet breakfast = workbook.getSheetAt(0);
-            XSSFSheet lunch = workbook.getSheetAt(1);
-            XSSFSheet dinner = workbook.getSheetAt(2);
+            if (workbook.getNumberOfSheets() >= 3) {
+                XSSFSheet breakfast = workbook.getSheetAt(0);
+                XSSFSheet lunch = workbook.getSheetAt(1);
+                XSSFSheet dinner = workbook.getSheetAt(2);
 
-            List<FoodItem> breakfastItems = processDishes(breakfast, 0);
-            List<FoodItem> lunchItems = processDishes(lunch, 1);
-            List<FoodItem> dinnerItems = processDishes(dinner, 2);
+                List<FoodItem> breakfastItems = processDishes(breakfast, 0);
+                List<FoodItem> lunchItems = processDishes(lunch, 1);
+                List<FoodItem> dinnerItems = processDishes(dinner, 2);
 
-            List<FoodItem> weekFoods = Stream.of(breakfastItems, lunchItems, dinnerItems)
-                    .flatMap(Collection::stream)
-                    .collect(Collectors.toList());
+                List<FoodItem> weekFoods = Stream.of(breakfastItems, lunchItems, dinnerItems)
+                        .flatMap(Collection::stream)
+                        .collect(Collectors.toList());
 
-            logger.info(weekFoods.toString());
+                logger.info("--------------weekfoods: " + weekFoods.toString());
 
-            return foodItemDao.createItems(weekFoods);
-
+                return foodItemDao.createItems(weekFoods);
+            } else {
+                logger.error("--------------sheet number err: " + workbook.getNumberOfSheets());
+                return 0;
+            }
+        } catch (MultipartStream.IllegalBoundaryException e2) {
+            logger.error(e2.getMessage() + e2.getStackTrace());
         } catch (IOException e) {
             logger.error(e.getStackTrace());
         }
@@ -76,7 +84,8 @@ public class FoodExcelService {
         for (int i = 2; i < rows; ++i) {
             XSSFRow dayFood = periodRecipe.getRow(i);
             //处理推荐
-            String[] recommend = dayFood.getCell(dayFood.getLastCellNum() - 1).getStringCellValue().split(Constant.RECIPE_SEPRATE);
+            String[] recommend = dayFood.getCell(dayFood.getLastCellNum() - 1).getStringCellValue().trim()
+                    .split(Constant.RECIPE_SEPRATE);
             Set<String> recs = new HashSet<>(Arrays.asList(recommend));
             //日期
             String thisDay = DateUtil.date2String(dayFood.getCell(0).getDateCellValue(), "");
@@ -116,12 +125,14 @@ public class FoodExcelService {
     private void addNewItems(List<FoodItem> foodItems, String[] dishes, Integer kind, Integer period,
                              String day, String week, Integer restaurant, Set<String> recs) {
         for (String dish : dishes) {
-            FoodItem item = new FoodItem(null, dish, kind, null, period, day, week,
-                    0, 0, 5, restaurant);
-            if (recs.contains(dish)) {
-                item.setRecommend(true);
+            if (!StringUtils.isEmpty(dish) && !StringUtils.isEmpty(day)) {
+                FoodItem item = new FoodItem(null, dish, kind, false, period, day, week,
+                        0, 0, 5, restaurant);
+                if (recs.contains(dish)) {
+                    item.setRecommend(true);
+                }
+                foodItems.add(item);
             }
-            foodItems.add(item);
         }
     }
 

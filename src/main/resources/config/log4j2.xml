@@ -4,7 +4,7 @@
     <Properties>
         <Property name="LOG_PATTERN" value="%d{DEFAULT} [%thread] %-5level %logger{36} - %msg%n"/>
         <Property name="FILE_PATH" value="C:/logs/dev"/>
-        <Property name="FILE_NAME" value="boot-log4j2.log"/>
+        <Property name="FILE_NAME" value="boot-log4j2"/>
     </Properties>
 
     <Appenders>
@@ -13,7 +13,7 @@
             <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>
         </Console>
 
-        <File name="Filelog" fileName="${FILE_PATH}/${FILE_NAME}" append="true">
+        <File name="Filelog" fileName="${FILE_PATH}/${FILE_NAME}.log" append="true">
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </File>
 

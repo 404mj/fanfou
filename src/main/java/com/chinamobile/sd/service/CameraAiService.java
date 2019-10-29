@@ -31,10 +31,10 @@ public class CameraAiService {
      */
     @Scheduled(cron = "*/30 * 6-8,11-13,17-19 * * *")
     public void executePicTask() {
-        logger.info("CurrentThread: {} - CronTaskExecTime: {}", Thread.currentThread().getName(),
+        logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
 
-//        asyncPicSendRedisCallAiTask();
+        asyncPicSendRedisCallAiTask();
     }
 
     /**

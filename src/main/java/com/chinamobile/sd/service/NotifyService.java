@@ -58,7 +58,7 @@ public class NotifyService {
                 logger.error(e.toString());
             }
         }
-        logger.info("notified_ai_service : " + requestBody);
+        logger.info("--------------------notified_ai_service : " + requestBody);
     }
 
 }

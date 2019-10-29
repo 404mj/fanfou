@@ -3,6 +3,7 @@ package com.chinamobile.sd.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.*;
+import com.chinamobile.sd.commonUtils.royasoft.TextPhotoPush;
 import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.service.*;
@@ -46,6 +47,8 @@ public class TryController {
     private NotifyService notifyService;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private TextPhotoPush textPhotoPush;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -335,5 +338,9 @@ public class TryController {
     @GetMapping("/t_notify")
     public void testNotify() {
         notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + 123123123 + "\"}");
+    }
+
+    @GetMapping("/t_push")
+    public void testPush() {
     }
 }

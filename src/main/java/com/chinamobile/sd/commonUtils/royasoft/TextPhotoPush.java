@@ -24,9 +24,9 @@ public class TextPhotoPush {
      * 2、在OMC中对此服务号设置第三方允许访问IP地址
      * 3、获取OMC中服务号的三个信息：服务号ID（serviceID）/安全身份ID（securityID）/安全密钥（securityKey）
      */
-    private static String serviceID = "8f4dc768-fe42-490e-9fc1-de3b8412ee27";
-    private static String securityID = "ID__026487_1572230881545";
-    private static String securityKey = "MEQQ6GCW0YYONRWPM079";
+    private static String serviceID = "7d30d5ff-ab74-47fa-9e75-9834b784b0d9";
+    private static String securityID = "ID__221744_1572252259843";
+    private static String securityKey = "VDJ87VDV7EKF10T77B53";
 
     @Value("${service.url.esip.push}")
     private String ESIP_services_url;
