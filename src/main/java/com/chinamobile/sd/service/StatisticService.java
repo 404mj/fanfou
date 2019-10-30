@@ -46,7 +46,7 @@ public class StatisticService {
         //过滤饭点请求
         String nowHour = DateUtil.getCurrentHour();
         if (!RESTHOURFILTER.contains(nowHour)) {
-            logger.info("--------------------not_eatting_time - " + nowHour);
+            logger.info("-----------not_eatting_time - " + nowHour);
             retMap.put("quelength", queLen);
             retMap.put("attendprob", attProb);
             retMap.put("waittime", waitTime);
@@ -60,7 +60,7 @@ public class StatisticService {
                 return ResultUtil.failResult(ServiceEnum.NO_QUERY_ERROR, "sorry~ no info yet");
             }
             String lastKey = lastKeyList.get(0);
-            logger.info("--------------------lastKey: " + lastKey);
+            logger.info("-----------lastKey: " + lastKey);
             if (restaurant == 0) {//B1大餐厅
                 queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
                 //attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
@@ -129,19 +129,19 @@ public class StatisticService {
         //递进判断
         if (secondKeyList != null && secondKeyList.size() > 0) {
             String secondKey = secondKeyList.get(0);
-            logger.info("--------------------get queLen2  redisKey: " + redisKey + " completed_list_key: " + secondKey);
+            logger.info("---------get queLen2  redisKey: " + redisKey + " completed_list_key: " + secondKey);
             String queLen2 = (String) redisTemplate.opsForHash().get(redisKey, secondKey);
             hisque.put(secondKey, queLen2);
 
             if (thirdKeyList != null && thirdKeyList.size() > 0) {
                 String thirdKey = thirdKeyList.get(0);
-                logger.info("--------------------get queLen3  redisKey: " + redisKey + " completed_list_key: " + thirdKey);
+                logger.info("---------get queLen3  redisKey: " + redisKey + " completed_list_key: " + thirdKey);
                 String queLen3 = (String) redisTemplate.opsForHash().get(redisKey, thirdKey);
                 hisque.put(thirdKey, queLen3);
 
                 if (fourthKeyList != null && fourthKeyList.size() > 0) {
                     String fourthKey = fourthKeyList.get(0);
-                    logger.info("--------------------get queLen4  redisKey: " + redisKey + " completed_list_key: " + fourthKey);
+                    logger.info("--------get queLen4  redisKey: " + redisKey + " completed_list_key: " + fourthKey);
                     String queLen4 = (String) redisTemplate.opsForHash().get(redisKey, fourthKey);
                     hisque.put(fourthKey, queLen4);
                 }

@@ -50,11 +50,11 @@ public class FoodExcelService {
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
 
-                logger.info("--------------weekfoods: " + weekFoods.toString());
+                logger.info("------weekfoods: " + weekFoods.toString());
 
                 return foodItemDao.createItems(weekFoods);
             } else {
-                logger.error("--------------sheet number err: " + workbook.getNumberOfSheets());
+                logger.error("------sheet number err: " + workbook.getNumberOfSheets());
                 return 0;
             }
         } catch (MultipartStream.IllegalBoundaryException e2) {
