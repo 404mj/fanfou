@@ -61,7 +61,7 @@ public class CrypUtil {
             signature.update(clearText.getBytes("utf-8"));
             return Base64.getEncoder().encodeToString(signature.sign());
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return Constant.EMPTYSTR;
@@ -83,7 +83,7 @@ public class CrypUtil {
             return Hex.encodeHexString(messageDigest);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         return Constant.EMPTYSTR;
@@ -94,7 +94,7 @@ public class CrypUtil {
         try (InputStream in = new URL(picUrl).openStream()) {
             Files.copy(in, Paths.get("C:/zsxhome/t_aiflow/image.jpg"));
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -106,9 +106,9 @@ public class CrypUtil {
             byte[] bytes = ByteStreams.toByteArray(is);
             return Base64.getEncoder().encodeToString(bytes);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
         /*
@@ -119,9 +119,9 @@ public class CrypUtil {
             ImageIO.write(netPic, "jpg", baos);
             return Base64.getEncoder().encodeToString(baos.toByteArray());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         */
 
@@ -134,9 +134,9 @@ public class CrypUtil {
             fis.close();
             return Base64.getEncoder().encodeToString(bytes);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }*/
         return Constant.EMPTYSTR;
     }
@@ -148,9 +148,9 @@ public class CrypUtil {
             fos.write(decoded);
             fos.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 }

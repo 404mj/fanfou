@@ -48,7 +48,7 @@ public class CameraAiService {
             notifyService.notifyMobile();
         }
 
-        asyncPicSendRedisCallAiTask();
+//        asyncPicSendRedisCallAiTask();
     }
 
     /**
@@ -73,7 +73,7 @@ public class CameraAiService {
             //通知AI service
             notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
 
     }

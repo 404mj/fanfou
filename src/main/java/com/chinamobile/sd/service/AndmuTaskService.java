@@ -33,56 +33,72 @@ public class AndmuTaskService {
     @Async("picTaskExecutor")
     public CompletableFuture<Integer> doR0QuePicJob(String timeKey) throws Exception {
         String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
-        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
-        String queurl = picJsonQue.get("data").toString();
-        logger.info("r0quepic----" + queurl + " timeKey----" + timeKey);
-        //存redis base64值
-        String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-        String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
-        redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
-        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        try {
+            JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
+            String queurl = picJsonQue.get("data").toString();
+            logger.info("r0quepic----" + queurl + " timeKey----" + timeKey);
+            //存redis base64值
+            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+            String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
+            redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
+            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
         return CompletableFuture.completedFuture(1);
     }
 
     @Async("picTaskExecutor")
     public CompletableFuture<Integer> doR0AttendPicJob(String timeKey) throws Exception {
         String attJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_ATTENDANCE + "\"}";
-        JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
-        String atturl = picJsonAtt.get("data").toString();
-        logger.info("r0attpic----" + atturl + " timeKey----" + timeKey);
-        //存redis base64值
-        String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
-        String nowHkey = Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday();
-        redisTemplate.opsForHash().put(nowHkey, timeKey, attBase);
-        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        try {
+            JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
+            String atturl = picJsonAtt.get("data").toString();
+            logger.info("r0attpic----" + atturl + " timeKey----" + timeKey);
+            //存redis base64值
+            String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
+            String nowHkey = Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday();
+            redisTemplate.opsForHash().put(nowHkey, timeKey, attBase);
+            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
         return CompletableFuture.completedFuture(1);
     }
 
     @Async("picTaskExecutor")
     public CompletableFuture<Integer> doR1QuePicJob(String timeKey) throws Exception {
         String queJson = "{\"deviceId\":\"" + Constant.R1_DEVICE_QUEUE + "\"}";
-        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
-        String queurl = picJsonQue.get("data").toString();
-        logger.info("r1quepic----" + queurl + " timeKey----" + timeKey);
-        //存redis base64值
-        String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-        String nowHkey = Constant.REDIS_R1REALTIMEPIC_PREFIX + DateUtil.getToday();
-        redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
-        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        try {
+            JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
+            String queurl = picJsonQue.get("data").toString();
+            logger.info("r1quepic----" + queurl + " timeKey----" + timeKey);
+            //存redis base64值
+            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+            String nowHkey = Constant.REDIS_R1REALTIMEPIC_PREFIX + DateUtil.getToday();
+            redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
+            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
         return CompletableFuture.completedFuture(1);
     }
 
     @Async("picTaskExecutor")
     public CompletableFuture<Integer> doR1AttendPicJob(String timeKey) throws Exception {
         String attJson = "{\"deviceId\":\"" + Constant.R1_DEVICE_ATTENDANCE + "\"}";
-        JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
-        String atturl = picJsonAtt.get("data").toString();
-        logger.info("r1attpic----" + atturl + " timeKey----" + timeKey);
-        //存redis base64值
-        String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
-        String nowHkey = Constant.REDIS_R1ATTENDANCE_PREFIX + DateUtil.getToday();
-        redisTemplate.opsForHash().put(nowHkey, timeKey, attBase);
-        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        try {
+            JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME, attJson, true);
+            String atturl = picJsonAtt.get("data").toString();
+            logger.info("r1attpic----" + atturl + " timeKey----" + timeKey);
+            //存redis base64值
+            String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
+            String nowHkey = Constant.REDIS_R1ATTENDANCE_PREFIX + DateUtil.getToday();
+            redisTemplate.opsForHash().put(nowHkey, timeKey, attBase);
+            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
         return CompletableFuture.completedFuture(1);
     }
 }

@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,7 +22,7 @@ import java.util.Date;
  * @Author: fengchen.zsx
  * @Date: 2019/10/18 16:44
  */
-@Service
+@Component
 public class NotifyService {
 
     private Logger logger = LogManager.getLogger(NotifyService.class);
@@ -56,17 +57,17 @@ public class NotifyService {
             httpPost.setEntity(entity);
             restClient.execute(httpPost);
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (ClientProtocolException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         } finally {
             try {
                 restClient.close();
                 httpPost.releaseConnection();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e.getMessage(), e);
                 logger.error(e.toString());
             }
         }

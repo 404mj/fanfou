@@ -285,7 +285,7 @@ public class TryController {
             logger.info(res);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return ResultUtil.successResult(resa);
     }
@@ -297,20 +297,25 @@ public class TryController {
      * @return
      */
     @GetMapping("/t_aiflow")
-    public void testAiflow() {
+    public String testAiflow() {
         String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
         //作为key的时间戳精确到秒
         String nowTime = DateUtil.getCurrentSeconds();
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
-        String queurl = picJsonQue.get("data").toString();
+        try {
+            String queurl = picJsonQue.get("data").toString();
 //        CrypUtil.savePicFromUrl(queurl);
-        String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-        String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
-        String timeKey = DateUtil.getCurrentSeconds();
-        redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
-        redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
-        notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
-
+            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+            String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
+            String timeKey = DateUtil.getCurrentSeconds();
+            redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
+            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+        } catch (Exception e) {
+//            logger.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
+        }
+        return "sss";
 
     }
 
@@ -344,4 +349,5 @@ public class TryController {
     public void testPush() {
         textPhotoPush.sendText("from zsx test 移动社区通知功能。");
     }
+
 }

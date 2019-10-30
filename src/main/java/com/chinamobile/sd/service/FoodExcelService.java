@@ -58,9 +58,9 @@ public class FoodExcelService {
                 return 0;
             }
         } catch (MultipartStream.IllegalBoundaryException e2) {
-            e2.printStackTrace();
+            logger.error(e2.getMessage(), e2);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
         return 0;
     }
