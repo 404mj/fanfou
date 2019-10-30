@@ -71,8 +71,7 @@ public class CameraAiService {
             CompletableFuture.allOf(r0QueRes, r0AttRes, r1QueRes, r1AttRes).join();
 
             //通知AI service
-            logger.info("async task done 1");
-            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+//            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
