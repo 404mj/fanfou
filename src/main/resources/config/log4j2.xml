@@ -2,7 +2,7 @@
 <!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
 <Configuration monitorInterval="60" status="INFO">
     <Properties>
-        <Property name="LOG_PATTERN" value="%d{DEFAULT} [%thread] %-5level %logger{36} - %msg%n"/>
+        <Property name="LOG_PATTERN" value="%d{DEFAULT} [%thread] %-5level %l - %msg%n"/>
         <Property name="FILE_PATH" value="C:/logs/dev"/>
         <Property name="FILE_NAME" value="boot-log4j2"/>
     </Properties>

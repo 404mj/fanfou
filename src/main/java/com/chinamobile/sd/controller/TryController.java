@@ -321,6 +321,7 @@ public class TryController {
 
     @GetMapping("/t_frontend")
     public String testUnion() {
+        logger.info("llllllllllllllllllllllllll");
         return "hello world";
     }
 
