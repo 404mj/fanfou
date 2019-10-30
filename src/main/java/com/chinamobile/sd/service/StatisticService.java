@@ -88,7 +88,7 @@ public class StatisticService {
             retMap.put("hisquecount", hisque);
             return ResultUtil.successResult(retMap);
         } catch (Exception e) {
-            logger.error(e.getStackTrace() + e.getMessage());
+            e.printStackTrace();
         }
         retMap.put("quelength", "0");
         retMap.put("attendprob", "0.0");

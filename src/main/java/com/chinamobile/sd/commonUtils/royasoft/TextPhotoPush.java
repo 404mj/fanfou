@@ -46,7 +46,7 @@ public class TextPhotoPush {
             HttpRequestUtil httpRequestUtil = new HttpRequestUtil();
             httpRequestUtil.postMethod(ESIP_services_url, sendParams);
         } catch (Exception e) {
-            logger.error(e.getStackTrace() + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -74,7 +74,7 @@ public class TextPhotoPush {
 
             sendMessage(json.toJSONString());
         } catch (Exception e) {
-            logger.error(e.getStackTrace() + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -147,7 +147,7 @@ public class TextPhotoPush {
 
             sendMessage(json.toJSONString());
         } catch (Exception e) {
-            logger.error(e.getStackTrace() + e.getMessage());
+            e.printStackTrace();
         }
     }
 

@@ -73,7 +73,7 @@ public class CameraAiService {
             //通知AI service
             notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {
-            logger.error(e.toString() + e.getStackTrace());
+            e.printStackTrace();
         }
 
     }

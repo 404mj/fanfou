@@ -82,18 +82,18 @@ public class HttpRequestUtil {
             }
 
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getStackTrace());
+            e.printStackTrace();
         } catch (ClientProtocolException e) {
-            logger.error(e.toString());
+            e.printStackTrace();
         } catch (IOException e) {
-            logger.error(e.toString());
+            e.printStackTrace();
         } finally {
             try {
                 restClient.close();
                 httpPost.releaseConnection();
                 inStream.close();
             } catch (IOException e) {
-                logger.error(e.toString());
+                e.printStackTrace();
             }
         }
         return null;

@@ -61,7 +61,7 @@ public class CrypUtil {
             signature.update(clearText.getBytes("utf-8"));
             return Base64.getEncoder().encodeToString(signature.sign());
         } catch (Exception e) {
-            logger.error(e.getStackTrace() + e.toString());
+            e.printStackTrace();
         }
 
         return Constant.EMPTYSTR;
@@ -83,7 +83,7 @@ public class CrypUtil {
             return Hex.encodeHexString(messageDigest);
 
         } catch (Exception e) {
-            logger.error(e.getStackTrace());
+            e.printStackTrace();
         }
 
         return Constant.EMPTYSTR;
@@ -94,7 +94,7 @@ public class CrypUtil {
         try (InputStream in = new URL(picUrl).openStream()) {
             Files.copy(in, Paths.get("C:/zsxhome/t_aiflow/image.jpg"));
         } catch (IOException e) {
-            logger.error(e.getStackTrace());
+            e.printStackTrace();
         }
     }
 
@@ -106,9 +106,9 @@ public class CrypUtil {
             byte[] bytes = ByteStreams.toByteArray(is);
             return Base64.getEncoder().encodeToString(bytes);
         } catch (MalformedURLException e) {
-            logger.error(e.getMessage() + e.getStackTrace());
+            e.printStackTrace();
         } catch (IOException e) {
-            logger.error(e.getMessage() + e.getStackTrace());
+            e.printStackTrace();
         }
 
         /*
@@ -148,9 +148,9 @@ public class CrypUtil {
             fos.write(decoded);
             fos.close();
         } catch (FileNotFoundException e) {
-            logger.error(e.getStackTrace());
+            e.printStackTrace();
         } catch (IOException e) {
-            logger.error(e.getStackTrace());
+            e.printStackTrace();
         }
     }
 }

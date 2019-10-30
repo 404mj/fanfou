@@ -56,16 +56,17 @@ public class NotifyService {
             httpPost.setEntity(entity);
             restClient.execute(httpPost);
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage() + e.toString());
+            e.printStackTrace();
         } catch (ClientProtocolException e) {
-            logger.error(e.toString());
+            e.printStackTrace();
         } catch (IOException e) {
-            logger.error(e.toString());
+            e.printStackTrace();
         } finally {
             try {
                 restClient.close();
                 httpPost.releaseConnection();
             } catch (IOException e) {
+                e.printStackTrace();
                 logger.error(e.toString());
             }
         }

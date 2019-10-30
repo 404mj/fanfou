@@ -77,7 +77,7 @@ public class FoodCommentService {
                 return ResultUtil.successResult(res);
             }
         } catch (Exception e) {
-            logger.error(e.getStackTrace() + e.getMessage());
+            e.printStackTrace();
         }
         return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
     }
