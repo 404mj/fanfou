@@ -18,9 +18,9 @@ public class AsyncTaskPoolConfig {
     @Bean("picTaskExecutor")
     public Executor picTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(6);
-        executor.setMaxPoolSize(12);
-        executor.setQueueCapacity(24);
+        executor.setCorePoolSize(15);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(30);
         executor.setKeepAliveSeconds(600);
         executor.setThreadNamePrefix("picTaskExecutor-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
