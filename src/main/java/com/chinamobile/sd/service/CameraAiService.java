@@ -35,7 +35,7 @@ public class CameraAiService {
      * 每天的早中晚饭时间开始启动，30s执行一次
      * 秒 分 时 每月第几天 月 星期 年
      */
-    @Scheduled(cron = "*/30 * 6-8,11-13,17-19 * * *")
+    @Scheduled(cron = "*/30 * 6-8,11-13,17-19 * * *", zone = "Asia/Shanghai")
     public void executePicTask() {
         logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
@@ -48,7 +48,7 @@ public class CameraAiService {
             notifyService.notifyMobile();
         }
 
-//        asyncPicSendRedisCallAiTask();
+        asyncPicSendRedisCallAiTask();
     }
 
     /**
@@ -71,6 +71,7 @@ public class CameraAiService {
             CompletableFuture.allOf(r0QueRes, r0AttRes, r1QueRes, r1AttRes).join();
 
             //通知AI service
+            logger.info("async task done 1");
             notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

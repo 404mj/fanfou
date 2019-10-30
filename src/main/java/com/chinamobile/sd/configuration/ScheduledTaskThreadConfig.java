@@ -12,7 +12,7 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 @Configuration
 public class ScheduledTaskThreadConfig implements SchedulingConfigurer {
 
-    private final int POOL_SIZE = 6;
+    private final int POOL_SIZE = 10;
 
     @Override
     public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
