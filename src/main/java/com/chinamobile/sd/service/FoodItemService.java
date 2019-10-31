@@ -128,10 +128,10 @@ public class FoodItemService {
         float oldUp = foodItem.getUp();
         float oldDown = foodItem.getDown();
         int oldStar = foodItem.getStars();
-        if (isDown) {
-            float rate = (oldDown + 1) / (oldUp + oldDown + 1);
-        }
         float rate = oldDown / (oldUp + oldDown + 1);
+        if (isDown) {
+            rate = (oldDown + 1) / (oldUp + oldDown + 1);
+        }
         if (rate > 0.5 && rate <= 0.66) {
             //扣1星
             oldStar -= 1;
