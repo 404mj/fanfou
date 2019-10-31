@@ -124,24 +124,24 @@ public class FoodItemService {
      * @param isDown
      * @return
      */
-    private int starCaculator(FoodItem foodItem, boolean isDown) {
+    public int starCaculator(FoodItem foodItem, boolean isDown) {
         float oldUp = foodItem.getUp();
         float oldDown = foodItem.getDown();
-        int oldStar = foodItem.getStars();
+        int fullStar = 5;
         float rate = oldDown / (oldUp + oldDown + 1);
         if (isDown) {
             rate = (oldDown + 1) / (oldUp + oldDown + 1);
         }
         if (rate > 0.5 && rate <= 0.66) {
             //扣1星
-            oldStar -= 1;
+            fullStar -= 1;
         } else if (rate > 0.66 && rate <= 0.8) {
             //扣2星
-            oldStar -= 2;
+            fullStar -= 2;
         } else if (rate > 0.8) {
             //扣3星
-            oldStar -= 3;
+            fullStar -= 3;
         }
-        return oldStar;
+        return fullStar;
     }
 }

@@ -27,6 +27,7 @@ create table `food_item`
   `down`       int         default 0 comment '踩的数量',
   `food_belng` tinyint     default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅',
   KEY `index_get` (`period`, `food_time`, `recommend`, `food_belng`)
+#   UNIQUE `index_food` (`food_desc`,`food_time`,`food_belng`)
 ) engine = InnoDB
   auto_increment = 1
   default charset = utf8;
