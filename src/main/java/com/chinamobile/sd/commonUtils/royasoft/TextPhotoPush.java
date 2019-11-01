@@ -37,7 +37,7 @@ public class TextPhotoPush {
             String aes_encode_body = AESUtil.encode(securityKey, json);
 
             //解密测试
-            //System.out.println("解密测试:"+AESUtil.decode(securityKey, aes_encode_body));
+//            logger.info("解密测试:"+AESUtil.decode(securityKey, aes_encode_body));
 
             Map<String, String> sendParams = new HashMap<String, String>();
             sendParams.put("function_id", "1001");//必须为1001
@@ -151,5 +151,4 @@ public class TextPhotoPush {
             logger.error(e.getMessage(), e);
         }
     }
-
 }

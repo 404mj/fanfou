@@ -6,16 +6,23 @@ package com.chinamobile.sd.commonUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class HttpRequestUtil {
@@ -24,21 +31,40 @@ public class HttpRequestUtil {
     private static Logger logger = LogManager.getLogger(HttpRequestUtil.class);
 
     /**
+     * without json
+     *
      * @param url
      * @param paramsMap
      */
     public static void postMethod(String url, Map<String, String> paramsMap) {
-
-        JSONObject jsonObj = new JSONObject();
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost postMethod = new HttpPost(url);
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
         if (paramsMap != null) {
             for (Map.Entry<String, String> param : paramsMap.entrySet()) {
-                jsonObj.put(param.getKey(), param.getValue());
+                nameValuePairs.add(new BasicNameValuePair(param.getKey(), param.getValue()));
             }
         }
-        httpPost(url, jsonObj.toJSONString(), null);
+        try {
+            postMethod.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+            CloseableHttpResponse response = httpClient.execute(postMethod);
+            logger.info(response.toString());
+            response.close();
+        } catch (UnsupportedEncodingException e) {
+            logger.error(e.getMessage(), e);
+        } catch (ClientProtocolException e) {
+            logger.error(e.getMessage(), e);
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        } finally {
+            postMethod.releaseConnection();
+        }
+
     }
 
     /**
+     * with json
+     *
      * @param url
      * @param requestBody
      * @param headers

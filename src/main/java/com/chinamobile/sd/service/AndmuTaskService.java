@@ -98,8 +98,9 @@ public class AndmuTaskService {
             redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {//todo fis this
+            return CompletableFuture.completedFuture(1);
         }
-        return CompletableFuture.completedFuture(1);
     }
 }
 

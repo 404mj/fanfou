@@ -348,7 +348,7 @@ public class TryController {
 
     @GetMapping("/t_push")
     public void testPush() {
-        textPhotoPush.sendText("from zsx test 移动社区通知功能。");
+        textPhotoPush.sendText("移动社区通知");
     }
 
 }
