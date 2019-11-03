@@ -89,8 +89,9 @@ public class FoodItemService {
     public ResultModel<Integer> upItem(Integer restaurantId, Integer foodId) {
         FoodItem foodItem = foodItemDao.findItemById(foodId);
         int star = starCaculator(foodItem, false);
-        foodItemDao.updateStar(foodId, star);
-
+        if (foodItem.getStars() != star) {
+            foodItemDao.updateStar(foodId, star);
+        }
         Integer res = foodItemDao.addItemUp(restaurantId, foodId);
         return ResultUtil.successResult(res);
     }
@@ -103,8 +104,9 @@ public class FoodItemService {
     public ResultModel<Integer> downItem(Integer restaurantId, Integer foodId) {
         FoodItem foodItem = foodItemDao.findItemById(foodId);
         int star = starCaculator(foodItem, true);
-        foodItemDao.updateStar(foodId, star);
-
+        if (foodItem.getStars() != star) {
+            foodItemDao.updateStar(foodId, star);
+        }
         Integer res = foodItemDao.addItemDown(restaurantId, foodId);
         return ResultUtil.successResult(res);
     }
