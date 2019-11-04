@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -37,18 +38,22 @@ public class CameraAiService {
      */
     @Scheduled(cron = "*/30 * 6-8,11-13,17-19 * * *", zone = "Asia/Shanghai")
     public void executePicTask() {
-        logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
-                DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
+        LocalTime resTime = LocalTime.parse("11:30");
+        //午饭点从11点半开始
+        if (LocalTime.now().isAfter(resTime)) {
+            logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
+                    DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
 
-        //推送移动社区
-        String pushValue = redisTemplate.opsForValue().get(Constant.REDIS_MOBILE_PUSHFLAG);
-        if (StringUtils.isEmpty(pushValue)) {
-            redisTemplate.opsForValue().set(Constant.REDIS_MOBILE_PUSHFLAG, Constant.REDIS_MOBILE_PUSHVALUE,
-                    Constant.PUSHFLAG_EXPIRES, TimeUnit.MINUTES);
-            notifyService.notifyMobile();
+            //推送移动社区
+            String pushValue = redisTemplate.opsForValue().get(Constant.REDIS_MOBILE_PUSHFLAG);
+            if (StringUtils.isEmpty(pushValue)) {
+                redisTemplate.opsForValue().set(Constant.REDIS_MOBILE_PUSHFLAG, Constant.REDIS_MOBILE_PUSHVALUE,
+                        Constant.PUSHFLAG_EXPIRES, TimeUnit.MINUTES);
+//            notifyService.notifyMobile();
+            }
+
+//        asyncPicSendRedisCallAiTask();
         }
-
-        asyncPicSendRedisCallAiTask();
     }
 
     /**
@@ -71,10 +76,9 @@ public class CameraAiService {
             CompletableFuture.allOf(r0QueRes, r0AttRes, r1QueRes, r1AttRes).join();
 
             //通知AI service
-//            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-
     }
 }

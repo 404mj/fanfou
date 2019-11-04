@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -24,8 +25,7 @@ import java.util.*;
 public class StatisticService {
 
     private Logger logger = LogManager.getLogger(StatisticService.class);
-    private HashSet<String> RESTHOURFILTER = Sets.newHashSet("06", "07", "08", "11", "12",
-            "13", "17", "18", "19");
+    private HashSet<Integer> RESTHOURFILTER = Sets.newHashSet(6, 7, 8, 11, 12, 13, 17, 18, 19);
 
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -37,16 +37,19 @@ public class StatisticService {
     public ResultModel getStatistic(Integer restaurant) {
         Map<String, Object> retMap = new HashMap<>();
         String queLen = "0";
-        //String attend = null;
+        //上座率从先直出
         Double attProb = 0.0;
         //mins
         float waitTime = 0;
         Map<String, String> hisque = new LinkedHashMap<>(16);
 
-        //过滤饭点请求
+        //过滤非饭点请求
         String nowHour = DateUtil.getCurrentHour();
         String nowMin = DateUtil.getCurrentMinute();
-        if (!RESTHOURFILTER.contains(nowHour) || (nowHour.equals("08") && Integer.parseInt(nowMin) > 30)) {
+        LocalTime now = LocalTime.now();
+        LocalTime lunStartTime = LocalTime.parse("11:30");
+        LocalTime brekEndTime = LocalTime.parse("8:30");
+        if (!RESTHOURFILTER.contains(now.getHour()) || (now.isBefore(lunStartTime) && now.isAfter(brekEndTime))) {
             logger.info("-----------sepcial_time - " + nowHour);
             retMap.put("quelength", queLen);
             retMap.put("attendprob", attProb);
@@ -64,8 +67,6 @@ public class StatisticService {
             logger.info("-----------lastKey: " + lastKey);
             if (restaurant == 0) {//B1大餐厅
                 queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
-                //attend = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
-                //attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
                 //上座率改为从先直出
                 attProb = Double.parseDouble((String) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey));
                 waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
@@ -74,8 +75,6 @@ public class StatisticService {
                 processHisQue(hisque, 0);
             } else if (restaurant == 1) {//B1小餐厅
                 queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
-                //attend = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey).toString();
-                //attProb = Double.valueOf(attend) / Constant.R0_FULLSEAT_PEOPLE;
                 attProb = Double.parseDouble((String) redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey));
                 waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
                 hisque.put(lastKey, queLen);
