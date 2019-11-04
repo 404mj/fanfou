@@ -191,6 +191,15 @@ public class DateUtil {
         return getFormatCurrentTime("HH");
     }
 
+    /**
+     * 取得当前时间的分钟
+     *
+     * @return mm
+     */
+    public static String getCurrentMinute() {
+        return getFormatCurrentTime("mm");
+    }
+
 
     /**
      * 根据给定的格式，返回时间字符串

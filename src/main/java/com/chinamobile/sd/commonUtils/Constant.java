@@ -46,7 +46,7 @@ public class Constant {
     //移动社区通知频率控制
     public static final String REDIS_MOBILE_PUSHFLAG = "FLAG_PUSH_MSG2MOBILE";
     public static final String REDIS_MOBILE_PUSHVALUE = "flag_seted";
-    public static final Long PUSHFLAG_EXPIRES = new Long(60);
+    public static final Long PUSHFLAG_EXPIRES = new Long(20);
 
 
     /**
