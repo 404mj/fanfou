@@ -70,7 +70,7 @@ public class StatisticService {
                 attProb = Double.parseDouble((String) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey));
                 waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
                 //前1小时,15分钟段,四个数据
-                hisque.put(lastKey, processQueLen(queLen));
+                hisque.put(lastKey, processQueLen(queLen, restaurant));
                 processHisQue(hisque, 0);
             } else if (restaurant == 1) {//B1小餐厅
                 queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
@@ -83,7 +83,7 @@ public class StatisticService {
             }
 
 
-            retMap.put("quelength", processQueLen(queLen));
+            retMap.put("quelength", processQueLen(queLen, restaurant));
             retMap.put("attendprob", attProb);
             retMap.put("waittime", waitTime);
             retMap.put("hisquecount", hisque);
@@ -103,10 +103,14 @@ public class StatisticService {
      * @param queLenStr
      * @return
      */
-    private String processQueLen(String queLenStr) {
+    private String processQueLen(String queLenStr, Integer restaurant) {
         Integer queLenInt = Integer.valueOf(queLenStr);
-        if (queLenInt >= 1) {
+        if (restaurant == 0 && queLenInt > 1) {
             queLenInt += 8;
+        }
+
+        if (restaurant == 1 && queLenInt >= 1) {
+            queLenInt += 2;
         }
         return queLenInt.toString();
     }
