@@ -48,18 +48,18 @@ public class HttpRequestUtil {
         try {
             postMethod.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
             CloseableHttpResponse response = httpClient.execute(postMethod);
-            logger.info(response.toString());
+            //EntityUtils.toString(response.getEntity())
+            logger.info(getStringRes(response));
             response.close();
-        } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage(), e);
-        } catch (ClientProtocolException e) {
-            logger.error(e.getMessage(), e);
-        } catch (IOException e) {
-            logger.error(e.getMessage(), e);
-        } finally {
             postMethod.releaseConnection();
+            httpClient.close();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (ClientProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
 
     /**
@@ -89,23 +89,9 @@ public class HttpRequestUtil {
 
             CloseableHttpResponse response = restClient.execute(httpPost);
             HttpEntity responseEntity = response.getEntity();
-            if (responseEntity != null) {
-                inStream = responseEntity.getContent();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
-                StringBuilder sb = new StringBuilder();
-                String resBuf = null;
-                while ((resBuf = reader.readLine()) != null) {
-                    sb.append(resBuf);
-                }
-                /*
-                Header[] hs = response.getAllHeaders();
-                for (int i = 0; i < hs.length; i++) {
-                    logger.info(hs[i].toString());
-                }
-                */
-                logger.info(sb.toString());
-                return JSONObject.parseObject(sb.toString());
-            }
+            String res = getStringRes(response);
+            logger.info(res);
+            return JSONObject.parseObject(res);
 
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getMessage(), e);
@@ -125,5 +111,19 @@ public class HttpRequestUtil {
         return null;
     }
 
-}
+    private static String getStringRes(HttpResponse response) throws IOException {
+        HttpEntity responseEntity = response.getEntity();
+        if (responseEntity != null) {
+            InputStream inStream = responseEntity.getContent();
+            StringBuilder sb = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
+            String resBuf = null;
+            while ((resBuf = reader.readLine()) != null) {
+                sb.append(resBuf);
+            }
+            return sb.toString();
+        }
+        return Constant.EMPTYSTR;
+    }
 
+}
