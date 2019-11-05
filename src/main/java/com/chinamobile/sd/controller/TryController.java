@@ -351,4 +351,9 @@ public class TryController {
         textPhotoPush.sendText("移动社区通知");
     }
 
+    @GetMapping("/t_hisque")
+    public void testHisque() {
+//        statisticService.test();
+    }
+
 }

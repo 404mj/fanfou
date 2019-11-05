@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @Author: fengchen.zsx
@@ -41,16 +43,14 @@ public class StatisticService {
         Double attProb = 0.0;
         //mins
         float waitTime = 0;
-        Map<String, String> hisque = new LinkedHashMap<>(16);
+        Map<String, String> hisque = new LinkedHashMap<>(30);
 
         //过滤非饭点请求
-        String nowHour = DateUtil.getCurrentHour();
-        String nowMin = DateUtil.getCurrentMinute();
         LocalTime now = LocalTime.now();
         LocalTime lunStartTime = LocalTime.parse("11:30");
         LocalTime brekEndTime = LocalTime.parse("8:30");
         if (!RESTHOURFILTER.contains(now.getHour()) || (now.isBefore(lunStartTime) && now.isAfter(brekEndTime))) {
-            logger.info("-----------sepcial_time - " + nowHour);
+            logger.info("-----------sepcial_time - " + now.toString());
             retMap.put("quelength", queLen);
             retMap.put("attendprob", attProb);
             retMap.put("waittime", waitTime);
@@ -67,17 +67,15 @@ public class StatisticService {
             logger.info("-----------lastKey: " + lastKey);
             if (restaurant == 0) {//B1大餐厅
                 queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
-                //上座率改为从先直出
                 attProb = Double.parseDouble((String) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey));
                 waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
-                //前1小时,15分钟段,四个数据
                 hisque.put(lastKey, processQueLen(queLen, restaurant));
                 processHisQue(hisque, 0);
             } else if (restaurant == 1) {//B1小餐厅
                 queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
                 attProb = Double.parseDouble((String) redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey));
                 waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
-                hisque.put(lastKey, queLen);
+                hisque.put(lastKey, processQueLen(queLen, restaurant));
                 processHisQue(hisque, 1);
             }
 
@@ -116,9 +114,11 @@ public class StatisticService {
 
 
     /**
+     * 简单取四个时间点的值，无法反映变化情况
      * @param hisque
      * @param rest
      */
+    /*
     private void processHisQue(Map<String, String> hisque, Integer rest) {
         List<String> secondKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 39, 39);
         List<String> thirdKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 79, 79);
@@ -149,6 +149,37 @@ public class StatisticService {
                     String queLen4 = (String) redisTemplate.opsForHash().get(redisKey, fourthKey);
                     hisque.put(fourthKey, queLen4);
                 }
+            }
+        }
+    }
+    */
+
+    /**
+     * 取前半小时数据，一分钟取样
+     *
+     * @param hisque
+     * @param rest
+     */
+    private void processHisQue(Map<String, String> hisque, Integer rest) {
+        String redisKey = Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday();
+        //B1大餐厅
+        if (rest == 1) {
+            redisKey = Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday();
+        }
+
+        List<String> keys = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 59);
+        if (keys.size() <= 1) return;
+        List<Object> evenKeys = IntStream.range(0, keys.size())
+                .filter(i -> i % 2 == 0)
+                .mapToObj(i -> keys.get(i))
+                .collect(Collectors.toList());
+        List<Object> counts = redisTemplate.opsForHash().multiGet(redisKey, evenKeys);
+
+        int i = 1;
+        Object v;
+        for (Object k : evenKeys) {
+            if (i <= counts.size() && (v = counts.get(i)) != null) {
+                hisque.put(k.toString(), v.toString());
             }
         }
     }
