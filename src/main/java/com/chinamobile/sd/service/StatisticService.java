@@ -48,7 +48,7 @@ public class StatisticService {
         //过滤非饭点请求
         LocalTime now = LocalTime.now();
         LocalTime lunStartTime = LocalTime.parse("11:30");
-        LocalTime brekEndTime = LocalTime.parse("8:30");
+        LocalTime brekEndTime = LocalTime.parse("08:30");
         if (!RESTHOURFILTER.contains(now.getHour()) || (now.isBefore(lunStartTime) && now.isAfter(brekEndTime))) {
             logger.info("-----------sepcial_time - " + now.toString());
             retMap.put("quelength", queLen);
