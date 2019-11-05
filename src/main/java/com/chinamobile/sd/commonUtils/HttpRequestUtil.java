@@ -5,6 +5,7 @@ package com.chinamobile.sd.commonUtils;
  */
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -16,9 +17,12 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.http.HttpMethod;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -39,6 +43,7 @@ public class HttpRequestUtil {
     public static void postMethod(String url, Map<String, String> paramsMap) {
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost postMethod = new HttpPost(url);
+        postMethod.setHeader(HTTP.CONTENT_ENCODING, "utf-8");
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         if (paramsMap != null) {
             for (Map.Entry<String, String> param : paramsMap.entrySet()) {
@@ -49,7 +54,7 @@ public class HttpRequestUtil {
             postMethod.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
             CloseableHttpResponse response = httpClient.execute(postMethod);
             //EntityUtils.toString(response.getEntity())
-            logger.info(getStringRes(response));
+            logger.info("======>> "+getStringRes(response));
             response.close();
             postMethod.releaseConnection();
             httpClient.close();

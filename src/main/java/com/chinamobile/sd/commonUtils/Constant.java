@@ -47,6 +47,7 @@ public class Constant {
     public static final String REDIS_MOBILE_PUSHFLAG = "FLAG_PUSH_MSG2MOBILE";
     public static final String REDIS_MOBILE_PUSHVALUE = "flag_seted";
     public static final Long PUSHFLAG_EXPIRES = new Long(20);
+    public static String MOBILE_PUSH_MSG = "餐厅管理功能上线啦，可以查看排队人数、提前知晓菜品，还能对每日菜品点赞评论哦，点击下方按钮，马上体验吧~~~";
 
 
     /**

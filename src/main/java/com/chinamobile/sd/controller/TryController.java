@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +32,6 @@ public class TryController {
      * 单独使用log4j,与slf4j桥接浪费性能
      */
     private Logger logger = LogManager.getLogger(TryController.class);
-
 
     @Autowired
     private AndmuRestClientService restClient4Andmu;
@@ -348,7 +348,7 @@ public class TryController {
 
     @GetMapping("/t_push")
     public void testPush() {
-        textPhotoPush.sendText("移动社区通知");
+        textPhotoPush.sendText("mobileMsg");
     }
 
     @GetMapping("/t_hisque")
