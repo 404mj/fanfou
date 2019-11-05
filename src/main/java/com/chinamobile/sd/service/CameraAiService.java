@@ -40,10 +40,10 @@ public class CameraAiService {
     public void executePicTask() {
         LocalTime resTime = LocalTime.parse("11:30");
         //午饭点从11点半开始
-        if (LocalTime.now().isAfter(resTime)) {
-            logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
-                    DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
 
+        logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
+                DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
+        if (LocalTime.now().isAfter(resTime)) {
             //推送移动社区
             String pushValue = redisTemplate.opsForValue().get(Constant.REDIS_MOBILE_PUSHFLAG);
             if (StringUtils.isEmpty(pushValue)) {
@@ -51,9 +51,9 @@ public class CameraAiService {
                         Constant.PUSHFLAG_EXPIRES, TimeUnit.MINUTES);
 //            notifyService.notifyMobile();
             }
-
-//        asyncPicSendRedisCallAiTask();
         }
+//        asyncPicSendRedisCallAiTask();
+
     }
 
     /**

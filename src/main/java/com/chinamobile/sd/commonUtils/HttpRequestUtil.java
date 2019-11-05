@@ -73,7 +73,6 @@ public class HttpRequestUtil {
     public static JSONObject httpPost(String url, String requestBody, Map<String, String> headers) {
         CloseableHttpClient restClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
-        InputStream inStream = null;
         try {
             StringEntity entity = new StringEntity(requestBody);
 
@@ -88,8 +87,8 @@ public class HttpRequestUtil {
             }
 
             CloseableHttpResponse response = restClient.execute(httpPost);
-            HttpEntity responseEntity = response.getEntity();
             String res = getStringRes(response);
+            response.close();
             logger.info(res);
             return JSONObject.parseObject(res);
 
@@ -103,7 +102,6 @@ public class HttpRequestUtil {
             try {
                 restClient.close();
                 httpPost.releaseConnection();
-                inStream.close();
             } catch (IOException e) {
                 logger.error(e.getMessage(), e);
             }
@@ -121,6 +119,7 @@ public class HttpRequestUtil {
             while ((resBuf = reader.readLine()) != null) {
                 sb.append(resBuf);
             }
+            inStream.close();
             return sb.toString();
         }
         return Constant.EMPTYSTR;
