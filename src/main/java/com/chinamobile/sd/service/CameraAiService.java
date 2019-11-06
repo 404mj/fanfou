@@ -38,12 +38,13 @@ public class CameraAiService {
      */
     @Scheduled(cron = "*/30 * 6-8,11-13,17-19 * * *", zone = "Asia/Shanghai")
     public void executePicTask() {
-        LocalTime resTime = LocalTime.parse("11:30");
+        LocalTime lunchTime = LocalTime.parse("11:30");
+        LocalTime dinnerEnd = LocalTime.parse("06:00");
         //午饭点从11点半开始
 
         logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
-        if (LocalTime.now().isAfter(resTime)) {
+        if (LocalTime.now().isAfter(lunchTime) && LocalTime.now().isBefore(dinnerEnd)) {
             //推送移动社区
             String pushValue = redisTemplate.opsForValue().get(Constant.REDIS_MOBILE_PUSHFLAG);
             if (StringUtils.isEmpty(pushValue)) {
