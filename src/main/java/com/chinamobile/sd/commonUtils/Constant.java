@@ -66,6 +66,7 @@ public class Constant {
     public static final String DEVICELIST_POST = "https://open.andmu.cn/v3/open/api/pro/device/list";
     public static final String VIDEO_PLAY = "https://open.andmu.cn/v3/open/api/websdk/live";
     public static final String PIC_REALTIME = "https://open.andmu.cn/v3/open/api/pro/camera/thumbnail/realtime";
+    public static final String PIC_REALTIME_NEW = "https://open.andmu.cn/v3/open/api/camera/thumbnail/realtime";
     //AI service
     public static final String AISERVICEURL = "http://172.20.10.14:8080/tee_egg";
 

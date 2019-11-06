@@ -296,27 +296,38 @@ public class TryController {
      *
      * @return
      */
-    @GetMapping("/t_aiflow")
-    public String testAiflow() {
+    @GetMapping("/t_picflow")
+    public String testPicflow() {
         String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
+        String queJson1 = "{\"deviceId\":\"" + Constant.R1_DEVICE_QUEUE + "\"}";
+        logger.info(queJson);
         //作为key的时间戳精确到秒
         String nowTime = DateUtil.getCurrentSeconds();
-        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME, queJson, true);
+        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, queJson, true);
+        JSONObject picJsonQue1 = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, queJson1, true);
+        logger.info(Constant.PIC_REALTIME_NEW);
         try {
-            String queurl = picJsonQue.get("data").toString();
+            String queurl = picJsonQue.getJSONObject("data").getString("url");
+            String queurl1 = picJsonQue1.getJSONObject("data").getString("url");
+            logger.info("======>> " + queurl + "=======> " + queurl1);
 //        CrypUtil.savePicFromUrl(queurl);
-            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-            String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
-            String timeKey = DateUtil.getCurrentSeconds();
-            redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
-            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
-            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+//            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+//            String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
+//            String timeKey = DateUtil.getCurrentSeconds();
+//            redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
+//            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+//            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {
-//            logger.error(e.getMessage(), e);
             logger.error(e.getMessage(), e);
         }
         return "sss";
 
+    }
+
+
+    @GetMapping("/t_aiflow")
+    public void testAiflow() {
+        cameraAiService.asyncPicSendRedisCallAiTask();
     }
 
     @GetMapping("/t_frontend")
