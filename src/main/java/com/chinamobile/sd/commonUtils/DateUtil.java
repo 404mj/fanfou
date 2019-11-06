@@ -3,6 +3,7 @@ package com.chinamobile.sd.commonUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -89,6 +90,15 @@ public class DateUtil {
      * 预定义的日期格式:HHmm
      */
     public static final String HHmm = "HHmm";
+
+    /**
+     * 几个固定时间点
+     */
+    public static final LocalTime breakEnd = LocalTime.parse("08:30");
+    public static final LocalTime lunchTime = LocalTime.parse("11:30");
+    public static final LocalTime lunchEnd = LocalTime.parse("13:00");
+    public static final LocalTime dinnerTime = LocalTime.parse("17:30");
+    public static final LocalTime dinnerEnd = LocalTime.parse("18:00");
 
 
     /**

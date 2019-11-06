@@ -298,9 +298,9 @@ public class TryController {
      */
     @GetMapping("/t_picflow")
     public String testPicflow() {
-        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\"}";
-        String queJson1 = "{\"deviceId\":\"" + Constant.R1_DEVICE_QUEUE + "\"}";
-        logger.info(queJson);
+        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\",\"size\": \"1080x720\"}";
+        String queJson1 = "{\"deviceId\":\"" + Constant.R1_DEVICE_QUEUE + "\",\"size\": \"1080x720\"}";
+        logger.info(queJson1);
         //作为key的时间戳精确到秒
         String nowTime = DateUtil.getCurrentSeconds();
         JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, queJson, true);
@@ -309,7 +309,7 @@ public class TryController {
         try {
             String queurl = picJsonQue.getJSONObject("data").getString("url");
             String queurl1 = picJsonQue1.getJSONObject("data").getString("url");
-            logger.info("======>> " + queurl + "=======> " + queurl1);
+            logger.info("====que0==>> " + queurl + "==que1=====> " + queurl1);
 //        CrypUtil.savePicFromUrl(queurl);
 //            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
 //            String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
