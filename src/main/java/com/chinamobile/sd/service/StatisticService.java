@@ -27,7 +27,7 @@ import java.util.stream.IntStream;
 public class StatisticService {
 
     private Logger logger = LogManager.getLogger(StatisticService.class);
-    private HashSet<Integer> RESTHOURFILTER = Sets.newHashSet(6, 7, 8, 11, 12, 13, 17, 18, 19);
+    private HashSet<Integer> RESTHOURFILTER = Sets.newHashSet(7, 8, 11, 12, 13, 17, 18);
 
     @Autowired
     private StringRedisTemplate redisTemplate;
