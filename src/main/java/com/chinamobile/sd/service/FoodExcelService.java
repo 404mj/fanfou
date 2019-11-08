@@ -2,8 +2,11 @@ package com.chinamobile.sd.service;
 
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
+import com.chinamobile.sd.commonUtils.ResultUtil;
+import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.dao.FoodItemDao;
 import com.chinamobile.sd.model.FoodItem;
+import com.chinamobile.sd.model.ResultModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -32,9 +35,11 @@ public class FoodExcelService {
     private static final Logger logger = LogManager.getLogger(FoodExcelService.class);
 
     @Autowired
+    private FoodItemService foodItemService;
+    @Autowired
     private FoodItemDao foodItemDao;
 
-    public int processRecipeExcel(MultipartFile recipeFile) {
+    public ResultModel<Integer> processRecipeExcel(MultipartFile recipeFile) {
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(recipeFile.getInputStream());
             if (workbook.getNumberOfSheets() >= 3) {
@@ -52,17 +57,19 @@ public class FoodExcelService {
 
                 logger.info("------weekfoods: " + weekFoods.toString());
 
-                return foodItemDao.createItems(weekFoods);
+                return foodItemService.addItems(weekFoods);
             } else {
                 logger.error("------sheet number err: " + workbook.getNumberOfSheets());
-                return 0;
+                return ResultUtil.failResult(ServiceEnum.PARAM_FORMAT_ERROR, ServiceEnum.PARAM_FORMAT_ERROR.getValue());
             }
         } catch (MultipartStream.IllegalBoundaryException e2) {
             logger.error(e2.getMessage(), e2);
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
-        return 0;
+        return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
     }
 
     /**

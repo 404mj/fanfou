@@ -36,6 +36,7 @@ public class AndmuTaskService {
         try {
             JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, queJson, true);
             String queurl = picJsonQue.getJSONObject("data").getString("url");
+//            String queurl = picJsonQue.get("data").toString();
             logger.info("r0quepic----" + queurl + " timeKey----" + timeKey);
             //存redis base64值
             String queBase = CrypUtil.encodeUrlPicToBase64(queurl);

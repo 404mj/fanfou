@@ -223,10 +223,15 @@ public class TryController {
 //        items.add(it1);
 //        items.add(it2);
 //        items.add(it3);
-        return foodItemService.addItems(items);
+        try {
+            return foodItemService.addItems(items);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 //        foodItemService.removeItemById(2);
 //        return ResultUtil.successResult("ok");
+        return null;
     }
 
     @GetMapping("/dbaget")

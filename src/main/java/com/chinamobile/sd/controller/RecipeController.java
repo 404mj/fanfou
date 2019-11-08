@@ -44,12 +44,7 @@ public class RecipeController {
         if (recipeFile.getSize() == 0) {
             return ResultUtil.customResult(ServiceEnum.VALIDATE_ERROR, 0);
         }
-        int added = foodExcelService.processRecipeExcel(recipeFile);
-
-        if (added <= 0) {
-            return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, "上传信息有误");
-        }
-        return ResultUtil.successResult(added);
+        return foodExcelService.processRecipeExcel(recipeFile);
     }
 
     /**

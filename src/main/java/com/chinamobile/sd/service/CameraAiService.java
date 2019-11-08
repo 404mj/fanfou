@@ -42,6 +42,7 @@ public class CameraAiService {
 
         logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
+
         if ((LocalTime.now().isAfter(DateUtil.lunchTime) && LocalTime.now().isBefore(DateUtil.lunchEnd)) ||
                 (LocalTime.now().isAfter(DateUtil.dinnerTime) && LocalTime.now().isBefore(DateUtil.dinnerEnd))) {
             //推送移动社区

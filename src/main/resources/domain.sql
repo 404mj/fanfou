@@ -26,8 +26,8 @@ create table `food_item`
   `up`         int         default 0 comment '赞的数量',
   `down`       int         default 0 comment '踩的数量',
   `food_belng` tinyint     default null comment '属于哪个餐厅:0-B1大餐厅;1-B1小餐厅',
-  KEY `index_get` (`period`, `food_time`, `recommend`, `food_belng`)
-#   UNIQUE `index_food` (`food_desc`,`food_time`,`food_belng`)
+  KEY `index_get` (`period`, `food_time`, `recommend`, `food_belng`),
+  UNIQUE `index_food` (`food_desc`, `period`, `food_time`, `food_belng`)
 ) engine = InnoDB
   auto_increment = 1
   default charset = utf8;
@@ -88,3 +88,6 @@ delete *
 from food_comment
 where 1 = 1;
 truncate table food_item;
+
+alter table food_item
+  add UNIQUE `index_food` (`food_desc`, `period`, `food_time`, `food_belng`);

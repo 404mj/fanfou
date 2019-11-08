@@ -23,7 +23,7 @@ public interface FoodItemDao {
 
     FoodItem findItemById(@Param("foodId") Integer foodId);
 
-    Integer createItems(List<FoodItem> itemList);
+    Integer createItems(List<FoodItem> itemList) throws Exception;
 
     Integer addItem(FoodItem foodItem);
 

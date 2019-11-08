@@ -54,7 +54,7 @@ public class FoodItemService {
      * @param itemList
      * @return
      */
-    public ResultModel<Integer> addItems(List<FoodItem> itemList) {
+    public ResultModel<Integer> addItems(List<FoodItem> itemList) throws Exception {
         if (null == itemList || itemList.isEmpty()) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, ServiceEnum.INPUT_NULL.getValue());
         }
