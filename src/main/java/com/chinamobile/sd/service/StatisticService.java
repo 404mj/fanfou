@@ -158,7 +158,7 @@ public class StatisticService {
      * @param hisque
      * @param rest
      */
-    private void processHisQue(Map<String, String> hisque, Integer rest) {
+    public void processHisQue(Map<String, String> hisque, Integer rest) {
         String redisKey = Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday();
         //B1大餐厅
         if (rest == 1) {
@@ -173,11 +173,12 @@ public class StatisticService {
                 .collect(Collectors.toList());
         List<Object> counts = redisTemplate.opsForHash().multiGet(redisKey, evenKeys);
 
-        int i = 1;
+        int i = 0;
         Object v;
         for (Object k : evenKeys) {
             if (i <= counts.size() && (v = counts.get(i)) != null) {
                 hisque.put(k.toString(), v.toString());
+                ++i;
             }
         }
     }

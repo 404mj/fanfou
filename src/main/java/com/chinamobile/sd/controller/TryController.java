@@ -369,7 +369,14 @@ public class TryController {
 
     @GetMapping("/t_hisque")
     public void testHisque() {
-//        statisticService.test();
-    }
+//        statisticService.initData();
+        Map<String, String> hisque = new LinkedHashMap<>(30);
+//        List<String> lastKeyList = redisTemplate.opsForList().range(Constant.REDISKEY_COMPLETED_LIST, 0, 0);
+//        String lastKey = lastKeyList.get(0);
+//        String queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
+//        hisque.put(lastKey, queLen);
 
+        statisticService.processHisQue(hisque,0);
+        logger.info(JSONObject.toJSONString(hisque));
+    }
 }
