@@ -65,13 +65,21 @@ public class StatisticService {
             logger.info("-----------lastKey: " + lastKey);
             if (restaurant == 0) {//B1大餐厅
                 queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
-                attProb = Double.parseDouble((String) redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey));
+                Object attprobo = redisTemplate.opsForHash().get(Constant.REDIS_R0ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
+                if (attprobo == null) {
+                    attprobo = "0.0";
+                }
+                attProb = Double.parseDouble((String) attprobo);
                 waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
                 hisque.put(lastKey, processQueLen(queLen, restaurant));
                 processHisQue(hisque, 0);
             } else if (restaurant == 1) {//B1小餐厅
                 queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R1PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
-                attProb = Double.parseDouble((String) redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey));
+                Object attprobo = redisTemplate.opsForHash().get(Constant.REDIS_R1ATTENDPROB_PREFIX + DateUtil.getToday(), lastKey);
+                if (attprobo == null) {
+                    attprobo = "0.0";
+                }
+                attProb = Double.parseDouble((String) attprobo);
                 waitTime = Integer.parseInt(queLen) / Constant.getPeopleFlowRate();
                 hisque.put(lastKey, processQueLen(queLen, restaurant));
                 processHisQue(hisque, 1);

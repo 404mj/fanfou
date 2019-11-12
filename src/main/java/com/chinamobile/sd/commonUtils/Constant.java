@@ -12,7 +12,7 @@ public class Constant {
      */
     public static final String EMPTYSTR = "";
     public static final String SUC = "SUCCESS";
-    public static final String RECIPE_SEPRATE = "\\|";
+    public static final String RECIPE_SEPRATE = "[\\|｜]";
     /**
      * number costant
      */
