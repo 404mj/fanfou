@@ -56,8 +56,6 @@ public class Constant {
 
     //7*24*60=一周过期时间
     public static final Long REDISKEY_EXPIRES = new Long(10080);
-    public static final Integer ONEHOUR_HIST = 120;
-    public static final Integer TWOHOUR_HIST = 240;
 
     /**
      * api list

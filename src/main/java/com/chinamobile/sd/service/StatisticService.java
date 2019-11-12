@@ -177,7 +177,7 @@ public class StatisticService {
         Object v;
         for (Object k : evenKeys) {
             if (i <= counts.size() && (v = counts.get(i)) != null) {
-                hisque.put(k.toString(), v.toString());
+                hisque.put(k.toString(), processQueLen(v.toString(), rest));
                 ++i;
             }
         }

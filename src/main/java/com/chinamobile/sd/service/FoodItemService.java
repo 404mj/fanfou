@@ -93,7 +93,12 @@ public class FoodItemService {
             foodItemDao.updateStar(foodId, star);
         }
         Integer res = foodItemDao.addItemUp(restaurantId, foodId);
-        return ResultUtil.successResult(res);
+        if (res > 0) {
+            return ResultUtil.successResult(res);
+        } else {
+            return ResultUtil.failResult(ServiceEnum.UPDATE_ERROR, ServiceEnum.UPDATE_ERROR.getValue()
+                    , ServiceEnum.UPDATE_ERROR.getCode());
+        }
     }
 
     /**
@@ -108,7 +113,12 @@ public class FoodItemService {
             foodItemDao.updateStar(foodId, star);
         }
         Integer res = foodItemDao.addItemDown(restaurantId, foodId);
-        return ResultUtil.successResult(res);
+        if (res > 0) {
+            return ResultUtil.successResult(res);
+        } else {
+            return ResultUtil.failResult(ServiceEnum.UPDATE_ERROR, ServiceEnum.UPDATE_ERROR.getValue()
+                    , ServiceEnum.UPDATE_ERROR.getCode());
+        }
     }
 
     /**
