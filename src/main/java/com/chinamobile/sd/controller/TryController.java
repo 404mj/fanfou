@@ -303,30 +303,31 @@ public class TryController {
      */
     @GetMapping("/t_picflow")
     public String testPicflow() {
-        String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\",\"size\": \"1080x720\"}";
-        String queJson1 = "{\"deviceId\":\"" + Constant.R1_DEVICE_QUEUE + "\",\"size\": \"1080x720\"}";
-        logger.info(queJson1);
+        //R0_DEVICE_QUEUE
+        String attJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_ATTENDANCE + "\",\"size\": \"1080x720\"}";
+//        String queJson1 = "{\"deviceId\":\"" + Constant.R1_DEVICE_QUEUE + "\",\"size\": \"1080x720\"}";
+//        logger.info(queJson1);
         //作为key的时间戳精确到秒
         String nowTime = DateUtil.getCurrentSeconds();
-        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, queJson, true);
-        JSONObject picJsonQue1 = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, queJson1, true);
-        logger.info(Constant.PIC_REALTIME_NEW);
+        JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, attJson, true);
+//        JSONObject picJsonQue1 = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, queJson1, true);
+//        logger.info(Constant.PIC_REALTIME_NEW);
         try {
             String queurl = picJsonQue.getJSONObject("data").getString("url");
-            String queurl1 = picJsonQue1.getJSONObject("data").getString("url");
-            logger.info("====que0==>> " + queurl + "==que1=====> " + queurl1);
+//            String queurl1 = picJsonQue1.getJSONObject("data").getString("url");
+//            logger.info("====que0==>> " + queurl + "==que1=====> " + queurl1);
 //        CrypUtil.savePicFromUrl(queurl);
-//            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
-//            String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
-//            String timeKey = DateUtil.getCurrentSeconds();
-//            redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
-//            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
-//            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+            String nowHkey = Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday();
+            String timeKey = DateUtil.getCurrentSeconds();
+            redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
+            redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
+            notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
+            return timeKey;
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
         }
-        return "sss";
-
+        return "error";
     }
 
 
@@ -376,7 +377,7 @@ public class TryController {
 //        String queLen = (String) redisTemplate.opsForHash().get(Constant.REDIS_R0PEOPLECOUNT_PREFIX + DateUtil.getToday(), lastKey);
 //        hisque.put(lastKey, queLen);
 
-        statisticService.processHisQue(hisque,0);
+        statisticService.processHisQue(hisque, 0);
         logger.info(JSONObject.toJSONString(hisque));
     }
 }
