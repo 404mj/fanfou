@@ -380,4 +380,9 @@ public class TryController {
         statisticService.processHisQue(hisque, 0);
         logger.info(JSONObject.toJSONString(hisque));
     }
+
+    @GetMapping("/t_updatetoken")
+    public String updateToken() {
+        return restClient4Andmu.getToken();
+    }
 }

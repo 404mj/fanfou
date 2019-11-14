@@ -82,7 +82,7 @@ public class AndmuRestClientService {
         }
         token = JSONObject.parseObject(res.get("data").toString()).getString("token");
         logger.info("----response   token--------" + token);
-        Long expiresIn = JSONObject.parseObject(res.get("data").toString()).getLong("expires_in");
+        Long expiresIn = JSONObject.parseObject(res.get("data").toString()).getLong("expires_in") - 10;
         redisTemplate.opsForValue().set(Constant.REDISKEY_TOKEN, token, expiresIn, TimeUnit.SECONDS);
         return token;
 

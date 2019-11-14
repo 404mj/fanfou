@@ -182,11 +182,23 @@ public class StatisticService {
         List<Object> counts = redisTemplate.opsForHash().multiGet(redisKey, evenKeys);
 
         int i = 0;
+        String lastKey = null;
         Object v;
         for (Object k : evenKeys) {
             if (i <= counts.size() && (v = counts.get(i)) != null) {
                 hisque.put(k.toString(), processQueLen(v.toString(), rest));
                 ++i;
+                lastKey = k.toString();
+            }
+        }
+        //todo 不够30个数据，进行补全
+        int hisLen = hisque.size();
+        long lastKeyLong = Long.valueOf(lastKey);
+        if (hisLen < 30) {
+            int leftLen = 30 - hisLen;
+            for (i = 1; i <= leftLen; ++i) {
+                lastKeyLong -= 60;
+                hisque.put(String.valueOf(lastKeyLong), "0");
             }
         }
     }
