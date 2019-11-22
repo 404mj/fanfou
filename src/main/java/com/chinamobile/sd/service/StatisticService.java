@@ -191,7 +191,7 @@ public class StatisticService {
                 lastKey = k.toString();
             }
         }
-        //todo 不够30个数据，进行补全
+        //不够30个数据，进行补全
         int hisLen = hisque.size();
         long lastKeyLong = Long.valueOf(lastKey);
         if (hisLen < 30) {

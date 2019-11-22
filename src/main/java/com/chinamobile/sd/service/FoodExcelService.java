@@ -55,7 +55,7 @@ public class FoodExcelService {
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
 
-                logger.info("------weekfoods: " + weekFoods.toString());
+//                logger.info("------weekfoods: " + weekFoods.toString());
 
                 return foodItemService.addItems(weekFoods);
             } else {
