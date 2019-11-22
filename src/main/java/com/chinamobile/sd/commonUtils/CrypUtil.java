@@ -111,6 +111,7 @@ public class CrypUtil {
             URL imgURL = new URL(picUrl);
             InputStream is = imgURL.openStream();
             byte[] bytes = ByteStreams.toByteArray(is);
+	    logger.info("picUrl " + picUrl + "  encode2base64 done");
             return new AsyncResult<>(Base64.getEncoder().encodeToString(bytes));
         } catch (MalformedURLException e) {
             logger.error(e.getMessage(), e);
