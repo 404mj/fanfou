@@ -72,6 +72,7 @@ public class HttpRequestUtil {
      */
     public static JSONObject httpPost(String url, String requestBody, Map<String, String> headers) {
         HttpPost httpPost = new HttpPost(url);
+
         try {
             StringEntity entity = new StringEntity(requestBody);
 

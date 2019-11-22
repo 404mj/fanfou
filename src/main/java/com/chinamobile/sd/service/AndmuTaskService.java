@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,10 +29,12 @@ public class AndmuTaskService {
     private AndmuRestClientService restClient4Andmu;
     @Autowired
     private StringRedisTemplate redisTemplate;
+    @Autowired
+    private CrypUtil crypUtil;
 
 
     @Async("picTaskExecutor")
-    public CompletableFuture<Integer> doR0QuePicJob(String timeKey) throws Exception {
+    public CompletableFuture<Integer> doR0QuePicJob(String timeKey) {
         String queJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_QUEUE + "\",\"size\": \"1080x720\"}";
         try {
             JSONObject picJsonQue = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, queJson, true);
@@ -39,32 +42,35 @@ public class AndmuTaskService {
 //            String queurl = picJsonQue.get("data").toString();
             logger.info("r0quepic----" + queurl + " timeKey----" + timeKey);
             //存redis base64值
-            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+            String queBase = crypUtil.encodeUrlPicToBase64(queurl).get(20, TimeUnit.SECONDS);
             String nowHkey = Constant.REDIS_R0REALTIMEPIC_PREFIX + DateUtil.getToday();
             redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
             redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {
+            return CompletableFuture.completedFuture(1);
         }
-        return CompletableFuture.completedFuture(1);
     }
 
     @Async("picTaskExecutor")
-    public CompletableFuture<Integer> doR0AttendPicJob(String timeKey) throws Exception {
+    public CompletableFuture<Integer> doR0AttendPicJob(String timeKey) {
         String attJson = "{\"deviceId\":\"" + Constant.R0_DEVICE_ATTENDANCE + "\",\"size\": \"1080x720\"}";
         try {
             JSONObject picJsonAtt = restClient4Andmu.requestApi(Constant.PIC_REALTIME_NEW, attJson, true);
             String atturl = picJsonAtt.getJSONObject("data").getString("url");
             logger.info("r0attpic----" + atturl + " timeKey----" + timeKey);
             //存redis base64值
-            String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
+            String attBase = crypUtil.encodeUrlPicToBase64(atturl).get(20, TimeUnit.SECONDS);
+            ;
             String nowHkey = Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday();
             redisTemplate.opsForHash().put(nowHkey, timeKey, attBase);
             redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {
+            return CompletableFuture.completedFuture(1);
         }
-        return CompletableFuture.completedFuture(1);
     }
 
     @Async("picTaskExecutor")
@@ -75,14 +81,15 @@ public class AndmuTaskService {
             String queurl = picJsonQue.getJSONObject("data").getString("url");
             logger.info("r1quepic----" + queurl + " timeKey----" + timeKey);
             //存redis base64值
-            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+            String queBase = crypUtil.encodeUrlPicToBase64(queurl).get(20, TimeUnit.SECONDS);
             String nowHkey = Constant.REDIS_R1REALTIMEPIC_PREFIX + DateUtil.getToday();
             redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
             redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+        } finally {
+            return CompletableFuture.completedFuture(1);
         }
-        return CompletableFuture.completedFuture(1);
     }
 
     @Async("picTaskExecutor")
@@ -93,13 +100,13 @@ public class AndmuTaskService {
             String atturl = picJsonAtt.getJSONObject("data").getString("url");
             logger.info("r1attpic----" + atturl + " timeKey----" + timeKey);
             //存redis base64值
-            String attBase = CrypUtil.encodeUrlPicToBase64(atturl);
+            String attBase = crypUtil.encodeUrlPicToBase64(atturl).get(20, TimeUnit.SECONDS);
             String nowHkey = Constant.REDIS_R1ATTENDANCE_PREFIX + DateUtil.getToday();
             redisTemplate.opsForHash().put(nowHkey, timeKey, attBase);
             redisTemplate.expire(nowHkey, Constant.REDISKEY_EXPIRES, TimeUnit.MINUTES);
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-        } finally {//todo fis this
+        } finally {//todo fix this
             return CompletableFuture.completedFuture(1);
         }
     }

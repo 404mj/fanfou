@@ -10,6 +10,9 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -26,10 +29,13 @@ import java.security.PrivateKey;
 import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 签名编码工具类
  */
+@Component
 public class CrypUtil {
 
     private static final Logger logger = LogManager.getLogger(CrypUtil.class);
@@ -99,12 +105,13 @@ public class CrypUtil {
     }
 
 
-    public static String encodeUrlPicToBase64(String picUrl) {
+    @Async
+    public Future<String> encodeUrlPicToBase64(String picUrl) {
         try {
             URL imgURL = new URL(picUrl);
             InputStream is = imgURL.openStream();
             byte[] bytes = ByteStreams.toByteArray(is);
-            return Base64.getEncoder().encodeToString(bytes);
+            return new AsyncResult<>(Base64.getEncoder().encodeToString(bytes));
         } catch (MalformedURLException e) {
             logger.error(e.getMessage(), e);
         } catch (IOException e) {
@@ -138,7 +145,7 @@ public class CrypUtil {
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }*/
-        return Constant.EMPTYSTR;
+        return new AsyncResult<>(Constant.EMPTYSTR);
     }
 
     public static void decodeBase64ToPic(String base64, String pathName) {

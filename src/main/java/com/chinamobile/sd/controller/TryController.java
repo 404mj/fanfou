@@ -49,6 +49,8 @@ public class TryController {
     private StringRedisTemplate redisTemplate;
     @Autowired
     private TextPhotoPush textPhotoPush;
+    @Autowired
+    private CrypUtil crypUtil;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -317,7 +319,7 @@ public class TryController {
 //            String queurl1 = picJsonQue1.getJSONObject("data").getString("url");
 //            logger.info("====que0==>> " + queurl + "==que1=====> " + queurl1);
 //        CrypUtil.savePicFromUrl(queurl);
-            String queBase = CrypUtil.encodeUrlPicToBase64(queurl);
+            String queBase = crypUtil.encodeUrlPicToBase64(queurl).get();
             String nowHkey = Constant.REDIS_R0ATTENDANCE_PREFIX + DateUtil.getToday();
             String timeKey = DateUtil.getCurrentSeconds();
             redisTemplate.opsForHash().put(nowHkey, timeKey, queBase);
