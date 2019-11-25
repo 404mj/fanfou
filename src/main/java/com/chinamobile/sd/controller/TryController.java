@@ -332,6 +332,12 @@ public class TryController {
         return "error";
     }
 
+    @GetMapping("/t_picdecode")
+    public void testPicDecode() {
+        String picbase = crypUtil.encodeUrlPic2BaseWithHc("http://oss-open.andmu.cn:2080/xxxxS_0012313a1fc1/1574043745898.jpg?e=1576635748&token=9GlNy3-FQnzzT9sNDnpdhBc_0cJDnktVx9MYD73p:OSJY-abfAeF8CPzS1_tmJTl3qJM=");
+        CrypUtil.decodeBase64ToPic(picbase, "C:\\zsxhome\\testhc.jpg");
+    }
+
 
     @GetMapping("/t_aiflow")
     public void testAiflow() {

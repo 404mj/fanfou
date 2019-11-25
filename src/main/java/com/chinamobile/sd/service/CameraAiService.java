@@ -53,7 +53,7 @@ public class CameraAiService {
 //            notifyService.notifyMobile();
             }
         }
-//        asyncPicSendRedisCallAiTask();
+        asyncPicSendRedisCallAiTask();
 
     }
 
@@ -72,10 +72,9 @@ public class CameraAiService {
             CompletableFuture<Integer> r0AttRes = andmuTaskService.doR0AttendPicJob(timeKey);
             CompletableFuture<Integer> r1QueRes = andmuTaskService.doR1QuePicJob(timeKey);
             CompletableFuture<Integer> r1AttRes = andmuTaskService.doR1AttendPicJob(timeKey);
-
+//
             //等待
             CompletableFuture.allOf(r0QueRes, r0AttRes, r1QueRes, r1AttRes).join();
-
             //通知AI service
             notifyService.notifyAiService(Constant.AISERVICEURL, "{\"time_stamp\":\"" + timeKey + "\"}");
         } catch (Exception e) {

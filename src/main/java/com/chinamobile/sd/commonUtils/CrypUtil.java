@@ -10,6 +10,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Component;
@@ -105,13 +106,17 @@ public class CrypUtil {
     }
 
 
+    /**
+     * @param picUrl
+     * @return
+     */
     @Async
     public Future<String> encodeUrlPicToBase64(String picUrl) {
         try {
             URL imgURL = new URL(picUrl);
             InputStream is = imgURL.openStream();
             byte[] bytes = ByteStreams.toByteArray(is);
-	    logger.info("picUrl " + picUrl + "  encode2base64 done");
+            logger.info("picUrl " + picUrl + "  encode2base64 done");
             return new AsyncResult<>(Base64.getEncoder().encodeToString(bytes));
         } catch (MalformedURLException e) {
             logger.error(e.getMessage(), e);
@@ -149,6 +154,10 @@ public class CrypUtil {
         return new AsyncResult<>(Constant.EMPTYSTR);
     }
 
+    /**
+     * @param base64
+     * @param pathName
+     */
     public static void decodeBase64ToPic(String base64, String pathName) {
         try {
             FileOutputStream fos = new FileOutputStream(pathName);
@@ -160,5 +169,17 @@ public class CrypUtil {
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
         }
+    }
+
+    /**
+     * @param url
+     * @return
+     */
+    public String encodeUrlPic2BaseWithHc(String url) {
+        if (Strings.isEmpty(url)) {
+            return Constant.EMPTYSTR;
+        }
+        byte[] picBytes = HttpRequestUtil.httpGetBytes(url);
+        return Base64.getEncoder().encodeToString(picBytes);
     }
 }

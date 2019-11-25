@@ -9,9 +9,12 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.config.SocketConfig;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -29,7 +32,14 @@ public class HttpRequestUtil {
 
 
     private static Logger logger = LogManager.getLogger(HttpRequestUtil.class);
-    private static final CloseableHttpClient restClient = HttpClients.createDefault();
+
+    private static RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(15000)
+            .setSocketTimeout(15000).build();
+
+    private static SocketConfig socketConfig = SocketConfig.custom().setSoTimeout(15000).build();
+
+    private static CloseableHttpClient restClient = HttpClients.custom().setDefaultRequestConfig(requestConfig)
+            .setDefaultSocketConfig(socketConfig).build();
 
     /**
      * without json
@@ -100,6 +110,24 @@ public class HttpRequestUtil {
             logger.error(e.getMessage(), e);
         } finally {
             httpPost.releaseConnection();
+        }
+        return null;
+    }
+
+    /**
+     * @param geturl
+     * @return
+     */
+    public static byte[] httpGetBytes(String geturl) {
+        HttpGet httpGet = new HttpGet(geturl);
+        try {
+            HttpResponse response = restClient.execute(httpGet);
+            HttpEntity entity = response.getEntity();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            entity.writeTo(baos);
+            return baos.toByteArray();
+        } catch (IOException e) {
+            logger.info(e.getMessage(), e);
         }
         return null;
     }
