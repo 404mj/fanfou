@@ -4,7 +4,9 @@ import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.commonUtils.ServiceEnum;
+import com.chinamobile.sd.dao.FoodCommentDao;
 import com.chinamobile.sd.dao.FoodItemDao;
+import com.chinamobile.sd.model.FoodComment;
 import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import org.apache.logging.log4j.LogManager;
@@ -38,6 +40,8 @@ public class FoodExcelService {
     private FoodItemService foodItemService;
     @Autowired
     private FoodItemDao foodItemDao;
+    @Autowired
+    private FoodCommentDao foodCommentDao;
 
     public ResultModel<Integer> processRecipeExcel(MultipartFile recipeFile) {
         try {
@@ -71,6 +75,32 @@ public class FoodExcelService {
         }
         return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
     }
+
+
+    /**
+     * 修改菜的名字（不修改种类！！没有餐厅参数）
+     *
+     * @param itemDay
+     * @param period
+     * @param oldDesc
+     * @param newDesc
+     * @return
+     */
+    public int correctFoodItem(String itemDay, Integer period, String oldDesc, String newDesc) {
+        return foodItemDao.modifyItemDesc(itemDay, period, oldDesc, newDesc);
+    }
+
+    /**
+     * @param weekStart
+     * @param weekEnd
+     */
+    public void exportComments(String weekStart, String weekEnd) {
+        //先只大餐厅评论
+        List<FoodComment> comments = foodCommentDao.findDiscussContentsByWeek(weekStart, weekEnd, 0);
+
+
+    }
+
 
     /**
      * @param periodRecipe
@@ -142,20 +172,5 @@ public class FoodExcelService {
             }
         }
     }
-
-
-    /**
-     * 修改菜的名字（不修改种类！！没有餐厅参数）
-     *
-     * @param itemDay
-     * @param period
-     * @param oldDesc
-     * @param newDesc
-     * @return
-     */
-    public int correctFoodItem(String itemDay, Integer period, String oldDesc, String newDesc) {
-        return foodItemDao.modifyItemDesc(itemDay, period, oldDesc, newDesc);
-    }
-
 
 }

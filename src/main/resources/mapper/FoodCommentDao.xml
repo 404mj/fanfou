@@ -13,4 +13,10 @@
         food_time = #{foodTime} and restaurant=#{restaurant} and visible=1
         order by comment_id;
     </select>
+    <select id="findDiscussContentsByWeek" resultType="com.chinamobile.sd.model.FoodComment">
+        select comment_id, content, comment_time, food_time, restaurant, discusser from food_comment
+        where
+        food_time &gt;= #{weekStart} and food_time &lt;= #{weekEnd} and restaurant=#{restaurant} and visible=1
+        order by food_time;
+    </select>
 </mapper>

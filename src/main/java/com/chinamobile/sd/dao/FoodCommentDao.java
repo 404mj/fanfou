@@ -18,4 +18,7 @@ public interface FoodCommentDao {
 
     List<FoodComment> findDiscussContentsByTime(@Param("foodTime") String foodTime, @Param("restaurant") Integer restaurant);
 
+    List<FoodComment> findDiscussContentsByWeek(@Param("weekStart") String weekStart, @Param("weekEnd") String weekEnd,
+                                                @Param("restaurant") Integer restaurant);
+
 }
