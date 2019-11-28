@@ -59,6 +59,18 @@ public class FoodCommentService {
         return ResultUtil.successResult(resList);
     }
 
+
+    /**
+     * @param weekStart
+     * @param weekEnd
+     * @return
+     */
+    public List<FoodComment> getCommentsBetweenTime(String weekStart, String weekEnd) {
+        //先只大餐厅评论
+        List<FoodComment> resList = foodCommentDao.findDiscussContentsByWeek(weekStart, weekEnd, 0);
+        return resList;
+    }
+
     /**
      * @param content
      * @param time

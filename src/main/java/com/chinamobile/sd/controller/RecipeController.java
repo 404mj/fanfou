@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.commonUtils.ServiceEnum;
+import com.chinamobile.sd.commonUtils.StringUtil;
+import com.chinamobile.sd.model.FoodComment;
 import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.service.FoodCommentService;
 import com.chinamobile.sd.service.FoodExcelService;
@@ -12,9 +14,15 @@ import com.chinamobile.sd.service.FoodItemService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.ByteArrayInputStream;
+import java.util.List;
 
 
 /**
@@ -174,6 +182,26 @@ public class RecipeController {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
         }
         return foodItemService.downItem(rid, foodId);
+    }
+
+
+    /**
+     * @param weekStart
+     * @param weekEnd
+     * @return
+     */
+    @GetMapping("/comments/export/")
+    public ResponseEntity<InputStreamResource> getCommentsExcel(@PathVariable("weekStart") String weekStart,
+                                                                @PathVariable("weekEnd") String weekEnd) {
+
+        if (StringUtils.isEmpty(weekEnd) || StringUtils.isEmpty(weekStart)) {
+            return null;
+        }
+        List<FoodComment> comments = foodCommentService.getCommentsBetweenTime(weekStart, weekEnd);
+        ByteArrayInputStream in = foodExcelService.comments2Excel(comments);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment;");
+        return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));
     }
 
 }

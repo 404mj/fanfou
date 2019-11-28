@@ -11,15 +11,18 @@ import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.xssf.usermodel.*;
 import org.apache.tomcat.util.http.fileupload.MultipartStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -94,11 +97,38 @@ public class FoodExcelService {
      * @param weekStart
      * @param weekEnd
      */
-    public void exportComments(String weekStart, String weekEnd) {
-        //先只大餐厅评论
-        List<FoodComment> comments = foodCommentDao.findDiscussContentsByWeek(weekStart, weekEnd, 0);
+    public ByteArrayInputStream comments2Excel(List<FoodComment> comments) {
+        String[] columns = {"菜品时间", "评论内容"};
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            XSSFSheet sheet = workbook.createSheet("Comments");
 
+            //表头设置&内容
+            Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerFont.setColor(IndexedColors.BLUE.getIndex());
+            XSSFCellStyle headerCellStyle = workbook.createCellStyle();
+            headerCellStyle.setFont(headerFont);
+            XSSFRow headerRow = sheet.createRow(0);
+            for (int col = 0; col < columns.length; col++) {
+                XSSFCell cell = headerRow.createCell(col);
+                cell.setCellValue(columns[col]);
+                cell.setCellStyle(headerCellStyle);
+            }
 
+            int rowIdx = 1;
+            for (FoodComment comment : comments) {
+                XSSFRow row = sheet.createRow(rowIdx++);
+                row.createCell(0).setCellValue(comment.getFoodTime());
+                row.createCell(1).setCellValue(comment.getContent());
+            }
+            workbook.write(out);
+            return new ByteArrayInputStream(out.toByteArray());
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+        }
+        return null;
     }
 
 

@@ -47,7 +47,8 @@ public class StatisticService {
 
         //过滤非饭点请求
         LocalTime now = LocalTime.now();
-        if (!RESTHOURFILTER.contains(now.getHour()) || (now.isBefore(DateUtil.lunchTime) && now.isAfter(DateUtil.breakEnd))) {
+        if (!RESTHOURFILTER.contains(now.getHour()) || (now.isBefore(DateUtil.lunchTime) && now.isAfter(DateUtil.breakEnd))
+                || (restaurant == 1 && (now.getHour() <= 10 || now.getHour() >= 14))) {
             logger.info("-----------sepcial_time - " + now.toString());
             retMap.put("quelength", queLen);
             retMap.put("attendprob", attProb);
@@ -85,10 +86,9 @@ public class StatisticService {
                 processHisQue(hisque, 1);
             }
 
-
             retMap.put("quelength", processQueLen(queLen, restaurant));
             retMap.put("attendprob", attProb);
-            retMap.put("waittime", waitTime);
+            retMap.put("waittime", Math.round(waitTime));
             retMap.put("hisquecount", hisque);
             return ResultUtil.successResult(retMap);
         } catch (Exception e) {
