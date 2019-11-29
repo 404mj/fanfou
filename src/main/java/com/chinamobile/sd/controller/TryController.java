@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.*;
 import com.chinamobile.sd.commonUtils.royasoft.TextPhotoPush;
+import com.chinamobile.sd.model.FoodComment;
 import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import com.chinamobile.sd.service.*;
@@ -392,5 +393,11 @@ public class TryController {
     @GetMapping("/t_updatetoken")
     public String updateToken() {
         return restClient4Andmu.getToken();
+    }
+
+    @GetMapping("/t_commens")
+    public ResultModel<List<FoodComment>> comments() {
+        String[] days = DateUtil.getCurrentWeekFirstLastDay();
+        return foodCommentService.getCommentsBetweenTime(days[0], days[1], 0);
     }
 }

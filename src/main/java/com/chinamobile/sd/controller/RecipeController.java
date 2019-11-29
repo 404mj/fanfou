@@ -133,9 +133,11 @@ public class RecipeController {
         }
 
         JSONObject reqjson = JSON.parseObject(req);
-        String day = reqjson.getString("food_time");
+//        String day = reqjson.getString("food_time");
 
-        return foodCommentService.getCommentsByDay(day, rid);
+        String[] days = DateUtil.getCurrentWeekFirstLastDay();
+        return foodCommentService.getCommentsBetweenTime(days[0], days[1], rid);
+//        return foodCommentService.getCommentsByDay(day, rid);
     }
 
 
@@ -197,8 +199,8 @@ public class RecipeController {
         if (StringUtils.isEmpty(weekEnd) || StringUtils.isEmpty(weekStart)) {
             return null;
         }
-        List<FoodComment> comments = foodCommentService.getCommentsBetweenTime(weekStart, weekEnd);
-        ByteArrayInputStream in = foodExcelService.comments2Excel(comments);
+        ResultModel<List<FoodComment>> comments = foodCommentService.getCommentsBetweenTime(weekStart, weekEnd, 0);
+        ByteArrayInputStream in = foodExcelService.comments2Excel((List<FoodComment>) comments.getData());
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment;");
         return ResponseEntity.ok().headers(headers).body(new InputStreamResource(in));

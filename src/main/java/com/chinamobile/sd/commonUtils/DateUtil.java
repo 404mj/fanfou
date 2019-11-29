@@ -3,12 +3,12 @@ package com.chinamobile.sd.commonUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Vector;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
+import java.util.*;
 
 import org.springframework.util.StringUtils;
 
@@ -273,5 +273,19 @@ public class DateUtil {
      */
     public static String getTodayDate() {
         return DateUtil.date2String(new Date(), DateUtil.YYYYMMDD);
+    }
+
+
+    /**
+     * @return
+     */
+    public static String[] getCurrentWeekFirstLastDay() {
+        String[] days = new String[2];
+        final DayOfWeek firstDayOfWeek = WeekFields.of(Locale.CHINA).getFirstDayOfWeek();
+        final DayOfWeek lastDayOfWeek = DayOfWeek.of(((firstDayOfWeek.getValue() + 5) % DayOfWeek.values().length) + 1).plus(1);
+        days[0] = LocalDate.now().with(TemporalAdjusters.previousOrSame(firstDayOfWeek.plus(1))).toString();
+        days[1] = LocalDate.now().with(TemporalAdjusters.nextOrSame(lastDayOfWeek)).toString();
+        System.out.println(days[0]);
+        return days;
     }
 }
