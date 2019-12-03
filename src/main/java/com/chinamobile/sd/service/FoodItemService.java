@@ -128,6 +128,15 @@ public class FoodItemService {
         foodItemDao.removeItemById(foodId);
     }
 
+    /**
+     * @param foodDay
+     * @param rest
+     * @return
+     */
+    public Integer removeItemsByDay(String foodDay, Integer rest) {
+        return foodItemDao.removeItemByDayBelng(foodDay, rest);
+    }
+
 
     /**
      * stars 与 赞踩的联动关系

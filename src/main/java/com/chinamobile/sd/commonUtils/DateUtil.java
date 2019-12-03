@@ -288,4 +288,17 @@ public class DateUtil {
         System.out.println(days[0]);
         return days;
     }
+
+    /**
+     * @param time
+     * @return
+     */
+    public static boolean isWorkDate(LocalDate date) {
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+        Integer weekTh = dayOfWeek.getValue();
+        if (weekTh >= 1 && weekTh <= 5) {
+            return true;
+        }
+        return false;
+    }
 }

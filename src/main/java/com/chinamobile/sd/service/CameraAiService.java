@@ -2,7 +2,6 @@ package com.chinamobile.sd.service;
 
 import com.chinamobile.sd.commonUtils.Constant;
 import com.chinamobile.sd.commonUtils.DateUtil;
-import com.chinamobile.sd.commonUtils.StringUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.concurrent.CompletableFuture;
@@ -43,8 +43,9 @@ public class CameraAiService {
         logger.info("currentthread: {} - crontaskexec: {}", Thread.currentThread().getName(),
                 DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
 
-        if ((LocalTime.now().isAfter(DateUtil.lunchTime) && LocalTime.now().isBefore(DateUtil.lunchEnd)) ||
-                (LocalTime.now().isAfter(DateUtil.dinnerTime) && LocalTime.now().isBefore(DateUtil.dinnerEnd))) {
+        // 早晚和周末不推送
+        if ((LocalTime.now().isAfter(DateUtil.lunchTime) && LocalTime.now().isBefore(DateUtil.lunchEnd)) &&
+                DateUtil.isWorkDate(LocalDate.now())) {
             //推送移动社区
             String pushValue = redisTemplate.opsForValue().get(Constant.REDIS_MOBILE_PUSHFLAG);
             if (StringUtils.isEmpty(pushValue)) {

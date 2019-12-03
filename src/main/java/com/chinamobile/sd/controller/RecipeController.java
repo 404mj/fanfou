@@ -186,6 +186,24 @@ public class RecipeController {
         return foodItemService.downItem(rid, foodId);
     }
 
+    /**
+     * @return
+     */
+    @PostMapping("/{rid}/delete/food/")
+    public ResultModel deleteFoodItem(@PathVariable("rid") Integer rid, @RequestBody String req) {
+        if (StringUtils.isEmpty(req)) {
+            return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "error param request");
+        }
+
+        JSONObject reqjson = JSON.parseObject(req);
+        String day = reqjson.getString("food_day");
+        Integer res = foodItemService.removeItemsByDay(day, rid);
+        if (res > 0) {
+            return ResultUtil.successResult(res);
+        }
+        return ResultUtil.failResult(ServiceEnum.DELETE_ERROR, "delete error");
+    }
+
 
     /**
      * @param weekStart
@@ -193,12 +211,16 @@ public class RecipeController {
      * @return
      */
     @GetMapping("/comments/export/")
-    public ResponseEntity<InputStreamResource> getCommentsExcel(@PathVariable("weekStart") String weekStart,
-                                                                @PathVariable("weekEnd") String weekEnd) {
+    public ResponseEntity<InputStreamResource> getCommentsExcel(@RequestBody String req) {
 
-        if (StringUtils.isEmpty(weekEnd) || StringUtils.isEmpty(weekStart)) {
+        if (StringUtils.isEmpty(req)) {
             return null;
         }
+
+        JSONObject reqjson = JSON.parseObject(req);
+        String weekStart = reqjson.getString("week_start");
+        String weekEnd = reqjson.getString("week_end");
+
         ResultModel<List<FoodComment>> comments = foodCommentService.getCommentsBetweenTime(weekStart, weekEnd, 0);
         ByteArrayInputStream in = foodExcelService.comments2Excel((List<FoodComment>) comments.getData());
         HttpHeaders headers = new HttpHeaders();
