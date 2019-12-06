@@ -49,25 +49,6 @@ create table `food_comment`
   default charset = utf8;
 
 -- 开发过程修改
-insert into food_item (food_desc, kind, recommend, period, food_time, food_week, up, down, food_belng)
-values ('红烧排骨', 2, 1, 1, '2019-09-30', '一', 0, 0, 0),
-       ('馒头', 3, 0, 1, '2019-09-30', '一', 0, 0, 0),
-       ('老厨白菜', 2, 1, 1, '2019-09-30', '一', 0, 0, 0),
-       ('小米粥', 4, 0, 2, '2019-09-30', '一', 0, 0, 0);
-insert into food_item (food_desc, kind, recommend, period, food_time, food_week, up, down, food_belng)
-values ('豆腐脑', 4, 1, 0, '2019-09-30', '一', 0, 0, 0),
-       ('煎饼果子', 5, 0, 0, '2019-09-30', '一', 0, 0, 0),
-       ('西葫芦水饺', 5, 0, 2, '2019-09-30', '一', 0, 0, 0),
-       ('火龙果', 0, 0, 2, '2019-09-30', '一', 0, 0, 0);
-
-insert into food_comment (content, comment_time, restaurant, discusser)
-VALUES ('白菜有点儿烂了，也可能是焖的有点久了', '2019-09-30', 0, ''),
-       ('小米粥一直是我的最爱！！！~~~', '2019-09-30', 0, ''),
-       ('红烧排骨太硬了了！赞赞赞！', '2019-09-30', 0, '');
-
-insert into food_comment (content, comment_time, restaurant, discusser)
-VALUES ('永远抢不到的煎饼果子和水饺', '2019-09-30', 0, '');
-
 alter table food_item
   change reconmmend recommend tinyint default null comment '是否推荐:0-不是推荐的;1-今日推荐';
 alter table food_item
@@ -91,3 +72,16 @@ truncate table food_item;
 
 alter table food_item
   add UNIQUE `index_food` (`food_desc`, `period`, `food_time`, `food_belng`);
+
+-- 每日排队和上座数据落地便于分析整理
+create table `count_data`
+(
+  `data_id`     int not null primary key auto_increment comment '主键',
+  `restaurant`  tinyint  default null comment '所属餐厅0|1',
+  `count_type`  tinyint  default null comment '数据统计类型，1：排队数据;2：上座数据',
+  `count_key`   datetime default null comment '年月日时分秒 redis键值',
+  `count_value` int      default 0 comment '对应类型数据',
+  key `index_count` (`restaurant`, `count_type`, `count_key`, `count_value`)
+) engine = InnoDB
+  auto_increment = 1
+  default charset = utf8;

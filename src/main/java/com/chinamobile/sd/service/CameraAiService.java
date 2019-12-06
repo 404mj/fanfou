@@ -36,7 +36,7 @@ public class CameraAiService {
      * 每天的早中晚饭时间开始启动，30s执行一次
      * 秒 分 时 每月第几天 月 星期 年
      */
-    @Scheduled(cron = "*/30 * 7-8,11-13,17-18 * * *", zone = "Asia/Shanghai")
+    @Scheduled(cron = "*/30 * 7-8,11-12,17-18 * * *", zone = "Asia/Shanghai")
     public void executePicTask() {
         //午饭点从11点半开始
 
@@ -54,7 +54,7 @@ public class CameraAiService {
 //            notifyService.notifyMobile();
             }
         }
-        asyncPicSendRedisCallAiTask();
+//        asyncPicSendRedisCallAiTask();
 
     }
 

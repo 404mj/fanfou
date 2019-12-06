@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.chinamobile.sd.dao.CountDataDao">
+
+    <insert id="addDatas" parameterType="com.chinamobile.sd.model.CountData">
+        insert into count_data (restaurant,count_type,count_key,count_value)
+        values
+        <foreach collection="list" index="index" item="it" separator=",">
+            (
+            #{it.restaurant},
+            #{it.countType},
+            #{it.countKey},
+            #{it.countValue}
+            )
+        </foreach>
+    </insert>
+</mapper>

@@ -52,6 +52,8 @@ public class TryController {
     private TextPhotoPush textPhotoPush;
     @Autowired
     private CrypUtil crypUtil;
+    @Autowired
+    private CountLandingService countLandingService;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -399,5 +401,10 @@ public class TryController {
     public ResultModel<List<FoodComment>> comments() {
         String[] days = DateUtil.getCurrentWeekFirstLastDay();
         return foodCommentService.getCommentsBetweenTime(days[0], days[1], 0);
+    }
+
+    @GetMapping("t_landing")
+    public void landing(){
+        countLandingService.landingTask();
     }
 }

@@ -3,9 +3,8 @@ package com.chinamobile.sd.commonUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.*;
@@ -301,4 +300,15 @@ public class DateUtil {
         }
         return false;
     }
+
+    /**
+     * @param secondts
+     * @return
+     */
+    public static String parseTimestamp2String(long secondts) {
+        LocalDateTime time = LocalDateTime.ofInstant(Instant.ofEpochSecond(secondts), TimeZone.getDefault().toZoneId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(YYYY_MM_DD_HH_MM_SS);
+        return time.format(formatter);
+    }
+
 }
