@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -34,7 +35,7 @@ public class CountLandingService {
     @Autowired
     private CountDataDao countDataDao;
 
-    @Scheduled(cron = "* 30 21 * * *", zone = "Asia/Shanghai")
+    @Scheduled(cron = "0 0 21 * * *", zone = "Asia/Shanghai")
     public void landingValues() {
         logger.info("-------- landing start --------");
         landingTask();
@@ -43,8 +44,7 @@ public class CountLandingService {
 
 
     public void landingTask() {
-
-        List<CountData> cds = new ArrayList<>(90);
+        List<CountData> cds = new ArrayList<>(360);
         for (int i = 0; i < 8; ++i) {
             List<String> tsKeys = redisTemplate.boundListOps(Constant.REDISKEY_COMPLETED_LIST).range(10 * i, (10 * (i + 1) - 1));
             List<Object> tsKeyObjs = tsKeys.stream().collect(Collectors.toList());
