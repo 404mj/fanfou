@@ -80,7 +80,7 @@ create table `count_data`
   `restaurant`  tinyint  default null comment '所属餐厅0|1',
   `count_type`  tinyint  default null comment '数据统计类型，1：排队数据;2：上座数据',
   `count_key`   datetime default null comment '年月日时分秒 redis键值',
-  `count_value` int      default 0 comment '对应类型数据',
+  `count_value` float      default 0 comment '对应类型数据',
   key `index_count` (`restaurant`, `count_type`, `count_key`, `count_value`)
 ) engine = InnoDB
   auto_increment = 1

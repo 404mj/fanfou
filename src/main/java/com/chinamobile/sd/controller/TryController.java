@@ -54,6 +54,8 @@ public class TryController {
     private CrypUtil crypUtil;
     @Autowired
     private CountLandingService countLandingService;
+    @Autowired
+    private FoodExcelService foodExcelService;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -272,8 +274,8 @@ public class TryController {
     @PostMapping("/upload")
     public ResultModel uploadExcel(@RequestParam("file") MultipartFile multipartFile) {
 //        InputStream inputStream = multipartFile.getInputStream();
-
-        return ResultUtil.successResult(1);
+        return foodExcelService.processRecipeExcel(multipartFile);
+//        return ResultUtil.successResult(1);
     }
 
     @GetMapping("/processexcel")
@@ -404,7 +406,7 @@ public class TryController {
     }
 
     @GetMapping("t_landing")
-    public void landing(){
+    public void landing() {
         countLandingService.landingTask();
     }
 }

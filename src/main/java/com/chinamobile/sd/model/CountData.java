@@ -9,9 +9,9 @@ public class CountData {
     private Integer restaurant;
     private Integer countType;
     private String countKey;
-    private Integer countValue;
+    private Float countValue;
 
-    public CountData(Integer dataId, Integer restaurant, Integer countType, String countKey, Integer countValue) {
+    public CountData(Integer dataId, Integer restaurant, Integer countType, String countKey, Float countValue) {
         this.dataId = dataId;
         this.restaurant = restaurant;
         this.countType = countType;
@@ -62,11 +62,11 @@ public class CountData {
         this.countKey = countKey;
     }
 
-    public Integer getCountValue() {
+    public Float getCountValue() {
         return countValue;
     }
 
-    public void setCountValue(Integer countValue) {
+    public void setCountValue(Float countValue) {
         this.countValue = countValue;
     }
 }
