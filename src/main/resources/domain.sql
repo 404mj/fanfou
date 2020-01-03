@@ -80,8 +80,34 @@ create table `count_data`
   `restaurant`  tinyint  default null comment '所属餐厅0|1',
   `count_type`  tinyint  default null comment '数据统计类型，1：排队数据;2：上座数据',
   `count_key`   datetime default null comment '年月日时分秒 redis键值',
-  `count_value` float      default 0 comment '对应类型数据',
+  `count_value` float    default 0 comment '对应类型数据',
   key `index_count` (`restaurant`, `count_type`, `count_key`, `count_value`)
+) engine = InnoDB
+  auto_increment = 1
+  default charset = utf8;
+
+-- 加班餐预约
+create table `booked_user`
+(
+  `book_uid`  int          not null primary key auto_increment,
+  `memid`     varchar(100) not null,
+  `name`      varchar(30),
+  `msisdn`    varchar(15)  not null comment '手机号',
+  `dept_name` varchar(100),
+  unique `index_bookuser` (`memid`, `msisdn`)
+) engine = InnoDB
+  auto_increment = 1
+  default charset = utf8;
+
+create table `booked_record`
+(
+  `book_id`     int  not null primary key auto_increment,
+  `book_uid`    int  not null,
+  `book_time`   date not null,
+  `book_week`   varchar(1),
+  `book_period` tinyint comment '0 1 2',
+  `book_rest`   tinyint comment '0机关餐厅 2七里山餐厅 3德亨餐厅',
+  unique `idx_book_record` (`book_uid`, `book_time`, `book_rest`, `book_period`)
 ) engine = InnoDB
   auto_increment = 1
   default charset = utf8;

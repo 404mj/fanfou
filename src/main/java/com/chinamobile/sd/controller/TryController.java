@@ -4,9 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.chinamobile.sd.commonUtils.*;
 import com.chinamobile.sd.commonUtils.royasoft.TextPhotoPush;
-import com.chinamobile.sd.model.FoodComment;
-import com.chinamobile.sd.model.FoodItem;
-import com.chinamobile.sd.model.ResultModel;
+import com.chinamobile.sd.model.*;
 import com.chinamobile.sd.service.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,6 +54,10 @@ public class TryController {
     private CountLandingService countLandingService;
     @Autowired
     private FoodExcelService foodExcelService;
+    @Autowired
+    private BookedUserService buserService;
+    @Autowired
+    private BookedRecordService recordService;
 
     /**
      * 直接使用sring序列化，免去Config配置
@@ -408,5 +410,12 @@ public class TryController {
     @GetMapping("t_landing")
     public void landing() {
         countLandingService.landingTask();
+    }
+
+    @GetMapping("t_buser_add")
+    public void addBuser() {
+        BookedUser user1 = new BookedUser("aaaaa44444", "张三4", "18810102024", "信息技术部");
+        logger.info(buserService.newBuser(user1));
+        logger.info(user1.getBookUid());
     }
 }

@@ -2,7 +2,6 @@ package com.chinamobile.sd.dao;
 
 import com.chinamobile.sd.model.CountData;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

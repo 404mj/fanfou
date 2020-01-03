@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.chinamobile.sd.dao.BookedUserDao">
+
+    <insert id="addBookedUser" useGeneratedKeys="true" keyProperty="bookUid">
+        insert into booked_user (memid, name, msisdn, dept_name)
+        values (#{memId},#{name},#{msisdn},#{deptName});
+    </insert>
+
+
+    <select id="findBookedUserByMemid" resultType="com.chinamobile.sd.model.BookedUser">
+        select book_uid,memid,name,msisdn,dept_name from booked_user
+        where memid = #{memId};
+    </select>
+
+</mapper>
