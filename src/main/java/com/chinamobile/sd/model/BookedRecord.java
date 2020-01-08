@@ -11,6 +11,7 @@ public class BookedRecord {
     private String bookWeek;
     private Integer bookPeriod;
     private Integer bookRest;
+    private Integer count;
 
     public BookedRecord(Integer bookUid, String bookTime, String bookWeek, Integer bookPeriod, Integer bookRest) {
         this.bookUid = bookUid;
@@ -78,5 +79,13 @@ public class BookedRecord {
 
     public void setBookRest(Integer bookRest) {
         this.bookRest = bookRest;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

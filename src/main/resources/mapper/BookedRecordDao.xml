@@ -17,6 +17,10 @@
     </insert>
 
     <select id="getRecordCountBetweenTime" resultType="com.chinamobile.sd.model.BookedRecord">
-        
+         select book_time,book_rest,book_period,count(*) as count
+         from booked_record
+         where book_time &gt;= #{startTime} and &lt;= #{endTime}
+         group by book_time,book_rest,book_period
+         order by book_time asc, book_rest asc,book_period asc;
     </select>
 </mapper>

@@ -25,7 +25,8 @@ public class BookedUserService {
      * @return
      */
     public Integer newBuser(BookedUser buser) {
-        return buserDao.addBookedUser(buser);
+        buserDao.addBookedUser(buser);
+        return buser.getBookUid();
     }
 
     public BookedUser getBuserByMemid(String memId) {
