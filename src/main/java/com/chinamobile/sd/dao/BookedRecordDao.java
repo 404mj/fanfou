@@ -11,7 +11,7 @@ import java.util.List;
  * @Date: 2020/1/3 14:11
  */
 public interface BookedRecordDao {
-    Integer addRecords(@Param("records") List<BookedRecord> records);
+    Integer addRecords(List<BookedRecord> records);
 
     List<BookedRecordCount> getRecordCountBetweenTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
 }

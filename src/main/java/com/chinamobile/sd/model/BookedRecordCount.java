@@ -10,11 +10,21 @@ public class BookedRecordCount {
     private Integer bookPeriod;
     private Integer count;
 
-    public BookedRecordCount(String bookTime, Integer bookPeriod, Integer bookRest, Integer count) {
+    public BookedRecordCount(String bookTime, Integer bookRest, Integer bookPeriod, Integer count) {
         this.bookTime = bookTime;
         this.bookPeriod = bookPeriod;
         this.bookRest = bookRest;
         this.count = count;
+    }
+
+    @Override
+    public String toString() {
+        return "BookedRecordCount{" +
+                "bookTime='" + bookTime + '\'' +
+                ", bookRest=" + bookRest +
+                ", bookPeriod=" + bookPeriod +
+                ", count=" + count +
+                '}';
     }
 
     public String getBookTime() {

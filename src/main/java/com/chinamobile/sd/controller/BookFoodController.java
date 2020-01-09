@@ -51,8 +51,6 @@ public class BookFoodController {
         } else {
             buid = userInDb.getBookUid();
         }
-
-
         //处理预定请求
         List<BookedRecord> recordList = new ArrayList<>(32);
         JSONObject jsonObj = JSONObject.parseObject(reqjson);
@@ -80,18 +78,14 @@ public class BookFoodController {
             return ResultUtil.successResult(res);
         }
         return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
+
     }
 
 
     @GetMapping("/export")
-    public ResponseEntity<InputStreamResource> exportBookReq() {
-//        if (StringUtils.isEmpty(reqjson)) {
-//            return null;
-//        }
-//        JSONObject jsonObj = JSONObject.parseObject(reqjson);
-        String dateStart = "2020-01-11";// jsonObj.getString("date_start");
-        String dateEnd = "2020-01-12";//jsonObj.getString("date_end");
-
+    public ResponseEntity<InputStreamResource> exportBookReq(@RequestParam("date_start") String dateStart,
+                                                             @RequestParam("date_end") String dateEnd) {
+        logger.info(dateStart);
         ByteArrayInputStream in = recordService.getCountAnd2Excel(dateStart, dateEnd);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "attachment;filename=\"" + dateStart + "_" + dateEnd + ".xlsx" + "\"");

@@ -3,14 +3,12 @@ package com.chinamobile.sd.service;
 import com.chinamobile.sd.dao.BookedRecordDao;
 import com.chinamobile.sd.model.BookedRecord;
 import com.chinamobile.sd.model.BookedRecordCount;
-import com.chinamobile.sd.model.FoodComment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
 import org.apache.poi.xssf.usermodel.*;
-import org.apache.poi.xssf.usermodel.extensions.XSSFCellBorder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -139,70 +137,59 @@ public class BookedRecordService {
 
             //写入统计信息
             int i = 3;
-            Map<Integer, XSSFRow> container = new HashMap<>(5);
+            Map<String, XSSFRow> container = new HashMap<>(5);
             for (BookedRecordCount record : countList) {
                 XSSFRow rowi;
-                if (!container.containsKey(i)) {
-                    rowi = sheet.createRow(i);
-                    container.put(i, rowi);
+                if (!container.containsKey(record.getBookTime())) {
+                    rowi = sheet.createRow(i++);
+                    container.put(record.getBookTime(), rowi);
+                    XSSFCell cell = rowi.createCell(0);
+                    cell.setCellStyle(tableCellStyle);
+                    cell.setCellValue(record.getBookTime());
                 } else {
-                    rowi = container.get(i);
+                    rowi = container.get(record.getBookTime());
                 }
-                for (int j = 0; j <= 9; ++j) {
-                    XSSFCell cellij = rowi.createCell(j);
-                    cellij.setCellStyle(tableCellStyle);
-                    switch (j) {
-                        case 0:
-                            cellij.setCellValue(record.getBookTime());
-                            break;
-                        case 1:
-                            if (record.getBookRest() == 0 && record.getBookPeriod() == 0) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
-                        case 2:
-                            if (record.getBookRest() == 0 && record.getBookPeriod() == 1) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
-                        case 3:
-                            if (record.getBookRest() == 0 && record.getBookPeriod() == 2) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
-                        case 4:
-                            if (record.getBookRest() == 2 && record.getBookPeriod() == 0) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
-                        case 5:
-                            if (record.getBookRest() == 2 && record.getBookPeriod() == 1) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
-                        case 6:
-                            if (record.getBookRest() == 2 && record.getBookPeriod() == 2) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
-                        case 7:
-                            if (record.getBookRest() == 3 && record.getBookPeriod() == 0) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
-                        case 8:
-                            if (record.getBookRest() == 3 && record.getBookPeriod() == 1) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
-                        case 9:
-                            if (record.getBookRest() == 3 && record.getBookPeriod() == 2) {
-                                cellij.setCellValue(record.getCount());
-                            }
-                            break;
+
+                if (record.getBookRest() == 0) {
+                    if (record.getBookPeriod() == 0) {
+                        fillCell(rowi, 1, tableCellStyle, record.getCount());
+                    } else if (record.getBookPeriod() == 1) {
+                        fillCell(rowi, 2, tableCellStyle, record.getCount());
+                    } else {
+                        fillCell(rowi, 3, tableCellStyle, record.getCount());
                     }
                 }
-                ++i;
+
+                if (record.getBookRest() == 2) {
+                    if (record.getBookPeriod() == 0) {
+                        fillCell(rowi, 4, tableCellStyle, record.getCount());
+                    } else if (record.getBookPeriod() == 1) {
+                        fillCell(rowi, 5, tableCellStyle, record.getCount());
+                    } else {
+                        fillCell(rowi, 6, tableCellStyle, record.getCount());
+                    }
+                }
+
+                if (record.getBookRest() == 3) {
+                    if (record.getBookPeriod() == 0) {
+                        fillCell(rowi, 7, tableCellStyle, record.getCount());
+                    } else if (record.getBookPeriod() == 1) {
+                        fillCell(rowi, 8, tableCellStyle, record.getCount());
+                    } else {
+                        fillCell(rowi, 9, tableCellStyle, record.getCount());
+                    }
+                }
+            }
+
+            //写入0值
+            for (i = 3; i < sheet.getPhysicalNumberOfRows(); ++i) {
+                XSSFRow rowi = sheet.getRow(i);
+                for (int j = 1; j <= 9; ++j) {
+                    XSSFCell cellij = rowi.getCell(j);
+                    if (cellij == null) {
+                        fillCell(rowi, j, tableCellStyle, 0);
+                    }
+                }
             }
             workbook.write(out);
             return new ByteArrayInputStream(out.toByteArray());
@@ -210,6 +197,18 @@ public class BookedRecordService {
             logger.error(e.getMessage(), e);
         }
         return null;
+    }
+
+    /**
+     * @param row
+     * @param numth
+     * @param stylew
+     * @param value
+     */
+    private void fillCell(XSSFRow row, Integer numth, XSSFCellStyle style, Integer value) {
+        XSSFCell cell = row.createCell(numth);
+        cell.setCellStyle(style);
+        cell.setCellValue(value);
     }
 
 }

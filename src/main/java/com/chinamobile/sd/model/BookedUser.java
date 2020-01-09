@@ -6,13 +6,14 @@ package com.chinamobile.sd.model;
  */
 public class BookedUser {
     private Integer bookUid;
-    private String memId;
+    private String memid;
     private String name;
     private String msisdn;
     private String deptName;
 
-    public BookedUser(String memId, String name, String msisdn, String deptName) {
-        this.memId = memId;
+    public BookedUser(Integer bookUid, String memId, String name, String msisdn, String deptName) {
+        this.bookUid = bookUid;
+        this.memid = memId;
         this.name = name;
         this.msisdn = msisdn;
         this.deptName = deptName;
@@ -22,7 +23,7 @@ public class BookedUser {
     public String toString() {
         return "BookedUserDao{" +
                 "bookedUid=" + bookUid +
-                ", memId=" + memId +
+                ", memId=" + memid +
                 ", name='" + name + '\'' +
                 ", msisdn='" + msisdn + '\'' +
                 ", deptName='" + deptName + '\'' +
@@ -38,11 +39,11 @@ public class BookedUser {
     }
 
     public String getMemId() {
-        return memId;
+        return memid;
     }
 
     public void setMemId(String memId) {
-        this.memId = memId;
+        this.memid = memId;
     }
 
     public String getName() {

@@ -414,8 +414,8 @@ public class TryController {
 
     @GetMapping("t_buser_add")
     public void addBuser() {
-        BookedUser user1 = new BookedUser("aaaaa44444", "张三4", "18810102024", "信息技术部");
-        logger.info(buserService.newBuser(user1));
-        logger.info(user1.getBookUid());
+//        BookedUser user1 = new BookedUser("aaaaa44444", "张三4", "18810102024", "信息技术部");
+//        logger.info(buserService.newBuser(user1));
+//        logger.info(user1.getBookUid());
     }
 }

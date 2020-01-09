@@ -17,7 +17,7 @@
     </insert>
 
     <select id="getRecordCountBetweenTime" resultType="com.chinamobile.sd.model.BookedRecordCount">
-         select book_time,book_rest,book_period,count(*) as count
+         select book_time as bookTime,book_rest as bookRest,book_period as bookPeriod,count(*) as count
          from booked_record
          where book_time &gt;= #{startTime} and book_time &lt;= #{endTime}
          group by book_time,book_rest,book_period
