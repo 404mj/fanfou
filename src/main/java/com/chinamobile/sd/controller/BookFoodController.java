@@ -89,8 +89,8 @@ public class BookFoodController {
 //            return null;
 //        }
 //        JSONObject jsonObj = JSONObject.parseObject(reqjson);
-        String dateStart = "20190107";// jsonObj.getString("date_start");
-        String dateEnd = "20190109";//jsonObj.getString("date_end");
+        String dateStart = "2020-01-11";// jsonObj.getString("date_start");
+        String dateEnd = "2020-01-12";//jsonObj.getString("date_end");
 
         ByteArrayInputStream in = recordService.getCountAnd2Excel(dateStart, dateEnd);
         HttpHeaders headers = new HttpHeaders();

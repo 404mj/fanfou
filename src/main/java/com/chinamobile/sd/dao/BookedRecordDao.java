@@ -1,6 +1,7 @@
 package com.chinamobile.sd.dao;
 
 import com.chinamobile.sd.model.BookedRecord;
+import com.chinamobile.sd.model.BookedRecordCount;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,5 +13,5 @@ import java.util.List;
 public interface BookedRecordDao {
     Integer addRecords(@Param("records") List<BookedRecord> records);
 
-    List<BookedRecord> getRecordCountBetweenTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
+    List<BookedRecordCount> getRecordCountBetweenTime(@Param("startTime") String startTime, @Param("endTime") String endTime);
 }
