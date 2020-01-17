@@ -172,6 +172,11 @@ public class DateUtil {
         return result;
     }
 
+    public static boolean isFutureOfToday(String datestr) {
+        Date target = string2Date(datestr, YYYY_MM_DD);
+        Date now = new Date();
+        return target.after(now);
+    }
 
     /**
      * 取得当前日期的月份，以MM格式返回.
@@ -310,5 +315,4 @@ public class DateUtil {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(YYYY_MM_DD_HH_MM_SS);
         return time.format(formatter);
     }
-
 }

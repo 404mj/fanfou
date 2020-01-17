@@ -58,12 +58,11 @@ public class FoodExcelService {
                 List<FoodItem> lunchItems = processDishes(lunch, 1);
                 List<FoodItem> dinnerItems = processDishes(dinner, 2);
 
-                List<FoodItem> weekFoods = Stream.of(breakfastItems, lunchItems, dinnerItems)
+                List<FoodItem> weekFoods = Stream.of(breakfastItems, dinnerItems)
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
 
-//                logger.info("------weekfoods: " + weekFoods.toString());
-
+//                logger.info("------weekfoods: " + breakfastItems.toString());
                 return foodItemService.addItems(weekFoods);
             } else {
                 logger.error("------sheet number err: " + workbook.getNumberOfSheets());
@@ -140,7 +139,7 @@ public class FoodExcelService {
     private List<FoodItem> processDishes(XSSFSheet periodRecipe, Integer period) {
         List<FoodItem> foodItems = new ArrayList<>(32);
 
-        int rows = periodRecipe.getPhysicalNumberOfRows();
+        int rows = periodRecipe.getLastRowNum();
         String foodBelng = periodRecipe.getRow(0).getCell(0).getStringCellValue();
         Integer restaurant = 0;
         if (foodBelng.equals("B1小餐厅")) {
@@ -148,7 +147,7 @@ public class FoodExcelService {
         }
 
         //从第三行开始遍历每天的菜品
-        for (int i = 2; i < rows; ++i) {
+        for (int i = 2; i <= rows; ++i) {
             XSSFRow dayFood = periodRecipe.getRow(i);
             //处理推荐
             String[] recommend = dayFood.getCell(dayFood.getLastCellNum() - 1).getStringCellValue().trim()

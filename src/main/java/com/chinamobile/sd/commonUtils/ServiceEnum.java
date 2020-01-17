@@ -8,15 +8,17 @@ public enum ServiceEnum {
 
     SUCCESS("SUCCESS", "调用成功"),
     PARAM_FORMAT_ERROR("FAIL_BIZ_PARAM_ERROR", "输入的参数有误"),
-    VALIDATE_ERROR("FAIL_BIZ_VALIDATE_ERROR", "数据检验异常"),
+    VALIDATE_ERROR("FAIL_BIZ_VALIDATE_ERROR", "数据检验异常,请检查"),
     INPUT_NULL("FAIL_BIZ_INPUT_NULL", "必要参数不能为空，请填写"),
     OTHER_ERROR("FAIL_BIZ_OTHER_ERROR", "其他错误"),
     NO_QUERY_INFO("FAIL_BIZ_NO_QUERY_INFO", "查询信息不存在"),
+    NO_USER_INFO("FAIL_USER_NO_QUERY_INFO", "获取用户信息失败，请重试"),
     DELETE_ERROR("FAIL_BIZ_DELETE_ERROR", "信息删除失败"),
     SAVE_ERROR("SAVE_ERROR", "信息添加失败"),
     UPDATE_ERROR("UPDATE_ERROR", "修改信息失败"),
     COMMIT_REPEAT_ERROR("FAIL_BIZ_COMMIT_REPEAT_ERROR", "不能重复提交"),
     NO_QUERY_ERROR("FAIL_BIZ_NO_QUERY_ERROR", "您请求的信息不存在。"),
+    SAVE_DUPLICATE("FAIL_DUPLICATE_SAVE", "您已经提交过啦"),
     SYSTEM_ERROR("FAIL_BIZ_SYSTEM_ERROR", "系统开小差啦~请稍后再试");
 
 

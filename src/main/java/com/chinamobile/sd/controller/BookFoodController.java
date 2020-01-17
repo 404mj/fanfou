@@ -2,6 +2,7 @@ package com.chinamobile.sd.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.chinamobile.sd.commonUtils.DateUtil;
 import com.chinamobile.sd.commonUtils.ResultUtil;
 import com.chinamobile.sd.commonUtils.ServiceEnum;
 import com.chinamobile.sd.model.BookedRecord;
@@ -13,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,19 +40,23 @@ public class BookFoodController {
     private BookedRecordService recordService;
 
 
-    @RequestMapping("/add")
+    @PostMapping("/add")
     public ResultModel bookFood(BookedUser bUser, @RequestBody String reqjson) {
         if (StringUtils.isEmpty(reqjson) || bUser == null) {
             return ResultUtil.failResult(ServiceEnum.INPUT_NULL, "参数有误");
         }
-
         Integer buid = null;
-        BookedUser userInDb = buserService.getBuserByMemid(bUser.getMemId());
-        if (userInDb == null) {
-            buid = buserService.newBuser(bUser);
-        } else {
-            buid = userInDb.getBookUid();
+        try {
+            BookedUser userInDb = buserService.getBuserByMemid(bUser.getMemId());
+            if (userInDb == null) {
+                buid = buserService.newBuser(bUser);
+            } else {
+                buid = userInDb.getBookUid();
+            }
+        } catch (Exception e) {
+            return ResultUtil.failResult(ServiceEnum.NO_USER_INFO, ServiceEnum.NO_USER_INFO.getValue());
         }
+
         //处理预定请求
         List<BookedRecord> recordList = new ArrayList<>(32);
         JSONObject jsonObj = JSONObject.parseObject(reqjson);
@@ -59,26 +65,28 @@ public class BookFoodController {
         for (int i = 0; i < bookItems.size(); ++i) {
             JSONObject item = bookItems.getJSONObject(i);
             String bdate = item.getString("date");
-            String periods = item.getString("periods");
+            JSONArray periods = item.getJSONArray("periods");
+
+            if (!DateUtil.isFutureOfToday(bdate)) {
+                return ResultUtil.failResult(ServiceEnum.VALIDATE_ERROR, ServiceEnum.VALIDATE_ERROR.getValue());
+            }
 
             //处理预定条目
-            if (periods.length() > 1) {
-                String[] ps = periods.split(",");
-                for (String period : ps) {
-                    BookedRecord br = new BookedRecord(buid, bdate, "", Integer.valueOf(period), rest);
+            if (periods.size() > 0) {
+                for (Object period : periods.toArray()) {
+                    BookedRecord br = new BookedRecord(buid, bdate, "", Integer.valueOf((String) period), rest);
                     recordList.add(br);
                 }
-            } else {
-                BookedRecord br = new BookedRecord(buid, bdate, "", Integer.valueOf(periods), rest);
-                recordList.add(br);
             }
         }
-        Integer res = recordService.newRecords(recordList);
-        if (res > 0) {
-            return ResultUtil.successResult(res);
+        try {
+            recordService.newRecords(recordList);
+        } catch (DuplicateKeyException de) {
+            return ResultUtil.failResult(ServiceEnum.SAVE_DUPLICATE, ServiceEnum.SAVE_DUPLICATE.getValue());
+        } catch (Exception e) {
+            return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
         }
-        return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
-
+        return ResultUtil.successResult(ServiceEnum.SUCCESS.getValue());
     }
 
 
