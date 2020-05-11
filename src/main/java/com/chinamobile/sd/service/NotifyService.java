@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -27,7 +28,8 @@ import java.util.Date;
 public class NotifyService {
 
     private Logger logger = LogManager.getLogger(NotifyService.class);
-
+    public static String[] WEEKMAP = {"", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"};
+    public static String RECIPEURL = "https://ydsq.sd.chinamobile.com/vue-h5/resturant/index.html#/weekDelicacy?week=";
 
     @Autowired
     private TextPhotoPush textPhotoPush;
@@ -38,6 +40,15 @@ public class NotifyService {
     public void notifyMobile() {
         textPhotoPush.sendText(Constant.MOBILE_PUSH_MSG);
         logger.info("--------notify_mobile: " + DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
+    }
+
+    /**
+     * 根据周几生成食谱访问链接，通知移动用户
+     */
+    public void notifyMobileRecipe() {
+        String wkurl = RECIPEURL + WEEKMAP[LocalDate.now().getDayOfWeek().getValue()];
+        textPhotoPush.sendText(Constant.MOBILE_PUSH_RECIPEMSG + wkurl);
+        logger.info("--------notify_mobile_receipe: " + DateUtil.date2String(new Date(), DateUtil.YYYY_MM_DD_HH_MM_SS));
     }
 
 
