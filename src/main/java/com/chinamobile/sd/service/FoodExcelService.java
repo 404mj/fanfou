@@ -1,9 +1,6 @@
 package com.chinamobile.sd.service;
 
-import com.chinamobile.sd.commonUtils.Constant;
-import com.chinamobile.sd.commonUtils.DateUtil;
-import com.chinamobile.sd.commonUtils.ResultUtil;
-import com.chinamobile.sd.commonUtils.ServiceEnum;
+import com.chinamobile.sd.commonUtils.*;
 import com.chinamobile.sd.dao.FoodCommentDao;
 import com.chinamobile.sd.dao.FoodItemDao;
 import com.chinamobile.sd.model.FoodComment;
@@ -11,7 +8,6 @@ import com.chinamobile.sd.model.FoodItem;
 import com.chinamobile.sd.model.ResultModel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.*;
@@ -47,6 +43,7 @@ public class FoodExcelService {
     private FoodCommentDao foodCommentDao;
 
     public ResultModel<Integer> processRecipeExcel(MultipartFile recipeFile) {
+        ResultModel res = new ResultModel();
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(recipeFile.getInputStream());
             if (workbook.getNumberOfSheets() >= 3) {
@@ -58,7 +55,7 @@ public class FoodExcelService {
                 List<FoodItem> lunchItems = processDishes(lunch, 1);
                 List<FoodItem> dinnerItems = processDishes(dinner, 2);
 
-                List<FoodItem> weekFoods = Stream.of(breakfastItems, dinnerItems)
+                List<FoodItem> weekFoods = Stream.of(breakfastItems, lunchItems, dinnerItems)
                         .flatMap(Collection::stream)
                         .collect(Collectors.toList());
 
@@ -66,18 +63,22 @@ public class FoodExcelService {
                 return foodItemService.addItems(weekFoods);
             } else {
                 logger.error("------sheet number err: " + workbook.getNumberOfSheets());
-                return ResultUtil.failResult(ServiceEnum.PARAM_FORMAT_ERROR, ServiceEnum.PARAM_FORMAT_ERROR.getValue());
+                return ResultUtil.failResult(ServiceEnum.PARAM_FORMAT_ERROR, "excel sheet number error");
             }
         } catch (MultipartStream.IllegalBoundaryException e2) {
             logger.error(e2.getMessage(), e2);
+            res.setMsg(StringUtil.parseCase(e2.getCause().getMessage()));
         } catch (IOException e) {
             logger.error(e.getMessage(), e);
+            res.setMsg(StringUtil.parseCase(e.getCause().getMessage()));
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
+            res.setMsg(StringUtil.parseCase(e.getCause().getMessage()));
         }
-        return ResultUtil.failResult(ServiceEnum.SAVE_ERROR, ServiceEnum.SAVE_ERROR.getValue());
+        res.setSuccess(false);
+        res.setStatus(ServiceEnum.SAVE_ERROR.getCode());
+        return res;
     }
-
 
     /**
      * 修改菜的名字（不修改种类！！没有餐厅参数）
@@ -201,5 +202,4 @@ public class FoodExcelService {
             }
         }
     }
-
 }

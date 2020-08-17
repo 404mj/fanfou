@@ -264,10 +264,11 @@ public class TryController {
     }
 
     @GetMapping("/testa")
-    public String testAsync() {
-        long st = System.currentTimeMillis();
-        cameraAiService.asyncPicSendRedisCallAiTask();
-        return String.valueOf(System.currentTimeMillis() - st);
+    public void testAsync() {
+//        long st = System.currentTimeMillis();
+//        cameraAiService.asyncPicSendRedisCallAiTask();
+//        return String.valueOf(System.currentTimeMillis() - st);
+        notifyService.notifyMobileRecipe();
     }
 
     /**

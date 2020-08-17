@@ -96,7 +96,7 @@ public class RecipeController {
         }
 
         JSONObject reqjson = JSON.parseObject(req);
-        String day = reqjson.getString("daytime");
+        String day = reqjson.getString("dauytime");
         Integer period = reqjson.getInteger("period");
 
         return foodItemService.getRecommendTodayPeriod(day, period, rid);
